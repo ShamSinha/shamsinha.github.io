@@ -369,29 +369,226 @@ If $P\succeq0$ but is singular, the function may be flat in some directions, so 
 
 ---
 
-## 9. Why can we assume the quadratic matrix is symmetric?
+## 9. Why can every quadratic form be represented by a symmetric matrix?
 
-Any square matrix can be decomposed as
+The phrase "we can assume that $P$ is symmetric" can be misleading. We are not proving that the original matrix $P$ is symmetric. Instead, we are showing that every possibly nonsymmetric matrix can be replaced by a symmetric matrix without changing the quadratic function.
 
-$$
-P=\frac{P+P^T}{2}+\frac{P-P^T}{2}.
-$$
-
-The first term is symmetric and the second is skew-symmetric.
-
-For a skew-symmetric matrix $S^T=-S$,
+Start with a general square matrix
 
 $$
-x^TSx=0.
+P\in\mathbb{R}^{n\times n}.
 $$
 
-Therefore,
+It can always be decomposed as
 
 $$
-x^TPx=x^T\left(\frac{P+P^T}{2}\right)x.
+P=H+K,
 $$
 
-Only the symmetric part affects the quadratic form.
+where
+
+$$
+H=\frac{P+P^T}{2}
+$$
+
+and
+
+$$
+K=\frac{P-P^T}{2}.
+$$
+
+The matrix $H$ is symmetric because
+
+$$
+H^T
+=\left(\frac{P+P^T}{2}\right)^T
+=\frac{P^T+P}{2}
+=H.
+$$
+
+The matrix $K$ is skew-symmetric because
+
+$$
+K^T
+=\left(\frac{P-P^T}{2}\right)^T
+=\frac{P^T-P}{2}
+=-K.
+$$
+
+Thus every square matrix is the sum of a symmetric part and a skew-symmetric part.
+
+### Why does the skew-symmetric part disappear?
+
+Consider the scalar
+
+$$
+a=x^TKx.
+$$
+
+Because $a$ is a scalar, transposing it does not change it:
+
+$$
+a=a^T.
+$$
+
+Now transpose the complete product:
+
+$$
+a^T
+=(x^TKx)^T
+=x^TK^Tx.
+$$
+
+Since $K^T=-K$,
+
+$$
+a^T=x^T(-K)x=-x^TKx=-a.
+$$
+
+We have therefore shown both
+
+$$
+a=a^T
+$$
+
+and
+
+$$
+a^T=-a.
+$$
+
+Hence $a=-a$, which is possible only when
+
+$$
+a=0.
+$$
+
+Therefore every skew-symmetric matrix satisfies
+
+$$
+x^TKx=0
+$$
+
+for every vector $x$.
+
+### Apply this result to the quadratic form
+
+Using $P=H+K$,
+
+$$
+x^TPx
+=x^T(H+K)x
+=x^THx+x^TKx.
+$$
+
+The second term is zero, so
+
+$$
+x^TPx=x^THx
+=x^T\left(\frac{P+P^T}{2}\right)x.
+$$
+
+This is the precise meaning of "we can assume $P$ is symmetric": the original $P$ need not be symmetric, but its symmetric part represents exactly the same quadratic form.
+
+### Concrete example
+
+Take the nonsymmetric matrix
+
+$$
+P=
+\begin{bmatrix}
+1&1\\
+-1&1
+\end{bmatrix}.
+$$
+
+Its symmetric part is
+
+$$
+H
+=\frac{P+P^T}{2}
+=\begin{bmatrix}
+1&0\\
+0&1
+\end{bmatrix}
+=I,
+$$
+
+and its skew-symmetric part is
+
+$$
+K
+=\frac{P-P^T}{2}
+=\begin{bmatrix}
+0&1\\
+-1&0
+\end{bmatrix}.
+$$
+
+For
+
+$$
+x=\begin{bmatrix}x_1\\x_2\end{bmatrix},
+$$
+
+direct expansion gives
+
+$$
+x^TPx
+=x_1^2+x_1x_2-x_1x_2+x_2^2
+=x_1^2+x_2^2.
+$$
+
+The two cross terms cancel. This is exactly the same expression obtained from the symmetric part:
+
+$$
+x^THx=x^TIx=x_1^2+x_2^2.
+$$
+
+### What happens to the gradient and Hessian?
+
+For a general matrix $P$, consider
+
+$$
+f(x)=\frac12x^TPx+q^Tx+r.
+$$
+
+Before making any symmetry assumption, the gradient is
+
+$$
+\nabla f(x)
+=\frac12(P+P^T)x+q,
+$$
+
+and the Hessian is
+
+$$
+\nabla^2f(x)=\frac{P+P^T}{2}=H.
+$$
+
+The Hessian is necessarily symmetric, and the skew-symmetric part of $P$ has no effect on either the function or its derivatives.
+
+After replacing $P$ by $H$, we may rename $H$ as $P$. Then $P=P^T$, and the familiar formulas become
+
+$$
+\nabla f(x)=Px+q,
+\qquad
+\nabla^2f(x)=P.
+$$
+
+Therefore the correct convexity condition for a quadratic written with an arbitrary matrix is
+
+$$
+\frac{P+P^T}{2}\succeq0.
+$$
+
+Once the symmetric representative is used, this is written more simply as
+
+$$
+P\succeq0.
+$$
+
+The key conclusion is not that every matrix is symmetric. It is that every quadratic form has an equivalent symmetric matrix representation, and only that symmetric part determines its curvature and convexity.
 
 ---
 
