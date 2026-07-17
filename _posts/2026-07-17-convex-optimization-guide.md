@@ -153,7 +153,7 @@ f\text{ is convex}
 P\succeq0.
 $$
 
-The notation $P\in\mathbf{S}_+^n$ means that $P$ is one symmetric positive semidefinite matrix. The symbol $\mathbf{S}_+^n$ denotes the cone of all $n\times n$ symmetric positive semidefinite matrices.
+The notation $P\in\mathbf{S}\_+^n$ means that $P$ is one symmetric positive semidefinite matrix. The symbol $\mathbf{S}\_+^n$ denotes the cone of all $n\times n$ symmetric positive semidefinite matrices.
 
 A matrix is positive semidefinite when
 
@@ -338,7 +338,7 @@ This is a halfspace. Therefore the function is quasiconvex. Its superlevel sets 
 
 ### Other examples
 
-The function $\sqrt{|x|}$ is quasiconvex because
+The function $\sqrt{\lvert x\rvert}$ is quasiconvex because
 
 $$
 \sqrt{|x|}\le\alpha
