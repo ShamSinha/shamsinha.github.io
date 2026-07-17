@@ -19,7 +19,7 @@ Some repetition has been removed, but most of the useful discussion has been kep
 
 ---
 
-## 1. First confusion: what are we actually optimizing, $x$ or $t$?
+## 1. First confusion: what are we actually optimizing, x or t?
 
 > **Doubt:** Here we want the optimal value of $x$ or $t$? $t$ is scalar, while $x$ may or may not be scalar.
 
@@ -291,7 +291,7 @@ $$
 f\text{ is convex}\iff P\succeq0.
 $$
 
-### What does $P\succeq0$ mean?
+### What does positive semidefinite mean?
 
 It means
 
@@ -303,7 +303,7 @@ Equivalently, when $P$ is symmetric, all eigenvalues of $P$ are nonnegative.
 
 Geometrically, the quadratic has nonnegative curvature in every direction.
 
-### Is $P$ a matrix or a cone?
+### Is P a matrix or a cone?
 
 $P$ is one matrix.
 
@@ -335,7 +335,7 @@ So the precise statement is:
 - $P$ is a PSD matrix;
 - $\mathbf S_+^n$ is the PSD cone.
 
-### Why the factor $1/2$?
+### Why the factor one-half?
 
 It is only a convenience:
 
@@ -347,7 +347,7 @@ for symmetric $P$.
 
 ---
 
-## 8. What happens when $P$ is not PSD?
+## 8. What happens when P is not PSD?
 
 Take
 
@@ -811,7 +811,7 @@ If the denominator could be negative, multiplying by it might reverse the inequa
 
 ---
 
-## 14. Proof: $\sqrt{|x|}$ is quasiconvex
+## 14. Proof: the square root of an absolute value is quasiconvex
 
 Consider
 
@@ -835,7 +835,7 @@ The function is quasiconvex even though it is not convex on all of $\mathbb R$.
 
 ---
 
-## 15. Proof: $\lceil x\rceil$ is quasilinear
+## 15. Proof: the ceiling function is quasilinear
 
 The ceiling function is monotone nondecreasing.
 
@@ -865,7 +865,7 @@ A discontinuous function can be quasilinear; quasilinear does not mean affine.
 
 ---
 
-## 16. Proof: $\log x$ is quasilinear on $x>0$
+## 16. Proof: the logarithm is quasilinear on the positive domain
 
 For a sublevel set,
 
@@ -901,7 +901,7 @@ It is also concave, but it is not affine.
 
 ---
 
-## 17. Proof: $x_1x_2$ is quasiconcave on $\mathbb R_{++}^2$
+## 17. Proof: the product of two positive variables is quasiconcave
 
 We inspect superlevel sets:
 
@@ -988,7 +988,7 @@ Stop when $u-l$ is small.
 
 Then $u$ approximates the optimal value and the stored feasible point approximates an optimizer.
 
-### Why not optimize $x$ and $t$ jointly?
+### Why not optimize x and t jointly?
 
 For a general quasiconvex function, the epigraph
 
@@ -1364,15 +1364,15 @@ No. The optimal set can be an edge or a higher-dimensional face. Under standard 
 
 It can be at a vertex. It simply does not have to be.
 
-### "$P$ is the PSD cone"
+### "P is the PSD cone"
 
 No. $P$ is one PSD matrix. $\mathbf S_+^n$ is the PSD cone.
 
-### "In bisection, $t$ is the decision vector"
+### "In bisection, t is the decision vector"
 
 No. $t$ is a scalar candidate objective level. $x$ remains the original decision variable.
 
-### "$p(x)/q(x)\le t$ becomes $p(x)-tq(x)=0$"
+### "The ratio inequality becomes an equality"
 
 No. It becomes
 
