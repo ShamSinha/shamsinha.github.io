@@ -68,6 +68,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      # The repository currently also has branch-based Pages publishing enabled.
+      # Let that automatic run finish before deploying the rendered Jekyll artifact,
+      # otherwise it can overwrite the site with the unbuilt repository contents.
+      - name: Wait for branch-based Pages publishing
+        run: sleep 30
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
