@@ -27,8 +27,8 @@ The central idea connecting the whole post is:
 - [Spectral decomposition and SVD](#spectral-svd)
 - [Independence, orthogonality, projection, and Gram–Schmidt](#projection-gram-schmidt)
 - [Matrix powers](#matrix-powers)
-- [Why determinant zero means non-invertible](#determinant-invertibility)
 - [Perron–Frobenius theory](#perron-frobenius)
+- [Why determinant zero means non-invertible](#determinant-invertibility)
 
 ---
 
@@ -779,7 +779,102 @@ The eigenvalues determine which modes grow, decay, oscillate, or disappear. This
 
 ---
 
-## 9. Why determinant zero means non-invertible {#determinant-invertibility}
+## 9. Perron–Frobenius theory {#perron-frobenius}
+
+This section follows naturally from matrix powers. For a nonnegative matrix, repeated multiplication propagates influence through its graph, while the dominant eigenvalue determines the long-term growth of $A^k$.
+
+Perron–Frobenius theory makes that dominant eigenstructure precise.
+
+### Nonnegative and irreducible matrices
+
+A matrix is nonnegative if
+
+$$
+A_{ij}\ge0
+\qquad\text{for every }i,j.
+$$
+
+Associate a directed graph with $A$ by drawing an edge $i\to j$ whenever $A_{ij}>0$.
+
+The matrix is **irreducible** when this graph is strongly connected: every node can reach every other node.
+
+For an $n\times n$ nonnegative matrix, an equivalent test is
+
+$$
+(I+A)^{n-1}>0
+$$
+
+elementwise. Adding $I$ creates self-loops, allowing a path of length at most $n-1$ to be extended to exactly $n-1$ steps.
+
+### What does the theorem guarantee?
+
+For a nonnegative irreducible matrix $A$:
+
+- its spectral radius $\rho(A)$ is a positive eigenvalue;
+- $\rho(A)$ has a strictly positive eigenvector $v\succ0$;
+- the Perron eigenvalue is algebraically simple;
+- every eigenvalue satisfies $\lvert\lambda_i\rvert\le\rho(A)$.
+
+Thus
+
+$$
+Av=\rho(A)v,
+\qquad
+v\succ0.
+$$
+
+### Important correction: irreducible versus positive
+
+Irreducibility alone does not guarantee
+
+$$
+\lvert\lambda_i\rvert<\rho(A)
+$$
+
+for every other eigenvalue. An irreducible but periodic matrix may have other eigenvalues on the same spectral circle.
+
+If $A$ is **positive**, meaning every entry is strictly positive, then the Perron eigenvalue is strictly dominant in magnitude.
+
+Why require irreducibility at all? Consider the reducible matrix
+
+$$
+A=
+\begin{bmatrix}
+3&0\\
+0&1
+\end{bmatrix}.
+$$
+
+Its dominant eigenvector is $(1,0)^T$, which is nonnegative but not strictly positive. The two coordinates form disconnected blocks, so dominance in one block says nothing about the other. Irreducibility removes this separation.
+
+### Why can the second eigenvector not be strictly positive?
+
+For a positive matrix, the interior of the positive cone contains only the Perron eigenvector direction. Another eigenvector with all positive components would have to be proportional to the Perron eigenvector, which is impossible if it corresponds to a different eigenvalue.
+
+### Collatz–Wielandt viewpoint
+
+One useful characterization is
+
+$$
+\rho(A)
+=
+\inf_{v\succ0}
+\max_i\frac{(Av)_i}{v_i}.
+$$
+
+Equivalently,
+
+$$
+\rho(A)
+=
+\inf\{\lambda\mid Av\preceq\lambda v,\ v\succ0\}.
+$$
+
+This form connects Perron–Frobenius theory directly to optimization.
+
+---
+
+## 10. Why determinant zero means non-invertible {#determinant-invertibility}
 
 For a square matrix, the following statements are equivalent:
 
@@ -874,99 +969,6 @@ $$
 $$
 
 In particular, $A$ is singular exactly when $0$ is one of its eigenvalues.
-
----
-
-## 10. Perron–Frobenius theory {#perron-frobenius}
-
-Perron–Frobenius theory describes the dominant eigenstructure of nonnegative matrices.
-
-### Nonnegative and irreducible matrices
-
-A matrix is nonnegative if
-
-$$
-A_{ij}\ge0
-\qquad\text{for every }i,j.
-$$
-
-Associate a directed graph with $A$ by drawing an edge $i\to j$ whenever $A_{ij}>0$.
-
-The matrix is **irreducible** when this graph is strongly connected: every node can reach every other node.
-
-For an $n\times n$ nonnegative matrix, an equivalent test is
-
-$$
-(I+A)^{n-1}>0
-$$
-
-elementwise. Adding $I$ creates self-loops, allowing a path of length at most $n-1$ to be extended to exactly $n-1$ steps.
-
-### What does the theorem guarantee?
-
-For a nonnegative irreducible matrix $A$:
-
-- its spectral radius $\rho(A)$ is a positive eigenvalue;
-- $\rho(A)$ has a strictly positive eigenvector $v\succ0$;
-- the Perron eigenvalue is algebraically simple;
-- every eigenvalue satisfies $\lvert\lambda_i\rvert\le\rho(A)$.
-
-Thus
-
-$$
-Av=\rho(A)v,
-\qquad
-v\succ0.
-$$
-
-### Important correction: irreducible versus positive
-
-Irreducibility alone does not guarantee
-
-$$
-\lvert\lambda_i\rvert<\rho(A)
-$$
-
-for every other eigenvalue. An irreducible but periodic matrix may have other eigenvalues on the same spectral circle.
-
-If $A$ is **positive**, meaning every entry is strictly positive, then the Perron eigenvalue is strictly dominant in magnitude.
-
-Why require irreducibility at all? Consider the reducible matrix
-
-$$
-A=
-\begin{bmatrix}
-3&0\\
-0&1
-\end{bmatrix}.
-$$
-
-Its dominant eigenvector is $(1,0)^T$, which is nonnegative but not strictly positive. The two coordinates form disconnected blocks, so dominance in one block says nothing about the other. Irreducibility removes this separation.
-
-### Why can the second eigenvector not be strictly positive?
-
-For a positive matrix, the interior of the positive cone contains only the Perron eigenvector direction. Another eigenvector with all positive components would have to be proportional to the Perron eigenvector, which is impossible if it corresponds to a different eigenvalue.
-
-### Collatz–Wielandt viewpoint
-
-One useful characterization is
-
-$$
-\rho(A)
-=
-\inf_{v\succ0}
-\max_i\frac{(Av)_i}{v_i}.
-$$
-
-Equivalently,
-
-$$
-\rho(A)
-=
-\inf\{\lambda\mid Av\preceq\lambda v,\ v\succ0\}.
-$$
-
-This form connects Perron–Frobenius theory directly to optimization.
 
 ---
 
