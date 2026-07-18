@@ -1109,5 +1109,6 @@ The unifying question is always geometric: **what does this matrix do to directi
 
 ## Sources
 
-- [Linear Algebra concept page](https://incongruous-donkey-948.notion.site/Linear-Algebra-eb62fdfc083043b9b869170af727e2df)
+- [EE263: Introduction to Linear Dynamical Systems](https://ee263.stanford.edu/archive/), Stephen Boyd, Stanford University
+- [EE364A: Convex Optimization I](https://see.stanford.edu/Course/EE364A), Stephen Boyd, Stanford Engineering Everywhere
 - [Visualize Spectral Decomposition — SEE Matrix, Chapter 2](https://www.youtube.com/watch?v=mhy-ZKSARxI), Visual Kernel
