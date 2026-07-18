@@ -21,54 +21,122 @@ Some repetition has been removed, but most of the useful discussion has been kep
 
 ## 1. First confusion: what are we actually optimizing, x or t?
 
+### Where this question came from
+
+This question came up while discussing **quasiconvex optimization by bisection**. In the original conversation, $t$ had been introduced as part of a feasibility test. Without that setup, it looks like a second decision variable appeared from nowhere.
+
+Start with the constrained optimization problem
+
+$$
+\begin{array}{ll}
+\text{minimize} & f_0(x)\\
+\text{subject to} & f_i(x)\le0,\quad i=1,\ldots,m,\\
+& Ax=b.
+\end{array}
+$$
+
+Here:
+
+- $x$ is the decision variable. It can be a scalar, but it is usually a vector in $\mathbb R^n$.
+- $f_0(x)$ assigns a **scalar objective value** to every choice of $x$.
+- The inequalities and equality decide which choices of $x$ are feasible.
+
+The original problem contains no $t$. We want to find a feasible point that makes $f_0(x)$ as small as possible.
+
+If $f_0$ is quasiconvex, directly minimizing it may not be a convex optimization problem. What we do know is that, for every **fixed scalar** $t$, its sublevel set
+
+$$
+\{x\mid f_0(x)\le t\}
+$$
+
+is convex. This lets us replace direct minimization with a sequence of yes-or-no questions:
+
+$$
+\text{Does there exist an }x\text{ satisfying all the original constraints and }f_0(x)\le t?
+$$
+
+For one chosen value of $t$, the corresponding feasibility problem is
+
+$$
+\begin{array}{ll}
+\text{find} & x\\
+\text{subject to} & f_0(x)\le t,\\
+& f_i(x)\le0,\quad i=1,\ldots,m,\\
+& Ax=b.
+\end{array}
+$$
+
+Notice the different roles:
+
+- bisection chooses $t$ outside the feasibility problem;
+- the feasibility solver searches for an $x$ inside it;
+- $t$ remains fixed while that solver is running.
+
+That is the missing context behind the doubt:
+
 > **Doubt:** Here we want the optimal value of $x$ or $t$? $t$ is scalar, while $x$ may or may not be scalar.
 
-Start with the original problem
-
-$$
-\min_x f_0(x)
-$$
-
-subject to some constraints.
+### Optimal point versus optimal value
 
 There are two different objects:
 
-- $x$ is the **decision variable**. It may be a scalar, but usually it is a vector in $\mathbb{R}^n$.
-- $f_0(x)$ is the objective value, which is scalar.
+- $x^\star$ is an **optimal point** or **optimizer**. It has the same dimension as $x$.
+- $p^\star=f_0(x^\star)$ is the **optimal value**. It is always scalar.
 
-An optimal decision point is written $x^\star$.
-
-The optimal value is a scalar, often written
+More generally, whether or not the optimum is attained, the optimal value is
 
 $$
 p^\star = \inf\{f_0(x)\mid x\text{ is feasible}\}.
 $$
 
-So:
+It is therefore slightly misleading to ask for the “optimal value of $x$.” We find an **optimal point** $x^\star$ and the corresponding **optimal objective value** $p^\star$.
 
-- $x^\star$: optimal point or optimizer;
-- $p^\star$: optimal objective value.
+### What bisection does with t
 
-In a level-set or bisection method, we introduce a scalar $t$. It is a **trial objective value**.
-
-For fixed $t$, we ask:
+Suppose we maintain a lower bound $l$ and an upper bound $u$ for $p^\star$. Bisection tries
 
 $$
-\text{Does there exist an }x\text{ such that }f_0(x)\le t
+t=\frac{l+u}{2}.
 $$
 
-and all the original constraints hold?
+Then it runs the feasibility problem above.
 
-If yes, then the true optimum satisfies $p^\star\le t$.
+- If some feasible $x$ satisfies $f_0(x)\le t$, then $p^\star\le t$, so $t$ becomes the new upper bound.
+- If no such $x$ exists, then $p^\star>t$, so $t$ becomes the new lower bound.
 
-If no, then $p^\star>t$.
+The process searches for the boundary between infeasible and feasible trial values.
 
-We are not optimizing $x$ inside the feasibility test. We are only asking for any feasible witness $x$.
+### A tiny numerical example
 
-At the end of bisection:
+Consider
 
-- the scalar interval converges to the optimal value;
-- a stored feasible $x$ is an approximate optimizer.
+$$
+\begin{array}{ll}
+\text{minimize} & x^2\\
+\text{subject to} & x\ge1.
+\end{array}
+$$
+
+The answer is
+
+$$
+x^\star=1,
+\qquad
+p^\star=1.
+$$
+
+Now pretend we do not know that answer.
+
+- Try $t=4$: does an $x\ge1$ exist with $x^2\le4$? Yes—for example, $x=1.5$. Therefore $p^\star\le4$.
+- Try $t=0.5$: does an $x\ge1$ exist with $x^2\le0.5$? No. Therefore $p^\star>0.5$.
+
+Bisection keeps changing the scalar threshold $t$. Each successful test also returns a feasible witness $x$. As the interval shrinks, $t$ approaches $p^\star$ and the best stored witness approaches an optimizer.
+
+So the final answer is:
+
+- we search over the scalar trial value $t$ to approximate the scalar optimum $p^\star$;
+- at each trial, we search for a feasible $x$;
+- ultimately we care about both the optimizer $x^\star$ and its objective value $p^\star$.
 
 There may be many optimal $x$ values but only one optimal objective value. Also, an infimum may exist without being attained, in which case there is no exact $x^\star$.
 
