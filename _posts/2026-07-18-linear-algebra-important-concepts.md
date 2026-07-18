@@ -456,6 +456,13 @@ Its only eigenvalue is $0$, and its eigenspace is one-dimensional. A $2\times2$ 
 
 Distinct eigenvalues guarantee diagonalizability. The converse is false: a matrix may have repeated eigenvalues and still have enough independent eigenvectors.
 
+For a repeated eigenvalue $\lambda$:
+
+- its **algebraic multiplicity** is how many times it appears as a root of the characteristic polynomial;
+- its **geometric multiplicity** is the dimension of $\ker(A-\lambda I)$, which counts the independent eigenvectors available for that eigenvalue.
+
+The geometric multiplicity can never exceed the algebraic multiplicity. Assuming the characteristic polynomial splits over the field being used, $A$ is diagonalizable exactly when these two multiplicities agree for every eigenvalue.
+
 ---
 
 ## 6. Spectral decomposition and SVD {#spectral-svd}
@@ -499,16 +506,27 @@ $$
 
 This is special: the eigenvalues are real, the eigenvectors can be chosen orthonormally, and the inverse is just a transpose. For complex normal matrices, the corresponding statement uses the conjugate transpose: $A=Q\Lambda Q^*$.
 
-#### Video and transcript-based notes
+#### Geometric meaning: one transformation, three simpler steps
 
-The Notion page links to [Visualize Spectral Decomposition — SEE Matrix, Chapter 2](https://www.youtube.com/watch?v=mhy-ZKSARxI) by Visual Kernel. The complete auto-generated transcript is available from the video's **Show transcript** panel; these are the main ideas reorganized as study notes:
+Matrix multiplication **composes** transformations. Matrix decomposition asks the reverse question: can one complicated transformation be expressed as a sequence of simpler transformations?
 
-- [00:02 — the two easy transformations](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=2s): a diagonal matrix scales coordinate axes, while an orthogonal matrix preserves geometry and represents a rotation or reflection.
-- [04:11 — composition versus decomposition](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=251s): multiplication composes transformations; decomposition rewrites one complicated transformation as several simpler ones.
-- [05:54 — the geometric role of eigenvectors](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=354s): most directions are turned, but an eigenvector stays on its original line and is only scaled by its eigenvalue.
-- [08:05 — why symmetry matters](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=485s): a symmetric matrix has an orthonormal eigenbasis, making a clean change of coordinates possible.
-- [09:36 — spectral decomposition](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=576s): $Q^T$ changes from standard coordinates to eigenvector coordinates, $\Lambda$ scales each eigenvector direction, and $Q$ changes back.
-- [12:04 — the full visual sequence](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=724s): rotate or reflect into the eigenbasis, scale independently, then undo the basis change.
+The columns of $Q$ are the orthonormal eigenvectors, so
+
+$$
+Qe_i=q_i.
+$$
+
+Thus $Q$ maps the standard basis to the eigenvector basis, while $Q^T$ maps a vector into eigenvector coordinates. Remember that the rightmost matrix acts first in
+
+$$
+Ax=Q\Lambda Q^Tx.
+$$
+
+The sequence is therefore:
+
+1. $Q^T$ expresses $x$ in the eigenvector basis.
+2. $\Lambda$ scales each eigenvector coordinate independently. A negative eigenvalue also reverses that direction.
+3. $Q$ maps the result back to the original coordinate system.
 
 So the geometric memory aid is
 
@@ -521,8 +539,6 @@ $$
 \text{change back}
 }
 $$
-
-The original related discussion is preserved here: [spectral decomposition and diagonalization](https://chatgpt.com/share/2cc34c6c-cbcf-4a4b-bf6d-b75520637a82).
 
 ### Singular value decomposition
 
@@ -609,8 +625,6 @@ $$
 $$
 
 then the number of nonzero singular values is $\operatorname{rank}(A)$. Keeping only the largest singular values produces a low-rank approximation, which is the basic idea behind PCA, image compression, and noise reduction. SVD also gives the pseudoinverse used for singular or rectangular least-squares problems.
-
-The original related discussion is preserved here: [SVD definition and derivation](https://chatgpt.com/share/2a561c2e-d049-4f66-b021-c2151a5eb6e9).
 
 ### Spectral decomposition versus SVD
 
@@ -974,4 +988,7 @@ The unifying question is always geometric: **what does this matrix do to directi
 
 ---
 
-These notes were reorganized from my public [Linear Algebra concept page](https://incongruous-donkey-948.notion.site/Linear-Algebra-eb62fdfc083043b9b869170af727e2df).
+## Sources
+
+- [Linear Algebra concept page](https://incongruous-donkey-948.notion.site/Linear-Algebra-eb62fdfc083043b9b869170af727e2df)
+- [Visualize Spectral Decomposition — SEE Matrix, Chapter 2](https://www.youtube.com/watch?v=mhy-ZKSARxI), Visual Kernel
