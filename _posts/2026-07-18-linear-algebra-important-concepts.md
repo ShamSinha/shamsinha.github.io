@@ -876,34 +876,97 @@ This form connects Perron–Frobenius theory directly to optimization.
 
 ## 10. Why determinant zero means non-invertible {#determinant-invertibility}
 
-For a square matrix, the following statements are equivalent:
+The important point is not merely the rule
 
 $$
-\det(A)\ne0,
+\det(A)=0
+\quad\Longleftrightarrow\quad
+A\text{ has no inverse}.
 $$
 
-$$
-A\text{ is invertible},
-$$
+We want to understand **why** it happens.
+
+### Start with what an inverse must do
+
+If
 
 $$
-\operatorname{rank}(A)=n,
+y=Ax,
 $$
 
+then $A^{-1}$ must recover the one original input:
+
 $$
-Ax=0\text{ has only }x=0,
+x=A^{-1}y.
 $$
 
-the columns and rows of $A$ are linearly independent, and $Ax=b$ has a unique solution for every $b\in\mathbb R^n$.
+Therefore different inputs cannot be allowed to produce the same output. If $Ax_1=Ax_2$ for $x_1\ne x_2$, an inverse receiving that output would not know which input to return.
 
-### Geometric explanation
+### What does a zero determinant tell us?
 
-The absolute determinant is a volume-scaling factor:
+The columns of $A$ are the transformed standard basis vectors:
 
-- in two dimensions, $\lvert\det(A)\rvert$ scales area;
-- in three dimensions, it scales volume.
+$$
+Ae_i=a_i.
+$$
 
-If $\det(A)=0$, a nonzero-dimensional region is collapsed into a lower-dimensional one—a plane may collapse to a line, for example. Different inputs can then produce the same output, so the original input cannot be uniquely recovered.
+The quantity $\lvert\det(A)\rvert$ is the volume of the shape spanned by these transformed basis vectors. In two dimensions, for
+
+$$
+A=
+\begin{bmatrix}
+a&b\\
+c&d
+\end{bmatrix},
+$$
+
+the two columns span a parallelogram whose signed area is
+
+$$
+ad-bc=\det(A).
+$$
+
+If this area is zero, the two columns do not span a genuine two-dimensional region: they lie on the same line. In higher dimensions the same idea holds—zero $n$-dimensional volume means the columns lie in a lower-dimensional subspace.
+
+So $\det(A)=0$ means the columns are linearly dependent. There are coefficients, not all zero, such that
+
+$$
+z_1a_1+\cdots+z_na_n=0.
+$$
+
+If $z=(z_1,\ldots,z_n)^T$, this is exactly
+
+$$
+Az=0
+\qquad\text{for some }z\ne0.
+$$
+
+This is the missing mechanism: **the matrix collapses a nonzero direction $z$ to zero**.
+
+### Why does a collapsed direction destroy the inverse?
+
+For any input $x$,
+
+$$
+A(x+z)=Ax+Az=Ax.
+$$
+
+The two different inputs $x$ and $x+z$ therefore have the same output. In fact, every point $x+tz$ on that line has the same output:
+
+$$
+A(x+tz)=Ax
+\qquad\text{for every scalar }t.
+$$
+
+Information about movement in the $z$ direction has disappeared. No inverse can reconstruct information that the forward transformation erased.
+
+We can also prove the contradiction directly. If $A^{-1}$ existed, applying it to $A(x+z)=Ax$ would give
+
+$$
+x+z=x,
+$$
+
+which would imply $z=0$. But we already found $z\ne0$.
 
 ### Concrete singular matrix
 
@@ -923,9 +986,39 @@ $$
 \det(A)=1\cdot4-2\cdot2=0.
 $$
 
-The transformation sends the entire plane onto a line. Information is lost, so no inverse exists.
+The dependency can be written as
 
-We can see the lost information directly. Take
+$$
+-2
+\begin{bmatrix}
+1\\
+2
+\end{bmatrix}
++
+\begin{bmatrix}
+2\\
+4
+\end{bmatrix}
+=0.
+$$
+
+Therefore the nonzero vector
+
+$$
+z=
+\begin{bmatrix}
+-2\\
+1
+\end{bmatrix}
+$$
+
+is collapsed:
+
+$$
+Az=0.
+$$
+
+Now take
 
 $$
 x_1=
@@ -954,6 +1047,30 @@ $$
 
 Given that output, an inverse would have to return two different inputs at once. That is impossible.
 
+### What if the determinant is nonzero?
+
+If $\det(A)\ne0$, the columns span the full space, so there is no nonzero collapsed direction:
+
+$$
+Az=0
+\quad\Longrightarrow\quad
+z=0.
+$$
+
+The transformation is then one-to-one. For a square matrix from $\mathbb R^n$ to $\mathbb R^n$, full rank also makes it onto, so every output has exactly one input and the inverse exists.
+
+Now the usual equivalences have a reason behind them:
+
+$$
+\det(A)\ne0
+\Longleftrightarrow
+\operatorname{rank}(A)=n
+\Longleftrightarrow
+\ker(A)=\{0\}
+\Longleftrightarrow
+A\text{ is invertible}.
+$$
+
 ### Connection to eigenvalues
 
 An eigenvalue $\lambda$ makes
@@ -968,7 +1085,7 @@ $$
 \det(A-\lambda I)=0.
 $$
 
-In particular, $A$ is singular exactly when $0$ is one of its eigenvalues.
+In particular, $A$ is singular exactly when $0$ is one of its eigenvalues. The associated eigenvector is precisely a nonzero direction that $A$ collapses to zero.
 
 ---
 
