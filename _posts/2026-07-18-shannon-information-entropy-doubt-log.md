@@ -1,6 +1,6 @@
 ---
 title: "Shannon Information and Entropy — A Doubt-Driven Guide"
-date: 2026-07-18 12:00:00 +0530
+date: 2026-07-18 08:00:00 +0530
 categories: [Mathematics, Information Theory]
 tags: [shannon-information, entropy, self-information, compression, bits, probability, doubts, study-notes]
 math: true
