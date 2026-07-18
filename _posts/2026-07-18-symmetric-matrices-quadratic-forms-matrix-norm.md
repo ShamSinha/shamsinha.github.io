@@ -1,6 +1,6 @@
 ---
 title: "Symmetric Matrices, Quadratic Forms, and Matrix Norm: Why These Ideas Exist"
-date: 2026-07-18 16:30:00 +0530
+date: 2026-07-18 16:00:00 +0530
 categories: [Mathematics, Linear Algebra]
 tags: [symmetric-matrices, eigenvalues, quadratic-forms, positive-semidefinite, matrix-norm, ellipsoids, svd, study-notes]
 math: true
