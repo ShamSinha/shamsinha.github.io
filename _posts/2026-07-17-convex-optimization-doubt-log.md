@@ -19,130 +19,7 @@ Some repetition has been removed, but most of the useful discussion has been kep
 
 ---
 
-## 1. First confusion: what are we actually optimizing, x or t?
-
-### Where this question came from
-
-This question came up while discussing **quasiconvex optimization by bisection**. In the original conversation, $t$ had been introduced as part of a feasibility test. Without that setup, it looks like a second decision variable appeared from nowhere.
-
-Start with the constrained optimization problem
-
-$$
-\begin{array}{ll}
-\text{minimize} & f_0(x)\\
-\text{subject to} & f_i(x)\le0,\quad i=1,\ldots,m,\\
-& Ax=b.
-\end{array}
-$$
-
-Here:
-
-- $x$ is the decision variable. It can be a scalar, but it is usually a vector in $\mathbb R^n$.
-- $f_0(x)$ assigns a **scalar objective value** to every choice of $x$.
-- The inequalities and equality decide which choices of $x$ are feasible.
-
-The original problem contains no $t$. We want to find a feasible point that makes $f_0(x)$ as small as possible.
-
-If $f_0$ is quasiconvex, directly minimizing it may not be a convex optimization problem. What we do know is that, for every **fixed scalar** $t$, its sublevel set
-
-$$
-\{x\mid f_0(x)\le t\}
-$$
-
-is convex. This lets us replace direct minimization with a sequence of yes-or-no questions:
-
-$$
-\text{Does there exist an }x\text{ satisfying all the original constraints and }f_0(x)\le t?
-$$
-
-For one chosen value of $t$, the corresponding feasibility problem is
-
-$$
-\begin{array}{ll}
-\text{find} & x\\
-\text{subject to} & f_0(x)\le t,\\
-& f_i(x)\le0,\quad i=1,\ldots,m,\\
-& Ax=b.
-\end{array}
-$$
-
-Notice the different roles:
-
-- bisection chooses $t$ outside the feasibility problem;
-- the feasibility solver searches for an $x$ inside it;
-- $t$ remains fixed while that solver is running.
-
-That is the missing context behind the doubt:
-
-> **Doubt:** Here we want the optimal value of $x$ or $t$? $t$ is scalar, while $x$ may or may not be scalar.
-
-### Optimal point versus optimal value
-
-There are two different objects:
-
-- $x^\star$ is an **optimal point** or **optimizer**. It has the same dimension as $x$.
-- $p^\star=f_0(x^\star)$ is the **optimal value**. It is always scalar.
-
-More generally, whether or not the optimum is attained, the optimal value is
-
-$$
-p^\star = \inf\{f_0(x)\mid x\text{ is feasible}\}.
-$$
-
-It is therefore slightly misleading to ask for the “optimal value of $x$.” We find an **optimal point** $x^\star$ and the corresponding **optimal objective value** $p^\star$.
-
-### What bisection does with t
-
-Suppose we maintain a lower bound $l$ and an upper bound $u$ for $p^\star$. Bisection tries
-
-$$
-t=\frac{l+u}{2}.
-$$
-
-Then it runs the feasibility problem above.
-
-- If some feasible $x$ satisfies $f_0(x)\le t$, then $p^\star\le t$, so $t$ becomes the new upper bound.
-- If no such $x$ exists, then $p^\star>t$, so $t$ becomes the new lower bound.
-
-The process searches for the boundary between infeasible and feasible trial values.
-
-### A tiny numerical example
-
-Consider
-
-$$
-\begin{array}{ll}
-\text{minimize} & x^2\\
-\text{subject to} & x\ge1.
-\end{array}
-$$
-
-The answer is
-
-$$
-x^\star=1,
-\qquad
-p^\star=1.
-$$
-
-Now pretend we do not know that answer.
-
-- Try $t=4$: does an $x\ge1$ exist with $x^2\le4$? Yes—for example, $x=1.5$. Therefore $p^\star\le4$.
-- Try $t=0.5$: does an $x\ge1$ exist with $x^2\le0.5$? No. Therefore $p^\star>0.5$.
-
-Bisection keeps changing the scalar threshold $t$. Each successful test also returns a feasible witness $x$. As the interval shrinks, $t$ approaches $p^\star$ and the best stored witness approaches an optimizer.
-
-So the final answer is:
-
-- we search over the scalar trial value $t$ to approximate the scalar optimum $p^\star$;
-- at each trial, we search for a feasible $x$;
-- ultimately we care about both the optimizer $x^\star$ and its objective value $p^\star$.
-
-There may be many optimal $x$ values but only one optimal objective value. Also, an infimum may exist without being attained, in which case there is no exact $x^\star$.
-
----
-
-## 2. Why is an LP feasible set a polyhedron?
+## 1. Why is an LP feasible set a polyhedron?
 
 Consider
 
@@ -190,7 +67,7 @@ forms a triangle, hence a bounded polyhedron and therefore a polytope.
 
 ---
 
-## 3. What does convex mean for a set?
+## 2. What does convex mean for a set?
 
 A set $C$ is convex when, for every $x,y\in C$ and every $\theta\in[0,1]$,
 
@@ -226,7 +103,7 @@ That one fact explains why systems of linear inequalities give convex feasible r
 
 ---
 
-## 4. What is a convex function?
+## 3. What is a convex function?
 
 A function $f$ is convex if
 
@@ -260,7 +137,7 @@ The two-point definition is the basic version; Jensen is the many-point or proba
 
 ---
 
-## 5. Why does the gradient define a tangent or supporting hyperplane?
+## 4. Why does the gradient define a tangent or supporting hyperplane?
 
 For a differentiable function,
 
@@ -299,7 +176,7 @@ So the tangent hyperplane lies below the graph. That is why it is called a suppo
 
 ---
 
-## 6. Why does convexity make every local minimum global?
+## 5. Why does convexity make every local minimum global?
 
 Suppose $x$ is a local minimum but there exists a feasible $y$ with
 
@@ -328,7 +205,7 @@ This is one of the main reasons convex optimization is special.
 
 ---
 
-## 7. What does a convex quadratic mean?
+## 6. What does a convex quadratic mean?
 
 > **Doubt:** I think $P$ is a positive-semidefinite matrix or cone.
 
@@ -415,7 +292,7 @@ for symmetric $P$.
 
 ---
 
-## 8. What happens when P is not PSD?
+## 7. What happens when P is not PSD?
 
 Take
 
@@ -437,7 +314,7 @@ If $P\succeq0$ but is singular, the function may be flat in some directions, so 
 
 ---
 
-## 9. Why can every quadratic form be represented by a symmetric matrix?
+## 8. Why can every quadratic form be represented by a symmetric matrix?
 
 The phrase "we can assume that $P$ is symmetric" can be misleading. We are not proving that the original matrix $P$ is symmetric. Instead, we are showing that every possibly nonsymmetric matrix can be replaced by a symmetric matrix without changing the quadratic function.
 
@@ -660,7 +537,7 @@ The key conclusion is not that every matrix is symmetric. It is that every quadr
 
 ---
 
-## 10. Block quadratic forms and the Schur complement
+## 9. Block quadratic forms and the Schur complement
 
 Consider
 
@@ -713,7 +590,7 @@ The intuition is that optimizing out $y$ leaves an effective quadratic curvature
 
 ---
 
-## 11. Piecewise-linear minimization
+## 10. Piecewise-linear minimization
 
 A standard convex piecewise-linear function is
 
@@ -783,7 +660,7 @@ $$
 
 ---
 
-## 12. Convex versus quasiconvex
+## 11. Convex versus quasiconvex
 
 A function is quasiconvex when every sublevel set
 
@@ -818,7 +695,7 @@ The reverse is false.
 
 ---
 
-## 13. Why is a linear-fractional objective quasiconvex?
+## 12. Why is a linear-fractional objective quasiconvex?
 
 Consider
 
@@ -879,7 +756,7 @@ If the denominator could be negative, multiplying by it might reverse the inequa
 
 ---
 
-## 14. Proof: the square root of an absolute value is quasiconvex
+## 13. Proof: the square root of an absolute value is quasiconvex
 
 Consider
 
@@ -903,7 +780,7 @@ The function is quasiconvex even though it is not convex on all of $\mathbb R$.
 
 ---
 
-## 15. Proof: the ceiling function is quasilinear
+## 14. Proof: the ceiling function is quasilinear
 
 The ceiling function is monotone nondecreasing.
 
@@ -933,7 +810,7 @@ A discontinuous function can be quasilinear; quasilinear does not mean affine.
 
 ---
 
-## 16. Proof: the logarithm is quasilinear on the positive domain
+## 15. Proof: the logarithm is quasilinear on the positive domain
 
 For a sublevel set,
 
@@ -969,7 +846,7 @@ It is also concave, but it is not affine.
 
 ---
 
-## 17. Proof: the product of two positive variables is quasiconcave
+## 16. Proof: the product of two positive variables is quasiconcave
 
 We inspect superlevel sets:
 
@@ -1005,7 +882,7 @@ which is the region above the convex curve $\alpha/x_1$.
 
 ---
 
-## 18. Quasiconvex optimization by bisection
+## 17. Quasiconvex optimization by bisection: x versus t
 
 Consider
 
@@ -1017,29 +894,71 @@ $$
 \end{array}
 $$
 
-where $f_0$ is quasiconvex and the feasible constraints are convex.
+where $f_0$ is quasiconvex and the remaining constraints define a convex feasible set.
 
-For fixed $t$, solve the feasibility problem
+Here, $x$ is the original **decision variable**. It can be a scalar, but it is usually a vector in $\mathbb R^n$. The function $f_0$ maps each $x$ to a scalar objective value.
+
+The optimal objective value is
+
+$$
+p^\star
+=
+\inf\{f_0(x)\mid f_i(x)\le0,\ Ax=b\}.
+$$
+
+If this value is attained, an optimal point is denoted by $x^\star$, and
+
+$$
+f_0(x^\star)=p^\star.
+$$
+
+### Why introduce t?
+
+The original problem contains no $t$. We introduce it only as a **trial objective value**.
+
+For a fixed scalar $t$, solve the feasibility problem
 
 $$
 \begin{array}{ll}
 \text{find} & x\\
 \text{subject to} & f_0(x)\le t,\\
-& f_i(x)\le0,\\
+& f_i(x)\le0,\quad i=1,\ldots,m,\\
 & Ax=b.
 \end{array}
 $$
 
-Because a quasiconvex function has convex sublevel sets, the additional condition $f_0(x)\le t$ is convex as a set.
+This asks one yes-or-no question:
+
+$$
+\text{Does there exist an }x\text{ satisfying every constraint and }f_0(x)\le t?
+$$
+
+Because $f_0$ is quasiconvex, the sublevel set
+
+$$
+\{x\mid f_0(x)\le t\}
+$$
+
+is convex for every fixed $t$. Intersecting it with the original convex constraints leaves a convex feasibility problem.
+
+This is the context in which the following doubt arose:
+
+> **Doubt:** Here we want the optimal value of $x$ or $t$? $t$ is scalar, while $x$ may or may not be scalar.
+
+The phrase “optimal value of $x$” mixes two different objects:
+
+- $x^\star$ is an **optimal point**. It has the same dimension as $x$.
+- $p^\star$ is the **optimal value** of the objective. It is always scalar.
+- $t$ is a temporary scalar guess for $p^\star$.
+
+For each guess, the feasibility solver searches for an $x$, while $t$ remains fixed. It is not minimizing $x$; it only needs to find one witness satisfying all the constraints.
+
+### Why bisection works
 
 Feasibility is monotone in $t$:
 
 - feasible at $t$ implies feasible at every larger value;
 - infeasible at $t$ implies infeasible at every smaller value.
-
-This monotonicity permits bisection.
-
-### Bisection logic
 
 Maintain a lower bound $l$ known to be infeasible and an upper bound $u$ known to be feasible.
 
@@ -1054,7 +973,38 @@ $$
 
 Stop when $u-l$ is small.
 
-Then $u$ approximates the optimal value and the stored feasible point approximates an optimizer.
+Then:
+
+- the shrinking scalar interval approximates $p^\star$;
+- the best stored feasible witness approximates an optimizer $x^\star$.
+
+There may be several optimal points $x^\star$, but the optimal objective value $p^\star$ is a single scalar. It is also possible for the infimum to exist without being attained, in which case no exact optimizer exists.
+
+### A tiny numerical example
+
+Consider
+
+$$
+\begin{array}{ll}
+\text{minimize} & x^2\\
+\text{subject to} & x\ge1.
+\end{array}
+$$
+
+The answer is
+
+$$
+x^\star=1,
+\qquad
+p^\star=1.
+$$
+
+Pretend we do not yet know it.
+
+- Try $t=4$. An $x\ge1$ with $x^2\le4$ exists; for example, $x=1.5$. The test is feasible, so $p^\star\le4$.
+- Try $t=0.5$. No $x\ge1$ can satisfy $x^2\le0.5$. The test is infeasible, so $p^\star>0.5$.
+
+Bisection keeps updating $t$ to locate the smallest feasible threshold. Successful tests also provide candidate points $x$.
 
 ### Why not optimize x and t jointly?
 
@@ -1064,11 +1014,17 @@ $$
 \{(x,t)\mid f_0(x)\le t\}
 $$
 
-need not be convex. The sublevel set is guaranteed convex only when $t$ is fixed. That is why $t$ is handled externally by bisection.
+need not be convex. Quasiconvexity guarantees convexity of the sublevel set in $x$ only after $t$ has been fixed. That is why bisection handles $t$ externally.
+
+So the final mental model is:
+
+- bisection searches over $t$ to approximate $p^\star$;
+- each feasibility test searches for an $x$;
+- the result includes both an objective value and, when it is attained, an optimizer.
 
 ---
 
-## 19. Ratio example in quasiconvex optimization
+## 18. Ratio example in quasiconvex optimization
 
 Suppose
 
@@ -1110,7 +1066,7 @@ not an equality.
 
 ---
 
-## 20. LP optimum: must it always be a vertex?
+## 19. LP optimum: must it always be a vertex?
 
 > **Doubt:** In a linear program, the solution is always present on a vertex of a face of the polyhedron, right?
 
@@ -1171,7 +1127,7 @@ Some polyhedra contain no vertices. For example, an affine line is a polyhedron 
 
 ---
 
-## 21. Why can a quadratic-program solution be inside a face or in the interior?
+## 20. Why can a quadratic-program solution be inside a face or in the interior?
 
 A convex QP has objective
 
@@ -1238,7 +1194,7 @@ A strictly convex quadratic has curved level sets. Curvature can select one uniq
 
 ---
 
-## 22. First-order optimality over a convex feasible set
+## 21. First-order optimality over a convex feasible set
 
 For a differentiable convex function over a convex set $X$, $x^\star$ is optimal if and only if
 
@@ -1261,7 +1217,7 @@ At a boundary optimum, the gradient need not vanish. It must point so that no fe
 
 ---
 
-## 23. Equality constraints and the nullspace
+## 22. Equality constraints and the nullspace
 
 Consider
 
@@ -1334,7 +1290,7 @@ $$
 
 ---
 
-## 24. Eliminating equality constraints
+## 23. Eliminating equality constraints
 
 Choose one feasible point $x_0$ satisfying
 
@@ -1358,7 +1314,7 @@ This is useful both conceptually and computationally: $z$ represents exactly the
 
 ---
 
-## 25. Log-concavity and the Gaussian example
+## 24. Log-concavity and the Gaussian example
 
 A positive function $p$ is log-concave when
 
@@ -1414,7 +1370,7 @@ A variance cannot be negative.
 
 ---
 
-## 26. Frequent statements that need correction
+## 25. Frequent statements that need correction
 
 ### "Quasiconvex means positive curvature"
 
@@ -1458,7 +1414,7 @@ No. An affine line or affine plane is a polyhedron and may have no extreme point
 
 ---
 
-## 27. A compact comparison table
+## 26. A compact comparison table
 
 | Topic | Key object | Convexity condition | Where an optimum may occur |
 |---|---|---|---|
@@ -1470,7 +1426,7 @@ No. An affine line or affine plane is a polyhedron and may have no extreme point
 
 ---
 
-## 28. A practical mental checklist
+## 27. A practical mental checklist
 
 When you see a new optimization problem, ask:
 
@@ -1489,7 +1445,7 @@ That checklist prevents many common mistakes.
 
 ---
 
-## 29. Final picture
+## 28. Final picture
 
 Convex optimization becomes easier when the algebra and geometry are connected:
 
