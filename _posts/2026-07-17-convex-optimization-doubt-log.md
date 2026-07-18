@@ -88,19 +88,34 @@ If every set $C_i$ contains the segment between any two of its points, then a pa
 
 This explains why a finite system of linear constraints produces a convex feasible set.
 
-### Doubt: why is an LP feasible set a polyhedron?
+### What is a linear program (LP)?
 
-Consider
+**LP** stands for **linear program** or **linear programming problem**. Its standard form is
 
 $$
-Gx\le h,\qquad Ax=b.
+\begin{array}{ll}
+\text{minimize} & c^Tx+d\\
+\text{subject to} & Gx\le h,\\
+& Ax=b.
+\end{array}
 $$
 
-The feasible set is
+Here:
+
+- $x\in\mathbb R^n$ is the decision vector we choose;
+- $c^Tx+d$ is the scalar objective we want to minimize;
+- $Gx\le h$ represents linear inequality constraints, interpreted componentwise;
+- $Ax=b$ represents linear equality constraints.
+
+The word **linear** means that the objective and constraints contain no products such as $x_1x_2$, powers such as $x_1^2$, or other nonlinear functions of $x$. Strictly speaking, expressions with constant terms are affine, but “linear program” is the standard name.
+
+The **feasible set** depends only on the constraints, not on the objective:
 
 $$
 \mathcal F=\{x\mid Gx\le h,\ Ax=b\}.
 $$
+
+### Doubt: why is an LP feasible set a polyhedron?
 
 Take one row of $G$:
 
