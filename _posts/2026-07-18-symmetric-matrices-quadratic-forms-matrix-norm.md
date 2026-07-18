@@ -387,6 +387,34 @@ A\succ0
 \lambda_i>0\text{ for every }i.
 $$
 
+### Doubt: must every diagonal entry of a PSD matrix be nonnegative?
+
+Yes. Let $e_i$ be the $i$-th standard basis vector: it has a $1$ in position $i$ and zeros everywhere else. Since a PSD matrix satisfies $x^TAx\geq0$ for every $x$, we may choose $x=e_i$ and obtain
+
+$$
+e_i^TAe_i=A_{ii}\geq0.
+$$
+
+Therefore every diagonal entry of a PSD matrix is nonnegative.
+
+However, this condition is only **necessary**, not sufficient. For example,
+
+$$
+A=
+\begin{bmatrix}
+1&2\\
+2&1
+\end{bmatrix}
+$$
+
+has positive diagonal entries, but for $x=(1,-1)^T$,
+
+$$
+x^TAx=-2<0.
+$$
+
+So $A$ is not PSD. Checking only the diagonal misses how the off-diagonal entries make different coordinates interact.
+
 ### Doubt: does “positive matrix” mean all entries are positive?
 
 No. Positive semidefinite describes the quadratic form, not the individual entries.
