@@ -416,20 +416,6 @@ Self-information is **surprise after one outcome occurs**. Entropy is **expected
 
 ---
 
-## Appendix: the Notion rendering doubt
-
-> **My doubt:** “no it is not redenering I tried copy the content, it just creating markdown code block”
-
-This was a publishing problem rather than an information-theory problem, but it was part of the learning conversation.
-
-Markdown fenced code and mathematical display blocks are different things. In Jekyll with MathJax or KaTeX support, equations enclosed by `$$` can render as display mathematics. Notion's Markdown import does not reliably convert those expressions into native equation blocks; it may import them as plain text or code instead.
-
-Inside Notion, the dependable approach is to create an equation block with `/math` and paste only the LaTeX expression, without the surrounding `$$` markers.
-
-For this blog, the post front matter includes `math: true`, so the display equations are rendered by the site's math support.
-
----
-
 ## Primary sources
 
 - Claude E. Shannon, [“A Mathematical Theory of Communication”](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x), *Bell System Technical Journal*, 1948.
