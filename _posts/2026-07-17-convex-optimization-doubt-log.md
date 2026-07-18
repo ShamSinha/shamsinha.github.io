@@ -1,5 +1,5 @@
 ---
-title: "Convex Optimization Doubt Log — The Full Learning Conversation"
+title: "Convex Optimization: Foundations and a Doubt-Driven Guide"
 date: 2026-07-17 00:00:00 +0000
 categories: [Mathematics, Optimization]
 tags: [convexity, quasiconvexity, linear-programming, quadratic-programming, doubts, study-notes]
@@ -8,18 +8,87 @@ toc: true
 comments: true
 published: true
 permalink: /posts/convex-optimization-doubt-log/
-description: "A conversational, doubt-by-doubt set of convex optimization notes that keeps the questions, corrections, intuition, proofs, and examples."
+description: "A foundations-first guide to convex optimization that preserves the questions, corrections, intuition, proofs, and examples from the learning conversation."
 ---
 
-These are deliberately **not** polished like a textbook chapter.
+This is a single, foundations-first guide built from the original learning conversation.
 
-The goal is to preserve the learning process: the doubts, the almost-correct statements, the corrections, the geometric intuition, and the small examples that made the ideas click.
+The definitions come before the doubts that depend on them. At the same time, the doubts, almost-correct statements, corrections, geometric intuition, and small examples have been preserved rather than polished away.
 
-Some repetition has been removed, but most of the useful discussion has been kept.
+The progression is:
+
+1. convex sets and functions;
+2. gradients, quadratics, and common representations;
+3. quasiconvexity and bisection;
+4. LP and QP geometry;
+5. constrained optimality and log-concavity.
+
+## Topic map
+
+- [Convex sets, halfspaces, and polyhedra](#convex-sets)
+- [Convex functions, Jensen's inequality, and gradients](#convex-functions)
+- [Convex quadratics and PSD matrices](#convex-quadratics)
+- [Symmetric and block quadratic forms](#symmetric-quadratics)
+- [Epigraph form and piecewise-linear minimization](#epigraph-form)
+- [Quasiconvexity, quasiconcavity, and examples](#quasiconvexity)
+- [Quasiconvex optimization by bisection](#quasiconvex-bisection)
+- [Linear and quadratic programming geometry](#lp-qp-geometry)
+- [First-order optimality and equality constraints](#constrained-optimality)
+- [Log-concavity and Gaussian distributions](#log-concavity)
 
 ---
 
-## 1. Why is an LP feasible set a polyhedron?
+## 1. Convex sets, halfspaces, and polyhedra {#convex-sets}
+
+A set $C\subseteq\mathbb R^n$ is convex when, for every $x,y\in C$ and every $\theta\in[0,1]$,
+
+$$
+\theta x+(1-\theta)y\in C.
+$$
+
+In plain language: draw the line segment between any two points in the set. The whole segment must stay inside the set.
+
+### Why are halfspaces convex?
+
+A halfspace has the form
+
+$$
+\{x\mid a^Tx\le b\}.
+$$
+
+Suppose
+
+$$
+a^Tx\le b,
+\qquad
+a^Ty\le b.
+$$
+
+For $z=\theta x+(1-\theta)y$,
+
+$$
+a^Tz
+=\theta a^Tx+(1-\theta)a^Ty
+\le \theta b+(1-\theta)b=b.
+$$
+
+Thus $z$ also belongs to the halfspace.
+
+The equality set
+
+$$
+\{x\mid a^Tx=b\}
+$$
+
+is a hyperplane and is also convex.
+
+### Why do intersections remain convex?
+
+If every set $C_i$ contains the segment between any two of its points, then a pair of points belonging to every $C_i$ has its entire segment in every $C_i$. Hence the segment belongs to their intersection.
+
+This explains why a finite system of linear constraints produces a convex feasible set.
+
+### Doubt: why is an LP feasible set a polyhedron?
 
 Consider
 
@@ -67,43 +136,7 @@ forms a triangle, hence a bounded polyhedron and therefore a polytope.
 
 ---
 
-## 2. What does convex mean for a set?
-
-A set $C$ is convex when, for every $x,y\in C$ and every $\theta\in[0,1]$,
-
-$$
-\theta x+(1-\theta)y\in C.
-$$
-
-In plain language: draw the line segment between any two points in the set. The whole segment must stay inside the set.
-
-### Why are halfspaces convex?
-
-Suppose
-
-$$
-a^Tx\le b,\qquad a^Ty\le b.
-$$
-
-For $z=\theta x+(1-\theta)y$,
-
-$$
-a^Tz
-=\theta a^Tx+(1-\theta)a^Ty
-\le \theta b+(1-\theta)b=b.
-$$
-
-Thus $z$ also belongs to the halfspace.
-
-### Why do intersections remain convex?
-
-If every set $C_i$ contains the segment between any two of its points, then a pair of points that belongs to every $C_i$ has its entire segment in every $C_i$. Hence the segment is in the intersection.
-
-That one fact explains why systems of linear inequalities give convex feasible regions.
-
----
-
-## 3. What is a convex function?
+## 2. Convex functions and Jensen's inequality {#convex-functions}
 
 A function $f$ is convex if
 
@@ -137,7 +170,7 @@ The two-point definition is the basic version; Jensen is the many-point or proba
 
 ---
 
-## 4. Why does the gradient define a tangent or supporting hyperplane?
+## 3. Why does the gradient define a tangent or supporting hyperplane?
 
 For a differentiable function,
 
@@ -176,7 +209,7 @@ So the tangent hyperplane lies below the graph. That is why it is called a suppo
 
 ---
 
-## 5. Why does convexity make every local minimum global?
+## 4. Why does convexity make every local minimum global?
 
 Suppose $x$ is a local minimum but there exists a feasible $y$ with
 
@@ -205,7 +238,7 @@ This is one of the main reasons convex optimization is special.
 
 ---
 
-## 6. What does a convex quadratic mean?
+## 5. What does a convex quadratic mean? {#convex-quadratics}
 
 > **Doubt:** I think $P$ is a positive-semidefinite matrix or cone.
 
@@ -292,7 +325,7 @@ for symmetric $P$.
 
 ---
 
-## 7. What happens when P is not PSD?
+## 6. What happens when P is not PSD?
 
 Take
 
@@ -314,7 +347,7 @@ If $P\succeq0$ but is singular, the function may be flat in some directions, so 
 
 ---
 
-## 8. Why can every quadratic form be represented by a symmetric matrix?
+## 7. Why can every quadratic form be represented by a symmetric matrix? {#symmetric-quadratics}
 
 The phrase "we can assume that $P$ is symmetric" can be misleading. We are not proving that the original matrix $P$ is symmetric. Instead, we are showing that every possibly nonsymmetric matrix can be replaced by a symmetric matrix without changing the quadratic function.
 
@@ -537,7 +570,7 @@ The key conclusion is not that every matrix is symmetric. It is that every quadr
 
 ---
 
-## 9. Block quadratic forms and the Schur complement
+## 8. Block quadratic forms and the Schur complement
 
 Consider
 
@@ -590,7 +623,35 @@ The intuition is that optimizing out $y$ leaves an effective quadratic curvature
 
 ---
 
-## 10. Piecewise-linear minimization
+## 9. Epigraph form and piecewise-linear minimization {#epigraph-form}
+
+Before the piecewise-linear example, it helps to understand a general representation used throughout convex optimization.
+
+For a convex objective, the problem
+
+$$
+\min_x f_0(x)
+$$
+
+is equivalent to its **epigraph form**:
+
+$$
+\begin{array}{ll}
+\text{minimize} & t\\
+\text{subject to} & f_0(x)\le t.
+\end{array}
+$$
+
+At an optimum, $t=f_0(x)$; otherwise $t$ could be reduced. The objective is now linear, while the original objective appears as a convex constraint.
+
+This does **not** mean that convex optimization requires a linear objective. Epigraph form is simply a useful equivalent representation.
+
+It is also different from quasiconvex bisection later in this guide:
+
+- for a convex $f_0$, the entire epigraph $\{(x,t)\mid f_0(x)\le t\}$ is convex, so $x$ and $t$ can be optimized jointly;
+- for a merely quasiconvex $f_0$, only each fixed-$t$ sublevel set is guaranteed to be convex, so bisection handles $t$ externally.
+
+### Piecewise-linear objectives
 
 A standard convex piecewise-linear function is
 
@@ -660,7 +721,7 @@ $$
 
 ---
 
-## 11. Convex versus quasiconvex
+## 10. Convex versus quasiconvex {#quasiconvexity}
 
 A function is quasiconvex when every sublevel set
 
@@ -693,9 +754,35 @@ $$
 
 The reverse is false.
 
+### First-order condition for a differentiable quasiconvex function
+
+For differentiable $f$ on a convex domain, quasiconvexity is equivalent to
+
+$$
+f(y)\le f(x)
+\implies
+\nabla f(x)^T(y-x)\le0.
+$$
+
+Why? If $f(y)\le f(x)$, then $y$ belongs to the sublevel set
+
+$$
+\{z\mid f(z)\le f(x)\}.
+$$
+
+The vector $y-x$ points from $x$ into that convex low-value region, while $\nabla f(x)$ points toward increasing values. Their inner product therefore cannot be positive.
+
+Compare this with the stronger convex condition
+
+$$
+f(y)\ge f(x)+\nabla f(x)^T(y-x),
+$$
+
+which supplies a global affine lower bound. Quasiconvexity gives only the directional implication above.
+
 ---
 
-## 12. Why is a linear-fractional objective quasiconvex?
+## 11. Why is a linear-fractional objective quasiconvex?
 
 Consider
 
@@ -756,7 +843,7 @@ If the denominator could be negative, multiplying by it might reverse the inequa
 
 ---
 
-## 13. Proof: the square root of an absolute value is quasiconvex
+## 12. Proof: the square root of an absolute value is quasiconvex
 
 Consider
 
@@ -780,7 +867,7 @@ The function is quasiconvex even though it is not convex on all of $\mathbb R$.
 
 ---
 
-## 14. Proof: the ceiling function is quasilinear
+## 13. Proof: the ceiling function is quasilinear
 
 The ceiling function is monotone nondecreasing.
 
@@ -810,7 +897,7 @@ A discontinuous function can be quasilinear; quasilinear does not mean affine.
 
 ---
 
-## 15. Proof: the logarithm is quasilinear on the positive domain
+## 14. Proof: the logarithm is quasilinear on the positive domain
 
 For a sublevel set,
 
@@ -846,7 +933,7 @@ It is also concave, but it is not affine.
 
 ---
 
-## 16. Proof: the product of two positive variables is quasiconcave
+## 15. Proof: the product of two positive variables is quasiconcave
 
 We inspect superlevel sets:
 
@@ -882,7 +969,7 @@ which is the region above the convex curve $\alpha/x_1$.
 
 ---
 
-## 17. Quasiconvex optimization by bisection: x versus t
+## 16. Quasiconvex optimization by bisection: x versus t {#quasiconvex-bisection}
 
 Consider
 
@@ -1024,7 +1111,7 @@ So the final mental model is:
 
 ---
 
-## 18. Ratio example in quasiconvex optimization
+## 17. Ratio example in quasiconvex optimization
 
 Suppose
 
@@ -1066,7 +1153,7 @@ not an equality.
 
 ---
 
-## 19. LP optimum: must it always be a vertex?
+## 18. LP optimum: must it always be a vertex? {#lp-qp-geometry}
 
 > **Doubt:** In a linear program, the solution is always present on a vertex of a face of the polyhedron, right?
 
@@ -1127,7 +1214,7 @@ Some polyhedra contain no vertices. For example, an affine line is a polyhedron 
 
 ---
 
-## 20. Why can a quadratic-program solution be inside a face or in the interior?
+## 19. Why can a quadratic-program solution be inside a face or in the interior?
 
 A convex QP has objective
 
@@ -1194,7 +1281,7 @@ A strictly convex quadratic has curved level sets. Curvature can select one uniq
 
 ---
 
-## 21. First-order optimality over a convex feasible set
+## 20. First-order optimality over a convex feasible set {#constrained-optimality}
 
 For a differentiable convex function over a convex set $X$, $x^\star$ is optimal if and only if
 
@@ -1217,7 +1304,7 @@ At a boundary optimum, the gradient need not vanish. It must point so that no fe
 
 ---
 
-## 22. Equality constraints and the nullspace
+## 21. Equality constraints and the nullspace
 
 Consider
 
@@ -1290,7 +1377,7 @@ $$
 
 ---
 
-## 23. Eliminating equality constraints
+## 22. Eliminating equality constraints
 
 Choose one feasible point $x_0$ satisfying
 
@@ -1314,7 +1401,45 @@ This is useful both conceptually and computationally: $z$ represents exactly the
 
 ---
 
-## 24. Log-concavity and the Gaussian example
+## 23. Nonnegative orthant constraints
+
+Consider
+
+$$
+\min f(x)
+\quad\text{subject to}\quad
+x\succeq0.
+$$
+
+The first-order condition requires
+
+$$
+\nabla f(x)^T(y-x)\ge0
+$$
+
+for every $y\succeq0$.
+
+This implies
+
+$$
+x\succeq0,
+\qquad
+\nabla f(x)\succeq0,
+\qquad
+x^T\nabla f(x)=0.
+$$
+
+Componentwise,
+
+$$
+x_i\nabla_i f(x)=0.
+$$
+
+Thus, for each coordinate, either $x_i>0$ and the corresponding gradient component is zero, or the gradient component is positive and $x_i=0$. This is the basic geometry behind complementary slackness.
+
+---
+
+## 24. Log-concavity and the Gaussian example {#log-concavity}
 
 A positive function $p$ is log-concave when
 
