@@ -177,7 +177,7 @@ For real $\lambda$:
 
 - $\lambda>1$: the vector grows and keeps its direction;
 - $0<\lambda<1$: it shrinks and keeps its direction;
-- $\lambda<0$: it reverses direction and is scaled by $|\lambda|$;
+- $\lambda<0$: it reverses direction and is scaled by $\lvert\lambda\rvert$;
 - $\lambda=0$: it is collapsed to zero.
 
 Eigenvectors themselves are not unique. If $v$ is an eigenvector, then every nonzero multiple $cv$ is also an eigenvector for the same eigenvalue.
@@ -208,9 +208,45 @@ $$
 
 Equivalently, $w$ is a right eigenvector of $A^T$.
 
+If $A$ is diagonalizable as
+
+$$
+A=V\Lambda V^{-1},
+$$
+
+then
+
+$$
+V^{-1}A=\Lambda V^{-1}.
+$$
+
+Therefore the rows $w_i^T$ of $V^{-1}$ are left eigenvectors:
+
+$$
+w_i^TA=\lambda_iw_i^T.
+$$
+
+With this normalization, the left and right eigenvectors form dual bases:
+
+$$
+w_i^Tv_j=\delta_{ij}.
+$$
+
 ### Can a real matrix have complex eigenvalues?
 
-Yes. A real matrix may have complex eigenvalues and eigenvectors. Nonreal eigenvalues of a real matrix occur in conjugate pairs.
+Yes. A real matrix may have complex eigenvalues and eigenvectors. Nonreal eigenvalues of a real matrix occur in conjugate pairs. If
+
+$$
+Av=\lambda v,
+$$
+
+then, because $A$ is real,
+
+$$
+A\overline v=\overline\lambda\,\overline v.
+$$
+
+If both $A$ and $\lambda$ are real, at least one of $\operatorname{Re}(v)$ and $\operatorname{Im}(v)$ is a nonzero real eigenvector for $\lambda$. So a real eigenvalue of a real matrix always has a real eigenvector available.
 
 For example, a two-dimensional rotation through an angle other than $0$ or $\pi$ has no real eigenvector: no real direction remains fixed.
 
@@ -275,6 +311,10 @@ $$
 \operatorname{tr}(cA)=c\operatorname{tr}(A),
 $$
 
+$$
+\operatorname{tr}(A^T)=\operatorname{tr}(A),
+$$
+
 and the cyclic identity
 
 $$
@@ -304,6 +344,40 @@ $$
 $$
 
 These identities remain true even when $A$ is not diagonalizable.
+
+### Why is trace the sum of eigenvalues?
+
+For a diagonalizable matrix,
+
+$$
+A=V\Lambda V^{-1}.
+$$
+
+Using the cyclic property,
+
+$$
+\operatorname{tr}(A)
+=\operatorname{tr}(V\Lambda V^{-1})
+=\operatorname{tr}(\Lambda V^{-1}V)
+=\operatorname{tr}(\Lambda).
+$$
+
+The trace of $\Lambda$ is the sum of its diagonal entries, which are the eigenvalues:
+
+$$
+\operatorname{tr}(A)=\lambda_1+\cdots+\lambda_n.
+$$
+
+This proof uses diagonalization for intuition. The identity remains valid for a defective matrix as well, for example by reading the coefficient of $\lambda^{n-1}$ in its characteristic polynomial.
+
+Similarly, when $A$ is diagonalizable,
+
+$$
+\det(A)
+=\det(V)\det(\Lambda)\det(V^{-1})
+=\det(\Lambda)
+=\prod_{i=1}^n\lambda_i.
+$$
 
 The memory pair is:
 
@@ -404,6 +478,52 @@ $$
 
 Each term acts along one orthogonal eigenvector direction.
 
+#### Doubt: is spectral decomposition only for symmetric matrices?
+
+The terminology varies, so it helps to separate two statements:
+
+- Every diagonalizable square matrix has an eigenvalue decomposition $A=V\Lambda V^{-1}$.
+- A real symmetric matrix has the stronger **orthogonal spectral decomposition** $A=Q\Lambda Q^T$.
+
+For the second form, collect the orthonormal eigenvectors into $Q$. Then
+
+$$
+AQ=Q\Lambda.
+$$
+
+Because $Q^{-1}=Q^T$, multiplying on the right by $Q^T$ gives
+
+$$
+A=Q\Lambda Q^T.
+$$
+
+This is special: the eigenvalues are real, the eigenvectors can be chosen orthonormally, and the inverse is just a transpose. For complex normal matrices, the corresponding statement uses the conjugate transpose: $A=Q\Lambda Q^*$.
+
+#### Video and transcript-based notes
+
+The Notion page links to [Visualize Spectral Decomposition — SEE Matrix, Chapter 2](https://www.youtube.com/watch?v=mhy-ZKSARxI) by Visual Kernel. The complete auto-generated transcript is available from the video's **Show transcript** panel; these are the main ideas reorganized as study notes:
+
+- [00:02 — the two easy transformations](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=2s): a diagonal matrix scales coordinate axes, while an orthogonal matrix preserves geometry and represents a rotation or reflection.
+- [04:11 — composition versus decomposition](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=251s): multiplication composes transformations; decomposition rewrites one complicated transformation as several simpler ones.
+- [05:54 — the geometric role of eigenvectors](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=354s): most directions are turned, but an eigenvector stays on its original line and is only scaled by its eigenvalue.
+- [08:05 — why symmetry matters](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=485s): a symmetric matrix has an orthonormal eigenbasis, making a clean change of coordinates possible.
+- [09:36 — spectral decomposition](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=576s): $Q^T$ changes from standard coordinates to eigenvector coordinates, $\Lambda$ scales each eigenvector direction, and $Q$ changes back.
+- [12:04 — the full visual sequence](https://www.youtube.com/watch?v=mhy-ZKSARxI&t=724s): rotate or reflect into the eigenbasis, scale independently, then undo the basis change.
+
+So the geometric memory aid is
+
+$$
+\boxed{
+\text{change to eigenbasis}
+\;\longrightarrow\;
+\text{scale}
+\;\longrightarrow\;
+\text{change back}
+}
+$$
+
+The original related discussion is preserved here: [spectral decomposition and diagonalization](https://chatgpt.com/share/2cc34c6c-cbcf-4a4b-bf6d-b75520637a82).
+
 ### Singular value decomposition
 
 The singular value decomposition applies to **every** real matrix, including rectangular and non-diagonalizable matrices:
@@ -433,6 +553,64 @@ The singular values satisfy
 $$
 \sigma_i=\sqrt{\lambda_i(A^TA)}.
 $$
+
+#### How is SVD derived?
+
+Start with $A^TA$. It is symmetric and positive semidefinite because
+
+$$
+x^TA^TAx=\lVert Ax\rVert_2^2\ge0.
+$$
+
+Therefore it has an orthonormal eigenbasis $v_i$ with nonnegative eigenvalues:
+
+$$
+A^TAv_i=\sigma_i^2v_i.
+$$
+
+For every nonzero singular value, define
+
+$$
+u_i=\frac{Av_i}{\sigma_i}.
+$$
+
+Then
+
+$$
+Av_i=\sigma_i u_i.
+$$
+
+The $u_i$ are orthonormal because, for $i\ne j$,
+
+$$
+u_i^Tu_j
+=\frac{v_i^TA^TAv_j}{\sigma_i\sigma_j}
+=0,
+$$
+
+and $u_i^Tu_i=1$. Collecting these equations gives
+
+$$
+AV=U\Sigma,
+$$
+
+so
+
+$$
+A=U\Sigma V^T.
+$$
+
+If some singular values are zero, the remaining columns of $U$ and $V$ are chosen to complete orthonormal bases. This is why SVD exists even when $A$ is rectangular, singular, or not diagonalizable.
+
+The singular values also reveal rank and approximation quality. If
+
+$$
+\sigma_1\ge\sigma_2\ge\cdots\ge0,
+$$
+
+then the number of nonzero singular values is $\operatorname{rank}(A)$. Keeping only the largest singular values produces a low-rank approximation, which is the basic idea behind PCA, image compression, and noise reduction. SVD also gives the pseudoinverse used for singular or rectangular least-squares problems.
+
+The original related discussion is preserved here: [SVD definition and derivation](https://chatgpt.com/share/2a561c2e-d049-4f66-b021-c2151a5eb6e9).
 
 ### Spectral decomposition versus SVD
 
@@ -489,7 +667,7 @@ $$
 =\frac{u^Tv}{u^Tu}u.
 $$
 
-In the handwritten note, the question is the projection of $a$ along $q$. Substituting $v=a$ and $u=q$ gives
+The Notion heading says “projection of $q$ along $a$,” but the handwritten equations decompose $a$ into a component parallel to $q$ and a perpendicular remainder. Therefore the calculation in the image is the projection of $a$ onto $q$. Substituting $v=a$ and $u=q$ gives
 
 $$
 \operatorname{proj}_q(a)
@@ -551,6 +729,18 @@ $$
 
 and $A^0=I$.
 
+For integer exponents for which the expressions are defined,
+
+$$
+A^{k+\ell}=A^kA^\ell,
+$$
+
+and
+
+$$
+(A^k)^{-1}=(A^{-1})^k=A^{-k}.
+$$
+
 ### Graph interpretation
 
 If $A$ is the adjacency matrix of a directed graph, then
@@ -595,13 +785,13 @@ $$
 Ax=0\text{ has only }x=0,
 $$
 
-and the columns of $A$ are linearly independent.
+the columns and rows of $A$ are linearly independent, and $Ax=b$ has a unique solution for every $b\in\mathbb R^n$.
 
 ### Geometric explanation
 
 The absolute determinant is a volume-scaling factor:
 
-- in two dimensions, $|\det(A)|$ scales area;
+- in two dimensions, $\lvert\det(A)\rvert$ scales area;
 - in three dimensions, it scales volume.
 
 If $\det(A)=0$, a nonzero-dimensional region is collapsed into a lower-dimensional one—a plane may collapse to a line, for example. Different inputs can then produce the same output, so the original input cannot be uniquely recovered.
@@ -625,6 +815,35 @@ $$
 $$
 
 The transformation sends the entire plane onto a line. Information is lost, so no inverse exists.
+
+We can see the lost information directly. Take
+
+$$
+x_1=
+\begin{bmatrix}
+1\\
+0
+\end{bmatrix},
+\qquad
+x_2=
+\begin{bmatrix}
+-1\\
+1
+\end{bmatrix}.
+$$
+
+Although $x_1\ne x_2$,
+
+$$
+Ax_1=
+\begin{bmatrix}
+1\\
+2
+\end{bmatrix}
+=Ax_2.
+$$
+
+Given that output, an inverse would have to return two different inputs at once. That is impossible.
 
 ### Connection to eigenvalues
 
@@ -676,7 +895,7 @@ For a nonnegative irreducible matrix $A$:
 - its spectral radius $\rho(A)$ is a positive eigenvalue;
 - $\rho(A)$ has a strictly positive eigenvector $v\succ0$;
 - the Perron eigenvalue is algebraically simple;
-- every eigenvalue satisfies $|\lambda_i|\le\rho(A)$.
+- every eigenvalue satisfies $\lvert\lambda_i\rvert\le\rho(A)$.
 
 Thus
 
@@ -691,12 +910,24 @@ $$
 Irreducibility alone does not guarantee
 
 $$
-|\lambda_i|<\rho(A)
+\lvert\lambda_i\rvert<\rho(A)
 $$
 
 for every other eigenvalue. An irreducible but periodic matrix may have other eigenvalues on the same spectral circle.
 
 If $A$ is **positive**, meaning every entry is strictly positive, then the Perron eigenvalue is strictly dominant in magnitude.
+
+Why require irreducibility at all? Consider the reducible matrix
+
+$$
+A=
+\begin{bmatrix}
+3&0\\
+0&1
+\end{bmatrix}.
+$$
+
+Its dominant eigenvector is $(1,0)^T$, which is nonnegative but not strictly positive. The two coordinates form disconnected blocks, so dominance in one block says nothing about the other. Irreducibility removes this separation.
 
 ### Why can the second eigenvector not be strictly positive?
 
