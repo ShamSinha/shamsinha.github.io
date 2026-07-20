@@ -136,6 +136,32 @@ This is why it is a lower bound. Maximizing the ELBO simultaneously raises a low
 
 Variational inference is especially useful in three settings: limited data where informative priors matter, problems that require explicit uncertainty, and generative modeling with hidden variables.
 
+### Choosing the variational family
+
+The approximation can only express distributions inside its chosen family. A common **mean-field** assumption factorizes the latent dimensions:
+
+$$
+q_\phi(z\mid x)=\prod_{j=1}^d q_{\phi_j}(z_j\mid x).
+$$
+
+This makes expectations and gradients cheap, but it cannot directly represent posterior correlations between latent dimensions. Full-covariance Gaussians are richer and more expensive. Normalizing flows, mixtures, and structured variational families add flexibility at additional computational cost.
+
+The KL direction also matters. Minimizing $D_{\mathrm{KL}}(q\|p)$ penalizes placing mass where $p$ has little mass very strongly, but it does not penalize every region that $q$ fails to cover equally. With a multimodal true posterior and a unimodal $q$, the approximation may concentrate on one mode rather than spread across low-density space between modes. This behavior is often called **mode seeking** or **zero forcing**.
+
+### Variational inference versus MCMC
+
+| Property | Variational inference | MCMC |
+|---|---|---|
+| Basic mechanism | Optimize parameters of $q_\phi$ | Construct correlated posterior samples |
+| Typical speed | Fast after choosing a tractable family | Often slower and harder to scale |
+| Main approximation error | Restricted family and optimization error | Finite-chain and convergence error |
+| Uncertainty behavior | Can be too narrow | Asymptotically exact under suitable conditions |
+| Diagnostics | ELBO, held-out prediction, sensitivity to initialization | Trace plots, effective sample size, chain convergence |
+
+VI is attractive when repeated inference or large datasets make sampling too expensive. MCMC is attractive when posterior fidelity matters more than speed and reliable convergence is achievable. Neither method removes the need to check the model itself.
+
+The ELBO is generally non-convex for neural models, so different initializations can find different local optima. A high ELBO also does not prove that $q_\phi$ captures every scientifically relevant uncertainty. Posterior predictive checks, multiple runs, and comparison with a richer family or a small MCMC benchmark can reveal approximation failure.
+
 ---
 
 ## 4. Variational autoencoders {#vae}
@@ -185,9 +211,11 @@ D_{\mathrm{KL}}
 \left(q_\phi(z\mid x)\|\mathcal N(0,I)\right)
 =\frac12\sum_j
 \left(
-\mu_j^2+\sigma_j^2-log\sigma_j^2-1
+\mu_j^2+\sigma_j^2-\log\sigma_j^2-1
 \right).
 $$
+
+The reconstruction term depends on the observation model. A Bernoulli decoder leads to binary cross-entropy; a fixed-variance Gaussian decoder leads to a scaled squared-error term. This is a likelihood choice, not merely a convenient loss-function swap, and its scale determines the balance against KL regularization.
 
 ---
 
@@ -232,6 +260,80 @@ $$
 $$
 
 So the trick does not replace genuine sampling with a fake deterministic point. It expresses the same random variable in a form through which low-variance pathwise gradients can flow.
+
+### One complete VAE training step
+
+Implementations usually predict log-variance $\ell=\log\sigma^2$ rather than $\sigma$ directly. This permits any real network output while keeping the reconstructed standard deviation positive:
+
+$$
+\sigma=\exp(\ell/2),
+\qquad
+z=\mu+\exp(\ell/2)\odot\varepsilon.
+$$
+
+For one mini-batch, training follows this path:
+
+1. The encoder maps $x$ to $\mu$ and $\ell$.
+2. Sample parameter-free noise $\varepsilon\sim\mathcal N(0,I)$ and construct $z$.
+3. The decoder maps $z$ to the parameters of $p_\theta(x\mid z)$.
+4. Compute the negative ELBO,
+
+   $$
+   L
+   =-\mathbb E_q[\log p_\theta(x\mid z)]
+   +\frac12\sum_j
+   \left(\mu_j^2+e^{\ell_j}-\ell_j-1\right).
+   $$
+
+5. Backpropagate once through the complete graph and update encoder and decoder parameters.
+
+The reconstruction gradient reaches the encoder through $z$:
+
+$$
+\frac{\partial L_{\mathrm{rec}}}{\partial\mu}
+=\frac{\partial L_{\mathrm{rec}}}{\partial z},
+$$
+
+$$
+\frac{\partial L_{\mathrm{rec}}}{\partial\ell}
+=\frac{\partial L_{\mathrm{rec}}}{\partial z}
+\odot\frac12\exp(\ell/2)\odot\varepsilon.
+$$
+
+The KL term contributes analytical gradients
+
+$$
+\frac{\partial L_{\mathrm{KL}}}{\partial\mu_j}=\mu_j,
+\qquad
+\frac{\partial L_{\mathrm{KL}}}{\partial\ell_j}
+=\frac12(e^{\ell_j}-1).
+$$
+
+The chain rule then carries both contributions through the encoder. The decoder receives gradients only from the reconstruction term, while the encoder receives reconstruction and KL gradients.
+
+A compact PyTorch-style step is:
+
+```python
+mu, logvar = encoder(x)
+std = torch.exp(0.5 * logvar)
+eps = torch.randn_like(std)
+z = mu + std * eps
+x_params = decoder(z)
+
+reconstruction = negative_log_likelihood(x, x_params).mean()
+kl = -0.5 * (1 + logvar - mu.square() - logvar.exp())
+loss = reconstruction + kl.sum(dim=1).mean()
+
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+### Failure modes and objective variants
+
+With a very powerful decoder, the model may reconstruct well without using $z$. Then $q_\phi(z\mid x)$ collapses toward the prior and the KL term approaches zero—**posterior collapse**. KL warm-up, free bits, weakening the decoder, or changing the training schedule can encourage latent usage.
+
+A $\beta$-VAE weights the KL term by a coefficient $\beta$. Values above $1$ emphasize a structured, prior-like latent space at the cost of reconstruction detail; values below $1$ favor reconstruction. This is a modeling trade-off, not a guarantee of interpretable or disentangled factors.
 
 ---
 

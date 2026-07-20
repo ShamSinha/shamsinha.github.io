@@ -184,6 +184,25 @@ print(f"Estimated mu: {mu_hat:.4f}")
 print(f"Estimated sigma: {sigma_hat:.4f}")
 ```
 
+### What happens as the sample grows?
+
+Under regularity conditions and a correctly specified identifiable model, MLE has several important large-sample properties:
+
+- **Consistency:** $\hat\theta_{\mathrm{MLE}}$ converges to the true parameter as $n$ grows.
+- **Asymptotic normality:** near the true value $\theta_0$,
+
+  $$
+  \sqrt n(\hat\theta-\theta_0)
+  \xrightarrow{d}
+  \mathcal N\!\left(0,I(\theta_0)^{-1}\right),
+  $$
+
+  where $I(\theta_0)$ is Fisher information per observation.
+- **Asymptotic efficiency:** among regular estimators, MLE reaches the information-bound variance in the large-sample limit.
+- **Invariance:** if $\hat\theta$ maximizes the likelihood of $\theta$, then $g(\hat\theta)$ is the MLE of $g(\theta)$, with care when $g$ is not one-to-one.
+
+These are asymptotic claims, not guarantees for a small dataset. They can fail at parameter boundaries, with non-identifiable latent models, under model misspecification, or when optimization lands at a poor local optimum. A numerical solver reporting success only means it satisfied its stopping rule; it does not prove the statistical model is appropriate or the optimum is globally best.
+
 ### Why ML losses look familiar
 
 Many loss functions are negative log-likelihoods:
@@ -268,6 +287,16 @@ For a convex function $f$,
 $$
 f(\mathbb E[X])\le\mathbb E[f(X)].
 $$
+
+Convexity itself means that for any $x,y$ in the domain and $\lambda\in[0,1]$,
+
+$$
+f(\lambda x+(1-\lambda)y)
+\le
+\lambda f(x)+(1-\lambda)f(y).
+$$
+
+Jensen's inequality extends this two-point weighted-average statement to an entire probability distribution. Equality holds when $X$ is constant, or when $f$ is affine over the part of its domain reached by $X$.
 
 For a concave function such as $\log$, the inequality reverses:
 
@@ -359,6 +388,18 @@ r
 $$
 
 indicating a strong positive linear relationship. The normalization is what makes this value independent of the original measurement units.
+
+### Pearson, Spearman, or Kendall?
+
+- **Pearson correlation** measures linear association in the original numeric values. It is sensitive to outliers and can miss a strong curved relationship.
+- **Spearman correlation** is Pearson correlation applied to ranks. It measures monotonic association, so it can detect a consistently increasing or decreasing relationship that is not linear.
+- **Kendall's $\tau$** compares concordant and discordant pairs. It is often easier to interpret probabilistically and can behave well for small samples or ordinal data, though ties require an adjusted version.
+
+For example, if $Y=X^2$ and $X$ is symmetric around zero, Pearson correlation can be zero even though $Y$ is determined exactly by $X$. A scatter plot is therefore part of correlation analysis, not an optional decoration.
+
+Outliers can manufacture or destroy a large Pearson coefficient. Report robust plots, investigate influential observations, and avoid universal labels such as “$|r|>0.7$ is strong” without domain context.
+
+A correlation test asks whether the observed coefficient is surprising under assumptions such as independent paired observations and a specified null relationship. Its p-value does not measure effect size, practical importance, or the probability that the variables are related. Confidence intervals and validation on new data provide more useful context.
 
 ---
 

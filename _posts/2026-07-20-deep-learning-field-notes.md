@@ -2,13 +2,13 @@
 title: "Deep Learning Field Notes: Losses, Layers, Training, and Deployment"
 date: 2026-07-20 10:00:00 +0530
 categories: [Machine Learning, Deep Learning]
-tags: [deep-learning, backpropagation, optimizers, focal-loss, cross-entropy, cnn, pooling, batch-normalization, dropout, metric-learning, model-compression, study-notes]
+tags: [deep-learning, backpropagation, optimizers, focal-loss, cross-entropy, cnn, pooling, batch-normalization, dropout, model-compression, study-notes]
 math: true
 toc: true
 comments: true
 published: true
 permalink: /posts/deep-learning-field-notes/
-description: "A connected guide to deep-learning losses, backpropagation, optimizers, convolutional layers, regularization, metric learning, and deployment optimization."
+description: "A connected guide to deep-learning losses, backpropagation, optimizers, convolutional layers, regularization, and deployment optimization."
 ---
 
 Deep learning is often taught as a catalog of layers and formulas. I find it more useful to ask what problem each idea solves.
@@ -32,7 +32,6 @@ This post turns my original short notes into one connected guide. It is not a co
 - [Transposed convolution](#transposed-convolution)
 - [Batch normalization](#batch-normalization)
 - [Dropout](#dropout)
-- [Contrastive and triplet loss](#contrastive-loss)
 - [Inference optimization](#inference-optimization)
 
 ---
@@ -46,6 +45,22 @@ H(P,Q)=-\sum_x P(x)\log Q(x).
 $$
 
 It measures the average surprise we experience when outcomes come from $P$, but we encode or predict them using $Q$.
+
+Start with Shannon entropy, which measures the uncertainty inside one distribution:
+
+$$
+H(P)=-\sum_xP(x)\log P(x).
+$$
+
+If logarithms use base $2$, entropy is measured in bits. For $M$ equally likely outcomes,
+
+$$
+H(P)
+=-M\left(\frac1M\log_2\frac1M\right)
+=\log_2M.
+$$
+
+A fair coin therefore has $1$ bit of entropy, while a deterministic outcome has $0$. The coding interpretation is that $H(P)$ is the best achievable average description length for outcomes from $P$, whereas $H(P,Q)$ is the average length paid when the code is designed for the wrong distribution $Q$.
 
 The KL divergence from $P$ to $Q$ is
 
@@ -360,6 +375,13 @@ $$
 v_t=\beta_2v_{t-1}+(1-\beta_2)g_t^2.
 $$
 
+The two states solve different problems:
+
+- $m_t$ is a momentum-like estimate of the gradient's direction. It damps rapid sign changes and carries consistent directions forward.
+- $v_t$ estimates coordinate-wise gradient scale. Dividing by $\sqrt{v_t}$ makes the step smaller where gradients have recently been large.
+
+Thus $\beta_1$ controls directional memory and $\beta_2$ controls scale memory. Common defaults, $\beta_1=0.9$ and $\beta_2=0.999$, make the second-moment estimate much smoother than the first, but they are defaults rather than laws. A rapidly changing objective may benefit from shorter memory.
+
 Because both averages begin at zero, early values are biased toward zero. Adam corrects them:
 
 $$
@@ -367,6 +389,14 @@ $$
 \qquad
 \hat v_t=\frac{v_t}{1-\beta_2^t},
 $$
+
+To see the bias, suppose the expected gradient is approximately constant at $g$. Starting from $m_0=0$ gives
+
+$$
+\mathbb E[m_t]=(1-\beta_1^t)g.
+$$
+
+The missing factor is exactly $1-\beta_1^t$, so dividing by it recovers an unbiased estimate under this simplified stationary picture. The same geometric-series argument applies to $v_t$.
 
 and updates
 
@@ -376,7 +406,18 @@ $$
 -\eta\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon}.
 $$
 
-The first moment smooths the direction; the second adapts the scale. Adam is a strong default, especially for sparse or noisy gradients, but it is not automatically the best-generalizing optimizer. SGD with momentum can still be preferable, and weight decay should usually be implemented in its decoupled AdamW form.
+The $\varepsilon$ term prevents division by zero, but it can also affect effective step sizes when $v_t$ is tiny. Adam is a strong default, especially for sparse or noisy gradients, but it is not automatically the best-generalizing optimizer. SGD with momentum can still be preferable.
+
+Ordinary L2 regularization adds $\lambda\theta$ to the gradient; Adam then rescales that term coordinate by coordinate. AdamW instead applies weight decay directly,
+
+$$
+\theta_t
+\leftarrow
+(1-\eta\lambda)\theta_{t-1}
+-\eta\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon},
+$$
+
+which separates the intended parameter shrinkage from Adam's adaptive gradient normalization.
 
 ---
 
@@ -514,6 +555,14 @@ $$
 
 The parameters $\gamma$ and $\beta$ mean the layer is not forced to keep zero mean and unit variance. It can learn the scale and offset that the next layer needs.
 
+### Which axes are normalized?
+
+For a convolutional tensor with shape $(N,C,H,W)$, `BatchNorm2d` computes one mean and variance for each channel $c$ using all values across the batch and spatial axes $(N,H,W)$. It does **not** combine different channels into one statistic.
+
+That distinction matters because channels usually represent different learned features—perhaps edges, textures, or colors. Mixing them would force unrelated feature maps to share a scale and would entangle their semantics. Per-channel normalization preserves that separation, while the learned $\gamma_c$ and $\beta_c$ let every channel recover the scale and offset it needs.
+
+For a dense layer shaped $(N,D)$, batch normalization instead computes one pair of statistics for every feature dimension across $N$. The principle is the same: normalize repeated observations of the same feature, not different features together.
+
 In practice, batch normalization often:
 
 - permits larger learning rates;
@@ -522,6 +571,12 @@ In practice, batch normalization often:
 - introduces a small regularizing effect through noisy batch statistics.
 
 Training and inference behave differently. Training uses the current mini-batch statistics. Inference uses running estimates accumulated during training. Forgetting to switch the model to evaluation mode can therefore change predictions.
+
+The roles of the stored quantities are different:
+
+- $\gamma$ and $\beta$ are trainable parameters updated by backpropagation.
+- `running_mean` and `running_var` are buffers updated from batch statistics; they are saved with the model but are not learned through gradients.
+- the current batch mean and variance are temporary values used for that training pass.
 
 The distinction is visible in PyTorch-style code. During training, statistics come from the current batch and the running buffers are updated:
 
@@ -554,7 +609,7 @@ y[:, c, :, :] = gamma[c] * x_hat[:, c, :, :] + beta[c]
 
 Frameworks differ in how they name the running-statistics update coefficient, so it is worth checking whether their `momentum` means the weight on the old estimate or on the new batch statistic.
 
-Small or non-independent batches can make the estimates noisy. Layer normalization and group normalization are alternatives when reliable batch statistics are unavailable.
+Small or non-independent batches can make the estimates noisy. Layer normalization uses statistics within each example, while group normalization divides channels into groups and is independent of batch size. They are useful alternatives when reliable batch statistics are unavailable.
 
 ---
 
@@ -620,51 +675,7 @@ Dropout is a regularizer, not a universal requirement. Heavy dropout can cause u
 
 ---
 
-## 10. Contrastive and triplet loss: learn a geometry {#contrastive-loss}
-
-Ordinary classification asks, “Which class is this?” Metric learning asks, “Which examples should be close together?”
-
-Let a network $f$ map an input to an embedding. For a pair $(x_1,x_2)$, define
-
-$$
-D=\left\|f(x_1)-f(x_2)\right\|_2.
-$$
-
-Let $y=1$ for a similar pair and $y=0$ for a dissimilar pair. One common contrastive loss is
-
-$$
-L
-=\frac12yD^2
-+\frac12(1-y)\max(0,m-D)^2,
-$$
-
-where $m$ is a margin.
-
-- For a similar pair, $y=1$, so minimizing $L$ pulls the embeddings together.
-- For a dissimilar pair, $y=0$, so the loss pushes them apart only while $D<m$.
-- Once a dissimilar pair is at least $m$ apart, it contributes no loss.
-
-The margin avoids wasting capacity by pushing every negative pair infinitely far away. The result is an embedding space in which distance carries semantic meaning. This is useful for face verification, image retrieval, clustering, few-shot learning, and self-supervised representation learning.
-
-Label conventions differ across implementations: some use $y=0$ for similar pairs. The formula and label definition must always be read together.
-
-### Triplet loss
-
-Pairwise contrastive loss says whether two examples should be close. Triplet loss expresses a relative constraint using an anchor $a$, a positive $p$, and a negative $n$:
-
-$$
-L_{\text{triplet}}
-=\max\!\left(0,
-d(a,p)-d(a,n)+m\right).
-$$
-
-The loss asks the negative to be at least margin $m$ farther from the anchor than the positive. If that ordering already holds, the triplet contributes no gradient.
-
-Triplet selection is the difficult part. Most easy triplets already have zero loss, while the very hardest examples may be mislabeled or destabilizing. Semi-hard negative mining and good in-batch sampling make the objective useful in practice.
-
----
-
-## 11. Inference optimization: make the trained model practical {#inference-optimization}
+## 10. Inference optimization: make the trained model practical {#inference-optimization}
 
 Training minimizes a learning objective; deployment must also satisfy latency, memory, throughput, energy, and cost constraints. The main compression tools trade some redundancy or precision for efficiency.
 
@@ -672,17 +683,64 @@ Training minimizes a learning objective; deployment must also satisfy latency, m
 
 Pruning removes weights, channels, heads, or entire blocks judged to be unimportant. Unstructured weight sparsity can reduce file size but may not improve wall-clock latency without sparse hardware and kernels. Structured pruning is easier for ordinary accelerators to exploit because it removes complete computational units.
 
+Common importance signals include weight magnitude, activation statistics, gradient sensitivity, and the change in loss after removing a unit. Magnitude pruning is simple: remove weights with the smallest absolute values. More expensive sensitivity methods try to preserve weights whose removal would damage the objective most.
+
+Pruning can happen at several points:
+
+1. **During training:** gradually increase sparsity so the model adapts while learning.
+2. **After training:** prune a converged model, then fine-tune to recover accuracy.
+3. **Before or at initialization:** search for a sparse subnetwork that can be trained directly.
+
+A practical iterative workflow is train, prune a modest fraction, fine-tune, evaluate, and repeat. One-shot aggressive pruning is faster but usually causes a larger quality drop. The target should be a measured latency or memory budget, not sparsity for its own sake.
+
 The lottery-ticket hypothesis suggests that a large randomly initialized network may contain smaller subnetworks capable of training to comparable quality. It is an insight about overparameterization, not a guarantee that every pruning rule discovers such a subnetwork.
 
 ### Quantization
 
 Quantization represents weights and sometimes activations with fewer bits—for example FP32 to FP16, BF16, INT8, or lower. This reduces memory bandwidth and can accelerate matrix operations on compatible hardware. Post-training quantization is cheap; quantization-aware training usually preserves quality better at aggressive precision.
 
+Uniform affine quantization maps a real value $x$ to an integer $q$ using a scale $s$ and zero point $z$:
+
+$$
+q=\operatorname{clip}\!\left(\operatorname{round}(x/s)+z,
+q_{\min},q_{\max}\right),
+$$
+
+with approximate reconstruction $\hat x=s(q-z)$. The range chosen for $s$ matters. A range that is too wide wastes integer levels; a range that is too narrow clips important outliers.
+
+- **Dynamic quantization** quantizes weights ahead of time and activations at runtime. It is easy to apply and often useful for linear or recurrent layers.
+- **Static post-training quantization (PTQ)** uses a representative calibration set to estimate activation ranges before deployment.
+- **Quantization-aware training (QAT)** inserts fake quantization during training so weights adapt to rounding and clipping. It costs more but usually protects accuracy at INT8 or below.
+
+Per-channel weight scales often preserve quality better than one scale for an entire tensor. Whether any scheme is faster depends on the target accelerator, kernel library, supported operators, and cost of inserting conversions around unsupported layers.
+
 ### Knowledge distillation and low-rank factorization
 
-Distillation trains a smaller student to match a larger teacher's softened outputs or internal representations. Low-rank factorization replaces a large matrix $W$ with smaller factors $UV^T$, reducing parameters and multiplies when the required rank is small.
+Distillation trains a smaller student to match a larger teacher's softened outputs or internal representations. With temperature $T$, the teacher and student class distributions are
 
-Compression only counts as an optimization when measured on the target stack. Parameter count, theoretical FLOPs, model size, and observed latency are related but not interchangeable.
+$$
+p_T=\operatorname{softmax}(z_{\mathrm{teacher}}/T),
+\qquad
+q_T=\operatorname{softmax}(z_{\mathrm{student}}/T).
+$$
+
+A common objective combines ordinary supervised loss with a soft-target loss:
+
+$$
+L
+=\alpha L_{\mathrm{hard}}
++(1-\alpha)T^2D_{\mathrm{KL}}(p_T\|q_T).
+$$
+
+A higher temperature exposes relative preferences among incorrect classes—the teacher's “dark knowledge.” The factor $T^2$ compensates for the gradient scaling introduced by temperature. Distillation can also align intermediate features, attention maps, or pairwise relations, but the student architecture still needs enough capacity to represent what the teacher knows.
+
+Low-rank factorization replaces a large matrix $W\in\mathbb R^{m\times n}$ with $UV^T$, where $U\in\mathbb R^{m\times r}$ and $V\in\mathbb R^{n\times r}$. Parameter count falls from $mn$ to $r(m+n)$ when $r\ll\min(m,n)$. The rank can be chosen from singular-value energy and then fine-tuned. Theoretical savings will not become latency savings if the two smaller operations introduce unfavorable memory traffic or kernel overhead.
+
+### Validate on the deployment stack
+
+Compression only counts as an optimization when measured on the target stack. Parameter count, theoretical FLOPs, model size, and observed latency are related but not interchangeable. Benchmark at realistic batch sizes and sequence or image shapes, including preprocessing, data transfer, warm-up, and memory use.
+
+Also re-evaluate task quality after compression. Aggregate accuracy can conceal damage to rare classes, calibration, robustness, or important subgroups. A sensible comparison records at least model size, peak memory, median and tail latency, throughput, energy when relevant, and the task metrics that matter operationally.
 
 ---
 
@@ -692,7 +750,7 @@ These techniques live at different parts of a network, but they answer a small s
 
 | Question | Concepts that answer it |
 |---|---|
-| What should the model learn? | Cross-entropy, focal, contrastive, and triplet loss |
+| What should the model learn? | Cross-entropy and focal loss |
 | How are gradients and updates computed? | Backpropagation, RMSProp, Adam |
 | How should it represent the input? | MLPs, ReLU, and CNNs |
 | How should spatial resolution change? | Pooling, strided convolution, transposed convolution |
@@ -712,3 +770,4 @@ When a model fails, asking which of those jobs is failing is usually more produc
 - [Demystifying the Adam Optimizer in Machine Learning](https://medium.com/@weidagang/demystifying-the-adam-optimizer-in-machine-learning-4401d162cb9e)
 - [A Lesser-Known Detail of Dropout](https://blog.dailydoseofds.com/p/a-lesser-known-detail-of-dropout)
 - [Boosting AI Model Inference: Pruning, Distillation, Low-Rank Methods, and Quantization](https://medium.com/@minh.hoque/boosting-ai-model-inference-three-proven-methods-to-speed-up-your-models-3f2b439f8c8)
+- [Model Pruning, Distillation, and Quantization](https://deepgram.com/learn/model-pruning-distillation-and-quantization-part-1#cool-but-when-do-i-prune-my-model)

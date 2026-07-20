@@ -113,6 +113,16 @@ $$
 
 Adding $\lambda I$ improves conditioning and smoothly shrinks coefficients. Ridge is a good fit when many predictors may carry some signal, including groups of correlated predictors.
 
+The constrained form makes the geometry clearer:
+
+$$
+\min_\beta \|y-X\beta\|_2^2
+\quad\text{subject to}\quad
+\|\beta\|_2^2\le t.
+$$
+
+In two dimensions the feasible set is a circle. Its boundary is smooth, so a least-squares contour normally touches it away from an axis. Ridge therefore shrinks coefficients continuously but rarely makes them exactly zero. When two predictors carry nearly the same information, ridge can share weight between them rather than letting either coefficient become extremely large.
+
 ### Lasso: L1 regularization
 
 Lasso solves
@@ -123,6 +133,8 @@ $$
 $$
 
 Its diamond-shaped constraint has corners on the coordinate axes. As a loss contour expands until it touches the feasible region, it often meets a corner, making one or more coefficients exactly zero. The equivalent subgradient view says the L1 penalty has a threshold around zero rather than L2's smooth pull.
+
+More formally, the constrained version uses $\|\beta\|_1\le t$. In two dimensions this is a diamond. At $\beta_j=0$, the subgradient of $|\beta_j|$ is the entire interval $[-1,1]$. If the data-fit gradient lies inside the interval supplied by the penalty, zero satisfies the optimality condition. This thresholding behavior is why lasso performs feature selection while ridge does not.
 
 Lasso is useful for sparse feature selection, but correlated predictors can make its selections unstable. Elastic net combines both penalties:
 
@@ -255,6 +267,50 @@ $$
 
 Training estimates the class prior and these per-class feature statistics. Prediction evaluates the density of every observed feature under each class and adds the resulting log-likelihoods to the log prior.
 
+### Worked Gaussian example
+
+Suppose a one-dimensional problem has two classes:
+
+$$
+P(A)=0.6,
+\quad X\mid A\sim\mathcal N(0,1),
+$$
+
+$$
+P(B)=0.4,
+\quad X\mid B\sim\mathcal N(2,1).
+$$
+
+For a new observation $x=1.5$, the two class-conditional densities are approximately
+
+$$
+P(x\mid A)=0.1295,
+\qquad
+P(x\mid B)=0.3521.
+$$
+
+Multiplying by the priors gives the unnormalized posterior scores
+
+$$
+s_A=0.6(0.1295)=0.0777,
+\qquad
+s_B=0.4(0.3521)=0.1408.
+$$
+
+Naive Bayes can classify immediately because $s_B>s_A$. If actual posterior probabilities are required, the evidence normalizes the scores:
+
+$$
+P(x)=s_A+s_B=0.2185,
+$$
+
+$$
+P(A\mid x)\approx0.356,
+\qquad
+P(B\mid x)\approx0.644.
+$$
+
+For several features, repeat the density calculation for every feature and multiply the results under the conditional-independence assumption—or, more safely, add their logarithms.
+
 The independence assumption is often false, yet classification may still work well because correct class ranking does not require perfectly estimated joint probabilities. Probability calibration can nevertheless be poor.
 
 ---
@@ -340,6 +396,10 @@ $$
 \sum_{k=1}^K\sum_{x_i\in C_k}\|x_i-\mu_k\|_2^2.
 $$
 
+![The K-means WCSS objective as the sum of squared distances from every point to its assigned centroid.](/assets/images/classical-machine-learning/kmeans-wcss-objective.png)
+
+*WCSS, also called inertia, adds the squared point-to-centroid distances inside every cluster. Squaring makes distant assignments especially expensive.*
+
 It alternates two steps:
 
 1. assign every point to its nearest centroid;
@@ -347,7 +407,38 @@ It alternates two steps:
 
 Each step cannot increase the objective, so the algorithm converges—but generally to a local optimum. K-means++ initialization and multiple restarts reduce sensitivity to the initial centroids.
 
+### One complete iteration
+
+Consider the one-dimensional observations
+
+$$
+X=\{1,2,8,9\},
+\qquad K=2,
+$$
+
+with initial centroids $\mu_1=1$ and $\mu_2=8$.
+
+1. **Assignment:** $1$ and $2$ are closer to $\mu_1$; $8$ and $9$ are closer to $\mu_2$.
+2. **Update:** the new centroids are
+
+   $$
+   \mu_1=\frac{1+2}{2}=1.5,
+   \qquad
+   \mu_2=\frac{8+9}{2}=8.5.
+   $$
+
+3. **Repeat:** reassignment produces the same two clusters, so the algorithm has converged.
+
+In practice, convergence can mean unchanged assignments, centroid movement below a tolerance, objective improvement below a tolerance, or reaching an iteration limit. Convergence does not imply the global minimum: different initial centroids can produce different partitions.
+
 The method prefers compact, roughly spherical, similarly sized clusters. Scaling matters because Euclidean distance gives large-scale features more influence. Outliers can pull centroids strongly.
+
+An iteration costs roughly $O(nKd)$ for $n$ observations, $K$ clusters, and $d$ features; over $I$ iterations the cost is $O(nKdI)$. Mini-batch K-means reduces the cost on very large datasets. High-dimensional distances can also become less informative, so dimensionality reduction or a different similarity model may be appropriate.
+
+Two implementation edge cases matter:
+
+- If a cluster receives no points, reinitialize its centroid—often to a distant point—or use the library's built-in recovery strategy.
+- Because squared distance is sensitive to outliers, robust scaling, trimming, or a medoid-based method may be safer for contaminated data.
 
 Here is the Python example from the source notes:
 
@@ -372,6 +463,10 @@ centroids = kmeans.cluster_centers_
 
 The elbow method plots within-cluster sum of squares against $K$ and looks for diminishing returns.
 
+![Steps for constructing an elbow curve by fitting several values of K and comparing their WCSS.](/assets/images/classical-machine-learning/kmeans-elbow-method.png)
+
+*The elbow is the point after which an additional cluster produces only a modest reduction in WCSS.*
+
 The silhouette value for point $i$ is
 
 $$
@@ -380,11 +475,15 @@ $$
 
 where $a(i)$ is average distance within its cluster and $b(i)$ is the smallest average distance to another cluster.
 
+![Silhouette score definition using within-cluster distance and nearest-cluster distance.](/assets/images/classical-machine-learning/kmeans-silhouette-score.png)
+
 - values near $1$ indicate a cohesive, separated assignment;
 - values near $0$ indicate a boundary;
 - negative values suggest a potentially poor assignment.
 
 Neither the elbow nor silhouette method discovers an objectively “true” $K$. Clusters are useful only when their geometry and meaning fit the problem.
+
+Use the two diagnostics differently. The elbow asks whether another cluster buys enough reduction in WCSS; the silhouette asks whether the resulting assignments are simultaneously cohesive and separated. If they disagree, inspect cluster stability across resampled data and judge whether the partition is meaningful for the actual application.
 
 ---
 
@@ -423,6 +522,66 @@ $$
 
 The principal directions are eigenvectors of the covariance matrix, ordered by eigenvalue. Equivalently, they are the right singular vectors of centered $X$.
 
+### From directions to a reduced representation
+
+Let $W_r=[w_1,\ldots,w_r]$ contain the first $r$ eigenvectors. The reduced coordinates, often called component scores, are
+
+$$
+Z=XW_r.
+$$
+
+An approximation in the original feature space is
+
+$$
+\hat X=ZW_r^T=XW_rW_r^T.
+$$
+
+Each eigenvalue $\lambda_j$ is the variance captured by component $j$. Its explained-variance ratio is
+
+$$
+\frac{\lambda_j}{\sum_k\lambda_k}.
+$$
+
+A common choice of $r$ is the smallest number of components whose cumulative ratio reaches a target such as $90\%$ or $95\%$. That target is a compression decision, not a universal statistical rule; downstream validation may prefer a different value.
+
+If components are whitened, each score is additionally divided by $\sqrt{\lambda_j}$. Whitening removes scale and correlation between retained components, but it can amplify low-variance noise and discards information about their relative importance.
+
+### Small numerical example
+
+Take the already centered observations
+
+$$
+X=
+\begin{bmatrix}
+-2&-1\\
+0&0\\
+2&1
+\end{bmatrix}.
+$$
+
+Their covariance matrix is
+
+$$
+S=\frac13X^TX
+=\begin{bmatrix}
+8/3&4/3\\
+4/3&2/3
+\end{bmatrix}.
+$$
+
+Its first eigenvector is $w_1=(2,1)^T/\sqrt{5}$ with eigenvalue $10/3$; the second eigenvalue is zero. Projecting onto one component gives
+
+$$
+Z=Xw_1=
+\begin{bmatrix}
+-\sqrt{5}\\
+0\\
+\sqrt{5}
+\end{bmatrix}.
+$$
+
+All observations lie on the line spanned by $(2,1)$, so the first component explains $100\%$ of the variance and $ZW_1^T$ reconstructs the data exactly. Real datasets generally leave nonzero residual variance, making the choice of $r$ consequential.
+
 PCA is unsupervised: it preserves high variance, not necessarily information useful for prediction. Standardize features when their units should not determine the components.
 
 For the deeper geometry—projections, eigenvectors, spectral decomposition, and SVD—see [Linear Algebra: Important Concepts and the Doubts That Connect Them](/posts/linear-algebra-important-concepts/). That article develops why symmetric matrices admit orthogonal eigendirections, how spectral decomposition reconstructs a matrix, and how SVD extends the geometry to rectangular matrices.
@@ -437,6 +596,14 @@ $$
 \text{precision}=\frac{TP}{TP+FP},
 \qquad
 \text{recall}=\frac{TP}{TP+FN}.
+$$
+
+Two related quantities are
+
+$$
+\text{specificity}=\frac{TN}{TN+FP},
+\qquad
+\text{false-positive rate}=1-\text{specificity}.
 $$
 
 - Prefer **precision** when false positives are expensive—for example, sending legitimate email to spam.
@@ -455,6 +622,22 @@ $$
 ROC curves plot true-positive rate against false-positive rate across thresholds. Precision-recall curves plot precision against recall.
 
 ROC-AUC measures ranking across both classes, but it can look optimistic when negatives vastly outnumber positives. PR-AUC focuses more directly on positive-class performance in imbalanced settings. Neither metric chooses an operating threshold or verifies probability calibration.
+
+### Thresholds, prevalence, and calibration
+
+A probability model becomes a hard classifier only after choosing a threshold. Lowering the threshold usually increases recall and false positives; raising it usually increases precision and false negatives. The correct operating point depends on costs and capacity, not on a default of $0.5$.
+
+Suppose 1,000 transactions contain 20 fraud cases. A detector finds 18 frauds but flags 42 legitimate transactions:
+
+$$
+\text{recall}=\frac{18}{20}=0.90,
+\qquad
+\text{precision}=\frac{18}{18+42}=0.30.
+$$
+
+High recall and modest precision can both be appropriate if missing fraud is much more expensive than reviewing an alert. The same sensitivity and specificity can yield different precision when deployment prevalence changes, so evaluation should reflect the population in which the model will operate.
+
+Ranking and calibration answer different questions. A model may rank positive examples above negative ones and achieve strong AUC while its stated probabilities are systematically too high or too low. Reliability diagrams, log loss, and the Brier score assess probability quality; threshold metrics assess decisions made from those probabilities.
 
 ### Start from consequences
 
