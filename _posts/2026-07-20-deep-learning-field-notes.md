@@ -527,27 +527,61 @@ Small or non-independent batches can make the estimates noisy. Layer normalizati
 
 ## 10. How dropout really works {#dropout}
 
-Dropout randomly removes activations during training. With drop probability $p$, inverted dropout uses a mask
+The familiar description—“randomly turn off neurons to reduce overfitting”—is correct, but incomplete. Dropout must also prevent a systematic scale mismatch between training and inference. This second step is the key point illustrated in [A Lesser-Known Detail of Dropout](https://blog.dailydoseofds.com/p/a-lesser-known-detail-of-dropout).
+
+### Step 1: train a randomly thinned network
+
+During each training pass, dropout samples an independent binary mask for the activations. If $p$ is the probability of dropping an activation, then the keep probability is $q=1-p$:
 
 $$
-m_i\sim\operatorname{Bernoulli}(1-p)
+m_i\sim\operatorname{Bernoulli}(q).
 $$
 
-and produces
+The masked activation would be $m_i h_i$. Different masks create different thinned subnetworks, but all of them share the same parameters. This discourages neurons from co-adapting—for example, a feature cannot assume that one particular companion feature will always be present.
+
+There is a numerical problem, however. Suppose 100 incoming activations and their weights are all $1$. Without dropout, their sum is $100$. With $p=0.4$, only about 60 inputs survive during training, so the sum is roughly $60$. If inference uses the complete network, its input jumps back to $100$.
+
+![Without scaling, dropout makes the expected training-time input smaller than the inference-time input.](/assets/images/deep-learning-field-notes/dropout-training-vs-inference.png)
+
+*With a 40% drop rate, the training-time sum is roughly 60 while the full inference network produces 100.*
+
+### Step 2: preserve the expected activation
+
+Modern libraries normally use **inverted dropout**: each retained activation is divided by the keep probability during training,
 
 $$
-\tilde h_i=\frac{m_i}{1-p}h_i.
+\tilde h_i
+=\frac{m_i}{q}h_i
+=\frac{m_i}{1-p}h_i.
 $$
 
-The division by $1-p$ keeps the expected activation unchanged:
+Because $\mathbb E[m_i]=q$, this preserves the activation in expectation:
 
 $$
-\mathbb E[\tilde h_i]=h_i.
+\mathbb E[\tilde h_i]
+=\frac{\mathbb E[m_i]}{q}h_i
+=h_i.
 $$
 
-At inference time, dropout is disabled and no further rescaling is needed.
+In the example, the surviving sum is rescaled as
 
-The intuition is not merely that dropout deletes neurons. Every random mask trains a slightly different subnetwork while all subnetworks share parameters. A feature cannot rely on one specific companion always being present, so the network is encouraged to learn more robust, distributed representations. In this sense, inference resembles averaging a large ensemble of related subnetworks.
+$$
+60\times\frac{1}{1-0.4}=100.
+$$
+
+![Inverted dropout rescales the surviving training-time input from 60 to 100.](/assets/images/deep-learning-field-notes/dropout-inverted-scaling-example.png)
+
+*Scaling the retained activations by $1/(1-p)$ aligns the expected training-time scale with inference.*
+
+The actual number of retained units varies from mask to mask; 60 is the expected count in this simplified example. The equality is therefore about expected activation, not a promise that every training pass produces exactly the inference-time value.
+
+### What happens at inference?
+
+At inference time, dropout is disabled. Because the adjustment already happened during training, the complete network is used with no further scaling. This is why frameworks such as PyTorch change behavior between training and evaluation modes.
+
+An older, equivalent convention leaves retained activations unscaled during training and multiplies them by $q$ at inference. Inverted dropout is generally preferred because inference stays simple and deterministic.
+
+Conceptually, the full inference network approximates averaging many related subnetworks. It is an approximation rather than an exact enumeration, but it explains why dropout combines noise injection, reduced co-adaptation, and ensemble-like regularization.
 
 Dropout is a regularizer, not a universal requirement. Heavy dropout can cause underfitting, and modern convolutional architectures often rely more on data augmentation, weight decay, normalization, and stochastic depth. It is still common and effective in MLP heads and transformer blocks.
 
