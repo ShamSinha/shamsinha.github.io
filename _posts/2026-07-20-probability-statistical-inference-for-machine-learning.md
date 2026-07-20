@@ -440,3 +440,9 @@ $$
 Most statistical mistakes come from skipping one arrow: treating a likelihood as a posterior, a p-value as a hypothesis probability, correlation as causation, or an estimate as if it had no sampling uncertainty.
 
 The goal is not merely to compute a number. It is to know what question that number answers.
+
+---
+
+## Further reading
+
+- [Likelihood Estimation — The Math You Should Know!](https://www.youtube.com/watch?v=-eGJuwQ5A2o&t=24s), CodeEmporium.
