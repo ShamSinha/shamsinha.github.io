@@ -127,8 +127,6 @@ $$
 
 For the cat example, both quantities are $-\log0.7\approx0.357$. More generally, if the targets are soft rather than one-hot, $H(P)$ need not be zero. Cross-entropy and KL divergence then differ by $H(P)$, but because $P$ is fixed with respect to the model parameters, minimizing one still minimizes the other.
 
-These were the central follow-up doubts in the [shared ChatGPT conversation](https://chatgpt.com/share/670e47d4-8a48-8000-8da3-11b94aba98b9) linked from my original notes.
-
 ### Binary cross-entropy
 
 For a binary target $y\in\{0,1\}$ and predicted probability $p=P(y=1)$,
@@ -303,8 +301,6 @@ The important computational idea is reuse. A naive derivative calculation would 
 
 Backpropagation only computes gradients. An optimizer decides how to use them. This distinction is easy to blur: backprop says *which direction changes the loss*; SGD, RMSProp, or Adam says *how far and with what accumulated state to move*.
 
-The derivation in my notes was prompted by this [worked backpropagation article](https://medium.com/data-science/understanding-backpropagation-algorithm-7bb3aa2f95fd).
-
 ---
 
 ## 5. RMSProp and Adam: turn gradients into updates {#optimizers}
@@ -365,7 +361,7 @@ $$
 -\eta\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon}.
 $$
 
-The first moment smooths the direction; the second adapts the scale. Adam is a strong default, especially for sparse or noisy gradients, but it is not automatically the best-generalizing optimizer. SGD with momentum can still be preferable, and weight decay should usually be implemented in its decoupled AdamW form. The linked [Adam explanation](https://medium.com/@weidagang/demystifying-the-adam-optimizer-in-machine-learning-4401d162cb9e) motivated this part of the notes.
+The first moment smooths the direction; the second adapts the scale. Adam is a strong default, especially for sparse or noisy gradients, but it is not automatically the best-generalizing optimizer. SGD with momentum can still be preferable, and weight decay should usually be implemented in its decoupled AdamW form.
 
 ---
 
@@ -549,7 +545,7 @@ Small or non-independent batches can make the estimates noisy. Layer normalizati
 
 ## 9. How dropout really works {#dropout}
 
-The familiar description—“randomly turn off neurons to reduce overfitting”—is correct, but incomplete. Dropout must also prevent a systematic scale mismatch between training and inference. This second step is the key point illustrated in [A Lesser-Known Detail of Dropout](https://blog.dailydoseofds.com/p/a-lesser-known-detail-of-dropout).
+The familiar description—“randomly turn off neurons to reduce overfitting”—is correct, but incomplete. Dropout must also prevent a systematic scale mismatch between training and inference.
 
 ### Step 1: train a randomly thinned network
 
@@ -649,7 +645,7 @@ $$
 
 The loss asks the negative to be at least margin $m$ farther from the anchor than the positive. If that ordering already holds, the triplet contributes no gradient.
 
-Triplet selection is the difficult part. Most easy triplets already have zero loss, while the very hardest examples may be mislabeled or destabilizing. Semi-hard negative mining and good in-batch sampling make the objective useful in practice. The triplet-loss discussion came from the [shared generative-model and representation-learning conversation](https://chatgpt.com/share/6a5216de-cca0-83e8-9b2a-933e3e843c36).
+Triplet selection is the difficult part. Most easy triplets already have zero loss, while the very hardest examples may be mislabeled or destabilizing. Semi-hard negative mining and good in-batch sampling make the objective useful in practice.
 
 ---
 
@@ -671,7 +667,7 @@ Quantization represents weights and sometimes activations with fewer bits—for 
 
 Distillation trains a smaller student to match a larger teacher's softened outputs or internal representations. Low-rank factorization replaces a large matrix $W$ with smaller factors $UV^T$, reducing parameters and multiplies when the required rank is small.
 
-Compression only counts as an optimization when measured on the target stack. Parameter count, theoretical FLOPs, model size, and observed latency are related but not interchangeable. These notes were prompted by the linked overview of [pruning, distillation, low-rank methods, and quantization](https://medium.com/@minh.hoque/boosting-ai-model-inference-three-proven-methods-to-speed-up-your-models-3f2b439f8c8).
+Compression only counts as an optimization when measured on the target stack. Parameter count, theoretical FLOPs, model size, and observed latency are related but not interchangeable.
 
 ---
 
@@ -692,3 +688,12 @@ These techniques live at different parts of a network, but they answer a small s
 The broader lesson is that an architecture is not just a stack of fashionable layers. Each component changes the learning problem: the geometry of the representation, the balance of the gradients, the information preserved by downsampling, or the path optimization takes through parameter space.
 
 When a model fails, asking which of those jobs is failing is usually more productive than adding another layer.
+
+---
+
+## Further reading
+
+- [Understanding the Backpropagation Algorithm](https://medium.com/data-science/understanding-backpropagation-algorithm-7bb3aa2f95fd)
+- [Demystifying the Adam Optimizer in Machine Learning](https://medium.com/@weidagang/demystifying-the-adam-optimizer-in-machine-learning-4401d162cb9e)
+- [A Lesser-Known Detail of Dropout](https://blog.dailydoseofds.com/p/a-lesser-known-detail-of-dropout)
+- [Boosting AI Model Inference: Pruning, Distillation, Low-Rank Methods, and Quantization](https://medium.com/@minh.hoque/boosting-ai-model-inference-three-proven-methods-to-speed-up-your-models-3f2b439f8c8)

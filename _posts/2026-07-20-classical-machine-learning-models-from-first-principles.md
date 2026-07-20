@@ -130,7 +130,7 @@ $$
 \lambda_1\|\beta\|_1+\lambda_2\|\beta\|_2^2.
 $$
 
-The nested Notion discussion links to this comparison of [lasso and ridge](https://chatgpt.com/share/66efe63c-c230-8000-a808-8f5233cbd183).
+As a practical rule, prefer lasso when you expect only a small subset of features to matter and want a sparse, interpretable model. Prefer ridge when many features probably contribute, especially when predictors are correlated. Elastic net is useful when you want sparsity but also want correlated groups to be treated more stably than pure lasso often treats them.
 
 > Standardize features before comparing L1 or L2 penalties. Otherwise, measurement units determine how expensive a coefficient appears.
 
@@ -185,7 +185,23 @@ $$
 z_1+z_2=c.
 $$
 
-Polynomial expansion can therefore create curved boundaries in the original space. The trade-offs are rapid feature growth, more computation, and greater overfitting risk. This was the key progression in the linked [logistic-regression limitations conversation](https://chatgpt.com/share/66ebeb44-7e90-8000-844b-66bec808fc58).
+Polynomial expansion can therefore create curved boundaries in the original space. The trade-offs are rapid feature growth, more computation, and greater overfitting risk.
+
+In scikit-learn, a pipeline ensures that the same feature expansion is applied during both fitting and prediction:
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import PolynomialFeatures
+
+
+model = make_pipeline(
+    PolynomialFeatures(degree=2, include_bias=False),
+    LogisticRegression(),
+)
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+```
 
 ---
 
@@ -409,7 +425,7 @@ The principal directions are eigenvectors of the covariance matrix, ordered by e
 
 PCA is unsupervised: it preserves high variance, not necessarily information useful for prediction. Standardize features when their units should not determine the components.
 
-For the deeper geometry—projections, eigenvectors, spectral decomposition, and SVD—see [Linear Algebra: Important Concepts and the Doubts That Connect Them](/posts/linear-algebra-important-concepts/). That article already develops the ideas referenced by the Notion page's [spectral-decomposition conversation](https://chat.openai.com/share/2cc34c6c-cbcf-4a4b-bf6d-b75520637a82) and [SVD conversation](https://chat.openai.com/share/2a561c2e-d049-4f66-b021-c2151a5eb6e9).
+For the deeper geometry—projections, eigenvectors, spectral decomposition, and SVD—see [Linear Algebra: Important Concepts and the Doubts That Connect Them](/posts/linear-algebra-important-concepts/). That article develops why symmetric matrices admit orthogonal eigendirections, how spectral decomposition reconstructs a matrix, and how SVD extends the geometry to rectangular matrices.
 
 ---
 

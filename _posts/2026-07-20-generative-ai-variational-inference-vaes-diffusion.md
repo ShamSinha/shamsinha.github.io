@@ -20,7 +20,7 @@ Two influential approaches appear very different:
 
 Their common language is probability: latent variables, approximate inference, Gaussian reparameterization, likelihood, and variational bounds.
 
-This post collects the generative-model material from my original ML/AI mathematics study notes and the associated [shared ChatGPT discussion](https://chatgpt.com/share/6a5216de-cca0-83e8-9b2a-933e3e843c36). The basic probability concepts are developed separately in [Probability and Statistical Inference for Machine Learning](/posts/probability-statistical-inference-for-machine-learning/).
+This post collects the generative-model material from my original ML/AI mathematics study notes. The basic probability concepts are developed separately in [Probability and Statistical Inference for Machine Learning](/posts/probability-statistical-inference-for-machine-learning/).
 
 ## Topic map
 
@@ -134,7 +134,7 @@ $$
 
 This is why it is a lower bound. Maximizing the ELBO simultaneously raises a lower bound on data likelihood and reduces the gap between the approximate and true posterior.
 
-The original notes were guided by the article [“Variational Inference: The Basics”](https://towardsdatascience.com/variational-inference-the-basics-f70ac511bcea), which emphasizes three useful settings: limited data with informative priors, explicit uncertainty, and generative modeling.
+Variational inference is especially useful in three settings: limited data where informative priors matter, problems that require explicit uncertainty, and generative modeling with hidden variables.
 
 ---
 
@@ -223,7 +223,15 @@ $$
 z\sim\mathcal N(\mu,\sigma^2).
 $$
 
-So the trick does not replace genuine sampling with a fake deterministic point. It expresses the same random variable in a form through which low-variance pathwise gradients can flow. This exact doubt—whether the transformed sample still comes from the encoder's distribution—is worked through in the [shared conversation](https://chatgpt.com/share/6a5216de-cca0-83e8-9b2a-933e3e843c36).
+Indeed,
+
+$$
+\mathbb E[z]=\mu,
+\qquad
+\operatorname{Var}(z)=\sigma^2\operatorname{Var}(\varepsilon)=\sigma^2.
+$$
+
+So the trick does not replace genuine sampling with a fake deterministic point. It expresses the same random variable in a form through which low-variance pathwise gradients can flow.
 
 ---
 
@@ -411,3 +419,9 @@ The deeper common thread is the reparameterized Gaussian. It turns stochastic mo
 5. A DDPM fixes the forward approximation, learns the reverse process, and uses a closed-form Gaussian to train at arbitrary time steps.
 
 Once these five steps are clear, the equations stop looking like unrelated tricks. They become variations on one problem: how to learn a probability distribution when the useful explanation of the data is hidden.
+
+---
+
+## Further reading
+
+- [Variational Inference: The Basics](https://towardsdatascience.com/variational-inference-the-basics-f70ac511bcea)

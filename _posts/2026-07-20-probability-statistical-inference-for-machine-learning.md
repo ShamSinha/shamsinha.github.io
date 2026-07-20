@@ -77,7 +77,7 @@ $$
 p\mid x\sim\operatorname{Beta}(7,5).
 $$
 
-The posterior is not a single best number. It retains a distribution over plausible values. This example and the original prior-versus-posterior doubts came from this [shared ChatGPT conversation](https://chatgpt.com/share/6a5216de-cca0-83e8-9b2a-933e3e843c36).
+The posterior is not a single best number. It retains a distribution over plausible values, combining the uncertainty in the prior with the evidence supplied by the observations.
 
 ### Bayesian inference versus point estimation
 
@@ -305,7 +305,7 @@ This is a conditional tail probability. It is not:
 
 If a preselected significance level is $\alpha=0.05$ and the p-value is below it, we reject $H_0$ under that testing procedure. That rule controls long-run Type I error under its assumptions. It does not mean there is a $95\%$ probability that the scientific claim is correct.
 
-Always report an effect size and uncertainty interval alongside a p-value. With enough data, a negligible effect can be statistically significant; with too little data, an important effect may be missed. The conditional-probability doubt is preserved in the original [p-value conversation](https://chatgpt.com/share/670234cb-595c-8000-8382-d34ce37039ae).
+Always report an effect size and uncertainty interval alongside a p-value. With enough data, a negligible effect can be statistically significant; with too little data, an important effect may be missed.
 
 ### Type I and Type II errors
 
@@ -342,7 +342,23 @@ This makes it dimensionless and bounds it between $-1$ and $1$.
 
 The last statement needs care. Zero Pearson correlation does not imply independence and does not rule out a strong nonlinear relationship. Correlation also does not establish causation.
 
-The normalization derivation and numerical example are expanded in this [correlation conversation](https://chatgpt.com/share/77e0bd84-a4e9-4cd3-87fa-fc5c17b8bc3a).
+For a concrete calculation, take
+
+$$
+X=(2,3,4,5,6),
+\qquad
+Y=(5,6,7,10,12).
+$$
+
+Their means are $4$ and $8$. The sum of cross-products of centered values is $18$, while the two centered sums of squares are $10$ and $34$. Therefore,
+
+$$
+r
+=\frac{18}{\sqrt{10}\sqrt{34}}
+\approx0.976,
+$$
+
+indicating a strong positive linear relationship. The normalization is what makes this value independent of the original measurement units.
 
 ---
 
