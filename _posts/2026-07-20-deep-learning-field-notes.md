@@ -317,10 +317,23 @@ A single learning rate $\eta$ can be awkward when different parameters see gradi
 
 ### RMSProp
 
+#### Motivation
+
+SGD multiplies every coordinate of the gradient by the same learning rate. On an anisotropic loss surface, one direction may be steep while another is flat. The steep direction produces large gradients and can make SGD overshoot or oscillate across a narrow valley. Reducing the global learning rate controls that oscillation, but then movement along the flat direction becomes painfully slow.
+
+RMSProp addresses this mismatch by giving each parameter an adaptive step size. It tracks the recent scale of that parameter's gradients, then divides the current gradient by that scale:
+
+- a coordinate with consistently large gradients receives a smaller effective step;
+- a coordinate with consistently small gradients receives a relatively larger step.
+
+This normalization lets optimization move cautiously in steep directions and more quickly in flat directions instead of forcing one global learning rate to handle both.
+
+#### Moving average and update
+
 RMSProp keeps an exponential moving average of squared gradients:
 
 $$
-v_t=\rho v_{t-1}+(1-\rho)g_t^2,
+v_t=\beta v_{t-1}+(1-\beta)g_t^2,
 $$
 
 then scales each coordinate of the update:
@@ -331,11 +344,13 @@ $$
 -\eta\frac{g_t}{\sqrt{v_t}+\varepsilon}.
 $$
 
-A coordinate with persistently large gradients gets a smaller effective step; a coordinate with small gradients gets a relatively larger one. Unlike AdaGrad's ever-growing sum, the moving average can forget ancient gradients.
+Here $\beta\in[0,1)$ controls how much history is retained. A value near $1$ produces a smoother but slower-changing estimate; a smaller value reacts more quickly to recent gradients. Squaring prevents positive and negative gradients from cancelling and makes $\sqrt{v_t}$ an estimate of their recent root-mean-square magnitude. The small $\varepsilon$ prevents division by zero and improves numerical stability.
+
+Unlike AdaGrad's ever-growing sum of squared gradients, the exponential moving average can forget ancient gradients. Its effective learning rates therefore do not have to shrink forever, which is useful when the relevant gradient scale changes during training.
 
 ### Adam
 
-Adam combines an exponential average of gradients with the RMSProp-style average of squared gradients:
+Adam combines an exponential average of gradients with the RMSProp-style average of squared gradients. Its $\beta_2$ plays the same role as RMSProp's $\beta$:
 
 $$
 m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,
