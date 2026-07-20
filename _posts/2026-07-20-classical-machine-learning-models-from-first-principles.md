@@ -396,9 +396,15 @@ $$
 \sum_{k=1}^K\sum_{x_i\in C_k}\|x_i-\mu_k\|_2^2.
 $$
 
-![The K-means WCSS objective as the sum of squared distances from every point to its assigned centroid.](/assets/images/classical-machine-learning/kmeans-wcss-objective.png)
+This objective is the **within-cluster sum of squares (WCSS)**, also called **inertia**. Its symbols mean:
 
-*WCSS, also called inertia, adds the squared point-to-centroid distances inside every cluster. Squaring makes distant assignments especially expensive.*
+- $K$ is the number of clusters;
+- $C_k$ is the set of points assigned to cluster $k$;
+- $x_i$ is one point in that cluster;
+- $\mu_k$ is the cluster's centroid;
+- $\|x_i-\mu_k\|_2^2$ is the squared Euclidean distance from the point to its centroid.
+
+WCSS adds these squared point-to-centroid distances over every cluster. Squaring prevents positive and negative coordinate differences from cancelling and makes distant assignments especially expensive.
 
 It alternates two steps:
 
@@ -461,11 +467,15 @@ centroids = kmeans.cluster_centers_
 
 ### Choosing $K$
 
-The elbow method plots within-cluster sum of squares against $K$ and looks for diminishing returns.
+The elbow method compares how WCSS changes as the number of clusters increases:
 
-![Steps for constructing an elbow curve by fitting several values of K and comparing their WCSS.](/assets/images/classical-machine-learning/kmeans-elbow-method.png)
+1. Choose a range of candidate values for $K$.
+2. Fit K-means separately for every candidate, preferably with multiple initializations.
+3. Record the final WCSS for each $K$.
+4. Plot WCSS against $K$.
+5. Look for the elbow: the point after which another cluster produces only a modest reduction in WCSS.
 
-*The elbow is the point after which an additional cluster produces only a modest reduction in WCSS.*
+WCSS can never increase merely because $K$ increases: more centroids give the model more freedom. The elbow method therefore looks for diminishing returns rather than the absolute minimum, which would trivially occur at the largest permitted $K$.
 
 The silhouette value for point $i$ is
 
@@ -475,7 +485,11 @@ $$
 
 where $a(i)$ is average distance within its cluster and $b(i)$ is the smallest average distance to another cluster.
 
-![Silhouette score definition using within-cluster distance and nearest-cluster distance.](/assets/images/classical-machine-learning/kmeans-silhouette-score.png)
+The overall silhouette score is the mean over all $n$ observations:
+
+$$
+S=\frac1n\sum_{i=1}^n s(i).
+$$
 
 - values near $1$ indicate a cohesive, separated assignment;
 - values near $0$ indicate a boundary;
