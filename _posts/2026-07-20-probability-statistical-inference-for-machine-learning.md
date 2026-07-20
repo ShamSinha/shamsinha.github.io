@@ -15,8 +15,6 @@ Machine learning is built on uncertainty. Data is finite, labels can be noisy, p
 
 Probability gives us a language for uncertainty. Statistical inference tells us what the observed data allows us to conclude.
 
-This post reorganizes my original probability and statistics study notes. The model-building half continues in [Classical Machine Learning Models from First Principles](/posts/classical-machine-learning-models-from-first-principles/), while latent-variable inference is developed in [Generative AI from First Principles](/posts/generative-ai-variational-inference-vaes-diffusion/).
-
 ## Topic map
 
 - [Probability, likelihood, and Bayes' theorem](#probability-bayes)
