@@ -134,7 +134,7 @@ $$
 
 Its diamond-shaped constraint has corners on the coordinate axes. As a loss contour expands until it touches the feasible region, it often meets a corner, making one or more coefficients exactly zero. The equivalent subgradient view says the L1 penalty has a threshold around zero rather than L2's smooth pull.
 
-More formally, the constrained version uses $\|\beta\|_1\le t$. In two dimensions this is a diamond. At $\beta_j=0$, the subgradient of $|\beta_j|$ is the entire interval $[-1,1]$. If the data-fit gradient lies inside the interval supplied by the penalty, zero satisfies the optimality condition. This thresholding behavior is why lasso performs feature selection while ridge does not.
+More formally, the constrained version uses $\lVert\beta\rVert_1\le t$. In two dimensions this is a diamond. At $\beta_j=0$, the subgradient of $\lvert\beta_j\rvert$ is the entire interval $[-1,1]$. If the data-fit gradient lies inside the interval supplied by the penalty, zero satisfies the optimality condition. This thresholding behavior is why lasso performs feature selection while ridge does not.
 
 Lasso is useful for sparse feature selection, but correlated predictors can make its selections unstable. Elastic net combines both penalties:
 
@@ -402,7 +402,7 @@ This objective is the **within-cluster sum of squares (WCSS)**, also called **in
 - $C_k$ is the set of points assigned to cluster $k$;
 - $x_i$ is one point in that cluster;
 - $\mu_k$ is the cluster's centroid;
-- $\|x_i-\mu_k\|_2^2$ is the squared Euclidean distance from the point to its centroid.
+- $\lVert x_i-\mu_k\rVert_2^2$ is the squared Euclidean distance from the point to its centroid.
 
 WCSS adds these squared point-to-centroid distances over every cluster. Squaring prevents positive and negative coordinate differences from cancelling and makes distant assignments especially expensive.
 
