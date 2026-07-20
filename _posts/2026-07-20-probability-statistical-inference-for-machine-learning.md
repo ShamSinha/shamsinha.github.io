@@ -139,6 +139,51 @@ $$
 
 The sample mean is therefore the value that makes the observations most likely under the Gaussian model.
 
+When a closed-form solution is unavailable, minimize the negative log-likelihood with gradient-based updates. In schematic Python, a joint update for the Gaussian parameters is
+
+```python
+# eta is the step size; dL_dmu and dL_dsigma are loss gradients.
+mu_new = mu - eta * dL_dmu
+sigma_new = sigma - eta * dL_dsigma
+```
+
+The following executable example estimates both $\mu$ and $\sigma$ numerically. The lower bound keeps $\sigma$ positive, and minimizing the negative log-likelihood is equivalent to maximizing the likelihood.
+
+```python
+import numpy as np
+from scipy.optimize import minimize
+
+
+# Generate sample data from N(5, 2^2).
+np.random.seed(42)
+data = np.random.normal(loc=5.0, scale=2.0, size=1000)
+
+
+def neg_log_likelihood(params):
+    mu, sigma = params
+    if sigma <= 0:
+        return np.inf
+
+    n = len(data)
+    log_likelihood = (
+        -n * np.log(sigma * np.sqrt(2 * np.pi))
+        - np.sum((data - mu) ** 2) / (2 * sigma**2)
+    )
+    return -log_likelihood
+
+
+result = minimize(
+    neg_log_likelihood,
+    x0=[0.0, 1.0],
+    method="L-BFGS-B",
+    bounds=[(None, None), (1e-5, None)],
+)
+
+mu_hat, sigma_hat = result.x
+print(f"Estimated mu: {mu_hat:.4f}")
+print(f"Estimated sigma: {sigma_hat:.4f}")
+```
+
 ### Why ML losses look familiar
 
 Many loss functions are negative log-likelihoods:

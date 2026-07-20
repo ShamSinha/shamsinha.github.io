@@ -333,6 +333,25 @@ Each step cannot increase the objective, so the algorithm converges—but genera
 
 The method prefers compact, roughly spherical, similarly sized clusters. Scaling matters because Euclidean distance gives large-scale features more influence. Outliers can pull centroids strongly.
 
+Here is the Python example from the source notes:
+
+```python
+import numpy as np
+from sklearn.cluster import KMeans
+
+
+# Create sample two-dimensional data.
+rng = np.random.default_rng(42)
+X = rng.random((100, 2))
+
+# Fit three clusters. Explicit n_init keeps behavior stable across versions.
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+kmeans.fit(X)
+
+labels = kmeans.labels_
+centroids = kmeans.cluster_centers_
+```
+
 ### Choosing $K$
 
 The elbow method plots within-cluster sum of squares against $K$ and looks for diminishing returns.

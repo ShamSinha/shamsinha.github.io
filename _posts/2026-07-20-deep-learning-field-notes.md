@@ -479,14 +479,81 @@ $$
 
 This explains the name. It is the transpose of the linear operator used by the convolution; it is not generally the inverse of that convolution and does not recover information that downsampling destroyed.
 
-Transposed convolutions are useful in decoders, segmentation networks, and generators because they learn how to increase spatial resolution. Their output size in one dimension is
+### The spatial construction
+
+A useful way to see the operation is to let every input value scale the entire kernel, place that scaled kernel at the input value's spatial offset, and add the overlapping contributions.
+
+![A two-by-two input expanded by a two-by-two transposed-convolution kernel into a three-by-three output.](/assets/images/deep-learning-field-notes/transposed-convolution-overlap.png)
+
+For the pictured example,
+
+$$
+X=K=
+\begin{bmatrix}
+0&1\\
+2&3
+\end{bmatrix}.
+$$
+
+The four input values place $0K$, $1K$, $2K$, and $3K$ at four neighboring offsets. Adding their overlaps produces
+
+$$
+\begin{bmatrix}
+0&0&1\\
+0&4&6\\
+4&12&9
+\end{bmatrix}.
+$$
+
+The Python implementation from the notes makes that scatter-and-add construction explicit:
+
+```python
+import torch
+
+
+# This minimal example assumes stride s = 1 and padding p = 0.
+def trans_conv(X, K):
+    h, w = K.shape
+    Y = torch.zeros((X.shape[0] + h - 1, X.shape[1] + w - 1))
+
+    for i in range(X.shape[0]):
+        for j in range(X.shape[1]):
+            Y[i : i + h, j : j + w] += X[i, j] * K
+
+    return Y
+```
+
+### Why the output-size equation looks reversed
+
+For a standard convolution, ignoring the floor operation and using dilation $d=1$, the one-dimensional size equation is
+
+$$
+o=\frac{i+2p-k}{s}+1.
+$$
+
+Solving the same equation for its input size gives
+
+$$
+i=(o-1)s+k-2p.
+$$
+
+The transposed operation exchanges the roles of the ordinary convolution's input and output. After relabeling them, its output size is therefore
+
+$$
+o_{\mathrm{transposed}}
+=(i_{\mathrm{transposed}}-1)s+k-2p.
+$$
+
+So the second handwritten image in the notes was not describing an unrelated rule: it rearranged the normal-convolution equation and then exchanged input and output. Including dilation and output padding gives the general form
 
 $$
 H_{\text{out}}
-=(H_{\text{in}}-1)s-2p+d(k-1)+o+1,
+=(H_{\text{in}}-1)s-2p+d(k-1)+o_p+1,
 $$
 
-where $s$ is stride, $p$ is padding, $d$ is dilation, $k$ is kernel size, and $o$ is output padding.
+where $s$ is stride, $p$ is padding, $d$ is dilation, $k$ is kernel size, and $o_p$ is output padding.
+
+Transposed convolutions are useful in decoders, segmentation networks, and generators because they learn how to increase spatial resolution.
 
 Uneven kernel overlap can cause checkerboard artifacts. A common alternative is deterministic upsampling—nearest-neighbor or bilinear interpolation—followed by a standard convolution.
 
@@ -520,6 +587,37 @@ In practice, batch normalization often:
 - introduces a small regularizing effect through noisy batch statistics.
 
 Training and inference behave differently. Training uses the current mini-batch statistics. Inference uses running estimates accumulated during training. Forgetting to switch the model to evaluation mode can therefore change predictions.
+
+The distinction is visible in PyTorch-style code. During training, statistics come from the current batch and the running buffers are updated:
+
+```python
+import torch
+
+
+# x has shape (N, C, H, W); c selects one channel.
+mean_c = x[:, c, :, :].mean()
+var_c = x[:, c, :, :].var(unbiased=False)
+
+x_hat[:, c, :, :] = (
+    x[:, c, :, :] - mean_c
+) / torch.sqrt(var_c + eps)
+y[:, c, :, :] = gamma[c] * x_hat[:, c, :, :] + beta[c]
+
+# Here decay is the weight retained from the previous running estimate.
+running_mean[c] = decay * running_mean[c] + (1 - decay) * mean_c
+running_var[c] = decay * running_var[c] + (1 - decay) * var_c
+```
+
+During inference, the frozen running statistics replace the current batch statistics:
+
+```python
+x_hat[:, c, :, :] = (
+    x[:, c, :, :] - running_mean[c]
+) / torch.sqrt(running_var[c] + eps)
+y[:, c, :, :] = gamma[c] * x_hat[:, c, :, :] + beta[c]
+```
+
+Frameworks differ in how they name the running-statistics update coefficient, so it is worth checking whether their `momentum` means the weight on the old estimate or on the new batch statistic.
 
 Small or non-independent batches can make the estimates noisy. Layer normalization and group normalization are alternatives when reliable batch statistics are unavailable.
 
