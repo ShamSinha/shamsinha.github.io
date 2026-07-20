@@ -2,13 +2,13 @@
 title: "Deep Learning Field Notes: Losses, Layers, Training, and Deployment"
 date: 2026-07-20 10:00:00 +0530
 categories: [Machine Learning, Deep Learning]
-tags: [deep-learning, backpropagation, optimizers, lstm, gru, focal-loss, cross-entropy, cnn, pooling, batch-normalization, dropout, metric-learning, model-compression, study-notes]
+tags: [deep-learning, backpropagation, optimizers, focal-loss, cross-entropy, cnn, pooling, batch-normalization, dropout, metric-learning, model-compression, study-notes]
 math: true
 toc: true
 comments: true
 published: true
 permalink: /posts/deep-learning-field-notes/
-description: "A connected guide to deep-learning losses, backpropagation, optimizers, layers, recurrent networks, regularization, metric learning, and deployment optimization."
+description: "A connected guide to deep-learning losses, backpropagation, optimizers, convolutional layers, regularization, metric learning, and deployment optimization."
 ---
 
 Deep learning is often taught as a catalog of layers and formulas. I find it more useful to ask what problem each idea solves.
@@ -28,7 +28,6 @@ This post turns my original short notes into one connected guide. It is not a co
 - [Multilayer perceptrons and activations](#mlp-activations)
 - [Backpropagation](#backpropagation)
 - [RMSProp and Adam](#optimizers)
-- [LSTM and GRU](#recurrent-networks)
 - [Pooling in convolutional networks](#pooling)
 - [Transposed convolution](#transposed-convolution)
 - [Batch normalization](#batch-normalization)
@@ -370,62 +369,7 @@ The first moment smooths the direction; the second adapts the scale. Adam is a s
 
 ---
 
-## 6. LSTM and GRU: controlled memory for sequences {#recurrent-networks}
-
-A basic recurrent neural network updates a hidden state using the current input and previous state:
-
-$$
-h_t=\tanh(W_xx_t+W_hh_{t-1}+b).
-$$
-
-Backpropagation through many time steps repeatedly multiplies by recurrent Jacobians. Their singular values can drive gradients toward zero or infinity, making long-range dependencies difficult to learn.
-
-An LSTM creates an additive path through a cell state $C_t$ and controls information with gates:
-
-$$
-f_t=\sigma(W_fx_t+U_fh_{t-1}+b_f),
-$$
-
-$$
-i_t=\sigma(W_ix_t+U_ih_{t-1}+b_i),
-\qquad
-\tilde C_t=\tanh(W_Cx_t+U_Ch_{t-1}+b_C),
-$$
-
-$$
-C_t=f_t\odot C_{t-1}+i_t\odot\tilde C_t,
-$$
-
-$$
-o_t=\sigma(W_ox_t+U_oh_{t-1}+b_o),
-\qquad
-h_t=o_t\odot\tanh(C_t).
-$$
-
-The $W_*$ matrices act on the current input; the $U_*$ matrices act on the previous hidden state. The forget gate controls retained memory, the input gate controls new content, and the output gate controls what becomes visible as $h_t$. The cell state's additive update gives gradients a less destructive route across time.
-
-A GRU combines cell and hidden state and uses two main gates:
-
-$$
-r_t=\sigma(W_rx_t+U_rh_{t-1}+b_r),
-\qquad
-z_t=\sigma(W_zx_t+U_zh_{t-1}+b_z),
-$$
-
-$$
-\tilde h_t
-=\tanh(W_hx_t+U_h(r_t\odot h_{t-1})+b_h),
-$$
-
-$$
-h_t=(1-z_t)\odot h_{t-1}+z_t\odot\tilde h_t.
-$$
-
-GRUs use fewer parameters and can train faster; LSTMs offer a separate memory state and finer control. Neither is universally superior. The [linked LSTM/GRU conversation](https://chatgpt.com/share/670508d6-0c04-8000-a6f2-078a0c017613) is the source of the gate-by-gate questions preserved here.
-
----
-
-## 7. Pooling in convolutional networks {#pooling}
+## 6. Pooling in convolutional networks {#pooling}
 
 Early convolutional layers detect local patterns such as edges and corners. Deeper layers combine them into textures, parts, shapes, and objects. But a feature map also records *where* each response occurs. A small translation, crop, or deformation can move a strong activation to a neighboring position.
 
@@ -461,7 +405,7 @@ The third statement needs care. Pooling does not create complete translation inv
 
 ---
 
-## 8. Transposed convolution: learned upsampling {#transposed-convolution}
+## 7. Transposed convolution: learned upsampling {#transposed-convolution}
 
 A normal convolution often maps a large spatial grid to a smaller one. A transposed convolution performs the corresponding matrix operation in the opposite direction.
 
@@ -559,7 +503,7 @@ Uneven kernel overlap can cause checkerboard artifacts. A common alternative is 
 
 ---
 
-## 9. Batch normalization: stabilize the optimization path {#batch-normalization}
+## 8. Batch normalization: stabilize the optimization path {#batch-normalization}
 
 For one feature channel in a mini-batch, batch normalization computes
 
@@ -623,7 +567,7 @@ Small or non-independent batches can make the estimates noisy. Layer normalizati
 
 ---
 
-## 10. How dropout really works {#dropout}
+## 9. How dropout really works {#dropout}
 
 The familiar description—“randomly turn off neurons to reduce overfitting”—is correct, but incomplete. Dropout must also prevent a systematic scale mismatch between training and inference. This second step is the key point illustrated in [A Lesser-Known Detail of Dropout](https://blog.dailydoseofds.com/p/a-lesser-known-detail-of-dropout).
 
@@ -685,7 +629,7 @@ Dropout is a regularizer, not a universal requirement. Heavy dropout can cause u
 
 ---
 
-## 11. Contrastive and triplet loss: learn a geometry {#contrastive-loss}
+## 10. Contrastive and triplet loss: learn a geometry {#contrastive-loss}
 
 Ordinary classification asks, “Which class is this?” Metric learning asks, “Which examples should be close together?”
 
@@ -729,7 +673,7 @@ Triplet selection is the difficult part. Most easy triplets already have zero lo
 
 ---
 
-## 12. Inference optimization: make the trained model practical {#inference-optimization}
+## 11. Inference optimization: make the trained model practical {#inference-optimization}
 
 Training minimizes a learning objective; deployment must also satisfy latency, memory, throughput, energy, and cost constraints. The main compression tools trade some redundancy or precision for efficiency.
 
@@ -759,7 +703,7 @@ These techniques live at different parts of a network, but they answer a small s
 |---|---|
 | What should the model learn? | Cross-entropy, focal, contrastive, and triplet loss |
 | How are gradients and updates computed? | Backpropagation, RMSProp, Adam |
-| How should it represent the input? | MLPs, ReLU, CNNs, LSTM, GRU |
+| How should it represent the input? | MLPs, ReLU, and CNNs |
 | How should spatial resolution change? | Pooling, strided convolution, transposed convolution |
 | How can training remain stable? | ReLU-like activations, batch normalization |
 | How can memorization be reduced? | Dropout and other regularizers |
