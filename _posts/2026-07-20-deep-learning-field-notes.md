@@ -429,26 +429,6 @@ A useful way to see the operation is to let every input value scale the entire k
 
 ![A two-by-two input expanded by a two-by-two transposed-convolution kernel into a three-by-three output.](/assets/images/deep-learning-field-notes/transposed-convolution-overlap.png)
 
-For the pictured example,
-
-$$
-X=K=
-\begin{bmatrix}
-0&1\\
-2&3
-\end{bmatrix}.
-$$
-
-The four input values place $0K$, $1K$, $2K$, and $3K$ at four neighboring offsets. Adding their overlaps produces
-
-$$
-\begin{bmatrix}
-0&0&1\\
-0&4&6\\
-4&12&9
-\end{bmatrix}.
-$$
-
 The Python implementation from the notes makes that scatter-and-add construction explicit:
 
 ```python
