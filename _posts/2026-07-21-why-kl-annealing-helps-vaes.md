@@ -314,7 +314,7 @@ In the plot, every run starts at the same near-zero point. Constant target KL an
 
 ## 4. KL weight as an information price
 
-There is another way to interpret the experiment. Let $R$ denote the information rate carried by the latent variable. For a Gaussian source under mean-squared distortion, the ideal rate-distortion relationship is
+There is another way to interpret the experiment. Let $R$ denote the information rate carried by the latent variable. Because the equations use natural logarithms, information is measured in **nats**; one nat equals $1/\ln 2\approx1.443$ bits. For a Gaussian source under mean-squared distortion, the ideal rate-distortion relationship is
 
 $$
 D(R)=Ve^{-2R}.
