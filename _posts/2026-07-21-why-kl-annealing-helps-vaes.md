@@ -692,20 +692,6 @@ print(
 )
 ```
 
-The code is included in full so the experiment can be inspected directly. You can also download the [standalone Python script](/assets/code/kl-annealing/simulate_kl_annealing.py), the tested [requirements file](/assets/code/kl-annealing/requirements.txt), and the supplied [final metrics CSV](/assets/data/kl-annealing/final_metrics.csv).
-
-Install the dependencies with
-
-```bash
-pip install numpy pandas matplotlib
-```
-
-and run the script with
-
-```bash
-python simulate_kl_annealing.py
-```
-
 ---
 
 ## 9. How to interpret real VAE training curves
