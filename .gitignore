@@ -15,6 +15,10 @@ _site
 node_modules
 package-lock.json
 
+# Python virtual environment
+.venv/
+__pycache__/
+
 # IDE configurations
 .idea
 .vscode/*

@@ -304,6 +304,8 @@ A mildly non-Gaussian latent can work well after normalization. A perfectly regu
 
 KL warmup, also called **KL annealing**, changes the optimization problem over time. It begins with a weak KL penalty and gradually raises it to the intended final value. This schedule changes the loss weight $\beta$; it is separate from learning-rate warmup, which changes the optimizer step size.
 
+For a full derivation with an exactly solvable scalar VAE, encoder-decoder gradient trajectories, mutual-information curves, and runnable code, see [Why KL Annealing Helps VAEs](/posts/why-kl-annealing-helps-vaes/).
+
 ### Why full KL pressure can be harmful at the start
 
 At initialization, both the encoder and decoder are untrained. The encoder can immediately reduce KL by producing nearly zero means and unit variances for every image. The decoder then receives almost input-independent noise and may learn to reconstruct without using the latent as much as it should.
