@@ -1,0 +1,145 @@
+/* Compact Home feed. Everything outside #compact-home remains Chirpy-owned. */
+
+#compact-home {
+  --compact-border: var(--main-border-color, rgba(127, 127, 127, 0.22));
+}
+
+#compact-home .compact-home-header {
+  margin-bottom: 1.25rem;
+  padding: 0.25rem 0 1.25rem;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--compact-border);
+}
+
+#compact-home .compact-home-header h1 {
+  margin: 0 0 0.25rem;
+  color: var(--heading-color);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+#compact-home .compact-home-header p {
+  margin: 0;
+  color: var(--text-muted-color);
+  font-size: 0.9rem;
+}
+
+#compact-home .compact-home-header a {
+  flex: none;
+  padding-bottom: 0.15rem;
+  color: var(--link-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#compact-home .compact-home-header a span {
+  display: inline-block;
+  margin-left: 0.25rem;
+  transition: transform 150ms ease;
+}
+
+#compact-home .compact-home-header a:hover span {
+  transform: translateX(0.2rem);
+}
+
+#compact-home .compact-post-list {
+  border-bottom: 1px solid var(--compact-border);
+}
+
+#compact-home .compact-post {
+  margin: 0;
+  border-top: 1px solid var(--compact-border);
+}
+
+#compact-home .compact-post:first-child {
+  border-top: 0;
+}
+
+#compact-home .compact-post > a {
+  padding: 1.05rem 0.25rem;
+  display: grid;
+  grid-template-columns: 6.7rem minmax(0, 1fr) auto;
+  gap: 1.15rem;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  transition: padding 150ms ease, background-color 150ms ease;
+}
+
+#compact-home .compact-post > a:hover {
+  padding-right: 0.6rem;
+  padding-left: 0.6rem;
+  background: var(--card-bg);
+}
+
+#compact-home .compact-post time {
+  color: var(--text-muted-color);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+#compact-home .compact-post-copy {
+  min-width: 0;
+}
+
+#compact-home .compact-post h2 {
+  margin: 0 0 0.25rem;
+  color: var(--heading-color);
+  font-size: clamp(1rem, 1.55vw, 1.18rem);
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+#compact-home .compact-post p {
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  color: var(--text-muted-color);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+#compact-home .compact-post-arrow {
+  color: var(--link-color);
+  font-size: 0.9rem;
+  transition: transform 150ms ease;
+}
+
+#compact-home .compact-post > a:hover .compact-post-arrow {
+  transform: translate(0.15rem, -0.15rem);
+}
+
+@media (max-width: 576px) {
+  #compact-home .compact-home-header {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  #compact-home .compact-post > a {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.7rem;
+  }
+
+  #compact-home .compact-post time {
+    grid-column: 1 / -1;
+    margin-bottom: -0.35rem;
+  }
+
+  #compact-home .compact-post p {
+    -webkit-line-clamp: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #compact-home * {
+    transition-duration: 0.01ms !important;
+  }
+}
