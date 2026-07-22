@@ -1,7 +1,7 @@
 ---
 layout: null
 title: Alex Morgan — Creative Developer
-description: A modern personal introduction and portfolio.
+description: A short personal introduction.
 ---
 <!doctype html>
 <html lang="en">
@@ -9,7 +9,7 @@ description: A modern personal introduction and portfolio.
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ page.description }}">
-    <meta name="theme-color" content="#f4efe7">
+    <meta name="theme-color" content="#f3f0e9">
     <title>{{ page.title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,165 +17,66 @@ description: A modern personal introduction and portfolio.
     <link rel="stylesheet" href="{{ '/assets/css/intro.css' | relative_url }}">
   </head>
   <body>
-    <div class="grain" aria-hidden="true"></div>
+    <div class="page-shell">
+      <header>
+        <a class="brand" href="{{ '/' | relative_url }}" aria-label="Alex Morgan, home">
+          <span class="brand-mark">AM</span>
+          <span>Alex Morgan</span>
+        </a>
 
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Alex Morgan, home">
-        <span>AM</span>
-        <span class="brand-name">Alex Morgan</span>
-      </a>
-      <nav aria-label="Main navigation">
-        <a href="#about">About</a>
-        <a href="#work">Work</a>
-        <a href="{{ '/archives/' | relative_url }}">Notes</a>
-      </nav>
-      <a class="header-cta" href="#contact">Let’s talk <span aria-hidden="true">↗</span></a>
-    </header>
+        <nav aria-label="Primary navigation">
+          <a href="{{ '/archives/' | relative_url }}">Writing</a>
+          <a href="mailto:hello@example.com">Contact</a>
+        </nav>
+      </header>
 
-    <main id="top">
-      <section class="hero section-shell">
-        <div class="availability reveal">
-          <span class="status-dot"></span>
-          Available for select projects · 2026
-        </div>
+      <main>
+        <section class="intro" aria-labelledby="intro-title">
+          <p class="eyebrow"><span></span> Hello, I’m Alex</p>
+          <h1 id="intro-title">I design and build<br><em>thoughtful digital things.</em></h1>
+          <p class="summary">
+            I’m a creative developer based in Bengaluru, interested in the space
+            where clean design, useful technology, and good ideas meet.
+          </p>
 
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow reveal">Creative developer <span>&amp;</span> designer</p>
-            <h1 class="reveal">I turn complex ideas into <em>simple, human</em> experiences.</h1>
-            <p class="hero-intro reveal">
-              Hi, I’m Alex — a multidisciplinary creative based in Bengaluru,
-              building thoughtful digital products at the intersection of design,
-              code, and curiosity.
-            </p>
-            <div class="hero-actions reveal">
-              <a class="button button-dark" href="#work">See my work <span>↓</span></a>
-              <a class="text-link" href="#about">More about me <span>↘</span></a>
-            </div>
+          <div class="actions">
+            <a class="primary-action" href="mailto:hello@example.com">Say hello <span>↗</span></a>
+            <a class="secondary-action" href="{{ '/archives/' | relative_url }}">Read my notes <span>→</span></a>
           </div>
 
-          <div class="portrait-wrap reveal" aria-label="Placeholder portrait for Alex Morgan">
-            <div class="portrait">
-              <div class="portrait-initials">AM</div>
-              <span class="portrait-label">Your photo<br>goes here</span>
-            </div>
-            <div class="orbit orbit-one"></div>
-            <div class="orbit orbit-two"></div>
-            <span class="spark spark-one">✦</span>
-            <span class="spark spark-two">✦</span>
-            <svg class="doodle-arrow" viewBox="0 0 130 100" aria-hidden="true">
-              <path d="M8 92C18 40 65 10 116 23" />
-              <path d="m101 10 16 13-17 11" />
-            </svg>
+          <ul class="skills" aria-label="Areas of interest">
+            <li>Product design</li>
+            <li>Creative development</li>
+            <li>Machine learning</li>
+          </ul>
+        </section>
+
+        <aside class="profile-card" aria-label="Profile photo placeholder">
+          <div class="card-top">
+            <span>Based in Bengaluru</span>
+            <span class="available"><i></i> Available</span>
           </div>
-        </div>
 
-        <div class="scroll-note" aria-hidden="true">
-          <span>Scroll to explore</span>
-          <span class="scroll-line"></span>
-        </div>
-      </section>
-
-      <section class="manifesto" aria-label="Personal philosophy">
-        <div class="marquee-row" aria-hidden="true">
-          <span>Design with intention</span><b>✦</b><span>Build with care</span><b>✦</b><span>Stay curious</span><b>✦</b>
-          <span>Design with intention</span><b>✦</b><span>Build with care</span><b>✦</b><span>Stay curious</span><b>✦</b>
-        </div>
-      </section>
-
-      <section class="about section-shell" id="about">
-        <div class="section-tag reveal"><span>01</span> A little about me</div>
-        <div class="about-grid">
-          <h2 class="reveal">Part builder.<br>Part storyteller.<br><em>Always learning.</em></h2>
-          <div class="about-copy reveal">
-            <p class="lead">I care about the details that make technology feel less like technology—and more like something that simply belongs.</p>
-            <p>Over the last five years, I’ve worked across product design and front-end development, partnering with ambitious teams to shape ideas from a blank page into useful, memorable products.</p>
-            <p>When I’m away from my screen, you’ll find me making unnecessarily elaborate coffee, collecting old paperbacks, or walking somewhere without checking the map.</p>
-            <div class="skills" aria-label="Skills">
-              <span>Product design</span>
-              <span>Creative development</span>
-              <span>Design systems</span>
-              <span>Prototyping</span>
-            </div>
+          <div class="portrait">
+            <span class="portrait-initials">AM</span>
+            <span class="photo-note">Your photo<br>goes here</span>
           </div>
-        </div>
-      </section>
 
-      <section class="work section-shell" id="work">
-        <div class="work-heading reveal">
-          <div class="section-tag"><span>02</span> Selected work</div>
-          <h2>A few things I’ve<br><em>loved making.</em></h2>
-          <p>Placeholder projects for now. Replace these with the work you’re proudest of.</p>
-        </div>
-
-        <div class="project-list">
-          <a class="project-card project-coral reveal" href="#contact">
-            <div class="project-meta">
-              <span>01 / Product design</span>
-              <span>2026</span>
-            </div>
-            <div class="project-art art-orbit" aria-hidden="true">
-              <span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span>
-            </div>
-            <div class="project-footer">
-              <div><h3>Orbit Finance</h3><p>Making everyday money feel refreshingly clear.</p></div>
-              <span class="project-arrow">↗</span>
-            </div>
-          </a>
-
-          <a class="project-card project-blue reveal" href="#contact">
-            <div class="project-meta">
-              <span>02 / Brand &amp; web</span>
-              <span>2025</span>
-            </div>
-            <div class="project-art art-field" aria-hidden="true">
-              <span class="field-word">FIELD</span><span class="field-dot"></span>
-            </div>
-            <div class="project-footer">
-              <div><h3>Field Notes</h3><p>A digital home for ideas worth keeping.</p></div>
-              <span class="project-arrow">↗</span>
-            </div>
-          </a>
-
-          <a class="project-card project-lime reveal" href="#contact">
-            <div class="project-meta">
-              <span>03 / Creative code</span>
-              <span>2025</span>
-            </div>
-            <div class="project-art art-signal" aria-hidden="true">
-              <i></i><i></i><i></i><i></i><i></i>
-            </div>
-            <div class="project-footer">
-              <div><h3>Signal Studio</h3><p>Playful tools for serious creative work.</p></div>
-              <span class="project-arrow">↗</span>
-            </div>
-          </a>
-        </div>
-      </section>
-
-      <section class="contact" id="contact">
-        <div class="contact-inner section-shell reveal">
-          <p class="eyebrow">Have an idea?</p>
-          <h2>Let’s make something<br><em>good together.</em></h2>
-          <a class="contact-link" href="mailto:hello@example.com">hello@example.com <span>↗</span></a>
-          <div class="contact-bottom">
-            <p>Open to thoughtful collaborations,<br>interesting problems, and good conversations.</p>
-            <div class="social-links">
-              <a href="#" aria-label="LinkedIn placeholder">LinkedIn ↗</a>
-              <a href="#" aria-label="GitHub placeholder">GitHub ↗</a>
-              <a href="#" aria-label="Instagram placeholder">Instagram ↗</a>
-            </div>
+          <div class="card-bottom">
+            <p>Currently exploring</p>
+            <strong>Design systems × AI</strong>
           </div>
+        </aside>
+      </main>
+
+      <footer>
+        <span>© 2026 Alex Morgan</span>
+        <div class="socials">
+          <a href="#" aria-label="GitHub placeholder">GitHub ↗</a>
+          <a href="#" aria-label="LinkedIn placeholder">LinkedIn ↗</a>
         </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <span>© <span id="year">2026</span> Alex Morgan</span>
-      <span>Designed with curiosity · Built with care</span>
-      <a href="#top">Back to top ↑</a>
-    </footer>
-
-    <script src="{{ '/assets/js/intro.js' | relative_url }}"></script>
+        <span class="footer-note">Make it clear. Make it useful.</span>
+      </footer>
+    </div>
   </body>
 </html>
