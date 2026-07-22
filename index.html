@@ -1,82 +1,44 @@
 ---
-layout: null
-title: Alex Morgan — Creative Developer
-description: A short personal introduction.
+layout: page
+title: "Hi, I’m Shubham."
+description: "A short introduction to Shubham Kumar and his writing on mathematics, machine learning, and generative AI."
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ page.description }}">
-    <meta name="theme-color" content="#f3f0e9">
-    <title>{{ page.title }}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ '/assets/css/intro.css' | relative_url }}">
-  </head>
-  <body>
-    <div class="page-shell">
-      <header>
-        <a class="brand" href="{{ '/' | relative_url }}" aria-label="Alex Morgan, home">
-          <span class="brand-mark">AM</span>
-          <span>Alex Morgan</span>
-        </a>
 
-        <nav aria-label="Primary navigation">
-          <a href="{{ '/archives/' | relative_url }}">Writing</a>
-          <a href="mailto:hello@example.com">Contact</a>
-        </nav>
-      </header>
+<link rel="stylesheet" href="{{ '/assets/css/intro.css' | relative_url }}">
 
-      <main>
-        <section class="intro" aria-labelledby="intro-title">
-          <p class="eyebrow"><span></span> Hello, I’m Alex</p>
-          <h1 id="intro-title">I design and build<br><em>thoughtful digital things.</em></h1>
-          <p class="summary">
-            I’m a creative developer based in Bengaluru, interested in the space
-            where clean design, useful technology, and good ideas meet.
-          </p>
+<div class="intro-home">
+  <p class="intro-kicker">Welcome to my corner of the internet</p>
 
-          <div class="actions">
-            <a class="primary-action" href="mailto:hello@example.com">Say hello <span>↗</span></a>
-            <a class="secondary-action" href="{{ '/archives/' | relative_url }}">Read my notes <span>→</span></a>
-          </div>
+  <p class="intro-lead">
+    I learn by asking questions,<br>
+    <em>then writing through the answers.</em>
+  </p>
 
-          <ul class="skills" aria-label="Areas of interest">
-            <li>Product design</li>
-            <li>Creative development</li>
-            <li>Machine learning</li>
-          </ul>
-        </section>
+  <p class="intro-copy">
+    I’m interested in the ideas behind machine learning, mathematics, and
+    generative AI. This site is where I turn my notes, experiments, and doubts
+    into explanations I’d want to read myself.
+  </p>
 
-        <aside class="profile-card" aria-label="Profile photo placeholder">
-          <div class="card-top">
-            <span>Based in Bengaluru</span>
-            <span class="available"><i></i> Available</span>
-          </div>
+  <div class="intro-actions">
+    <a class="intro-primary" href="{{ '/archives/' | relative_url }}">Explore the writing <span>→</span></a>
+    <a class="intro-secondary" href="{{ '/about/' | relative_url }}">More about me</a>
+  </div>
 
-          <div class="portrait">
-            <span class="portrait-initials">AM</span>
-            <span class="photo-note">Your photo<br>goes here</span>
-          </div>
+  <div class="intro-bottom">
+    <ul class="intro-topics" aria-label="Topics I write about">
+      <li>Mathematics</li>
+      <li>Machine learning</li>
+      <li>Generative AI</li>
+    </ul>
 
-          <div class="card-bottom">
-            <p>Currently exploring</p>
-            <strong>Design systems × AI</strong>
-          </div>
-        </aside>
-      </main>
-
-      <footer>
-        <span>© 2026 Alex Morgan</span>
-        <div class="socials">
-          <a href="#" aria-label="GitHub placeholder">GitHub ↗</a>
-          <a href="#" aria-label="LinkedIn placeholder">LinkedIn ↗</a>
-        </div>
-        <span class="footer-note">Make it clear. Make it useful.</span>
-      </footer>
-    </div>
-  </body>
-</html>
+    {% assign latest_post = site.posts.first %}
+    {% if latest_post %}
+      <a class="latest-note" href="{{ latest_post.url | relative_url }}">
+        <span class="latest-label">Latest note</span>
+        <strong>{{ latest_post.title }}</strong>
+        <span class="latest-arrow" aria-hidden="true">↗</span>
+      </a>
+    {% endif %}
+  </div>
+</div>
