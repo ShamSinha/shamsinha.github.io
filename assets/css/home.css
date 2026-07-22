@@ -1,145 +1,177 @@
-/* Compact Home feed. Everything outside #compact-home remains Chirpy-owned. */
-
-#compact-home {
-  --compact-border: var(--main-border-color, rgba(127, 127, 127, 0.22));
+#main-wrapper:has(#research-home) #panel-wrapper {
+  display: none !important;
 }
 
-#compact-home .compact-home-header {
-  margin-bottom: 1.25rem;
-  padding: 0.25rem 0 1.25rem;
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 1.5rem;
-  border-bottom: 1px solid var(--compact-border);
+#main-wrapper:has(#research-home) #topbar-title {
+  display: none !important;
 }
 
-#compact-home .compact-home-header h1 {
-  margin: 0 0 0.25rem;
-  color: var(--heading-color);
-  font-size: 1.65rem;
+#main-wrapper:has(#research-home) main,
+#main-wrapper:has(#research-home) #tail-wrapper {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 auto;
+}
+
+#research-home {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  min-height: calc(100vh - 12rem);
+  display: grid;
+  align-items: center;
+}
+
+#research-home .research-home-grid {
+  width: 100%;
+  padding: 1.25rem 0 2.5rem;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+  grid-template-areas: "photo copy";
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+#research-home .research-home-copy {
+  grid-area: copy;
+}
+
+#research-home .research-home-eyebrow {
+  margin: 0 0 0.65rem;
+  color: var(--link-color);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
 }
 
-#compact-home .compact-home-header p {
+#research-home h1 {
+  margin: 0 0 1rem;
+  color: var(--heading-color);
+  font-size: clamp(2.1rem, 4.4vw, 3.45rem);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1.06;
+}
+
+#research-home .research-home-lede {
+  max-width: 42rem;
+  margin: 0 0 0.8rem;
+  color: var(--text-color);
+  font-size: clamp(1rem, 1.8vw, 1.18rem);
+  line-height: 1.65;
+}
+
+#research-home .research-home-detail {
+  max-width: 42rem;
   margin: 0;
   color: var(--text-muted-color);
   font-size: 0.9rem;
+  line-height: 1.65;
 }
 
-#compact-home .compact-home-header a {
-  flex: none;
-  padding-bottom: 0.15rem;
+#research-home .research-home-interests {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: var(--text-muted-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+#research-home .research-home-interests span {
+  padding: 0 0.25rem;
   color: var(--link-color);
+}
+
+#research-home .research-home-actions {
+  margin-top: 1.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+#research-home .research-home-actions .btn {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+#research-home .research-home-resume {
+  padding: 0.45rem 0.25rem;
   font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
 }
 
-#compact-home .compact-home-header a span {
-  display: inline-block;
-  margin-left: 0.25rem;
-  transition: transform 150ms ease;
+#research-home .research-home-links {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-#compact-home .compact-home-header a:hover span {
-  transform: translateX(0.2rem);
-}
-
-#compact-home .compact-post-list {
-  border-bottom: 1px solid var(--compact-border);
-}
-
-#compact-home .compact-post {
-  margin: 0;
-  border-top: 1px solid var(--compact-border);
-}
-
-#compact-home .compact-post:first-child {
-  border-top: 0;
-}
-
-#compact-home .compact-post > a {
-  padding: 1.05rem 0.25rem;
-  display: grid;
-  grid-template-columns: 6.7rem minmax(0, 1fr) auto;
-  gap: 1.15rem;
-  align-items: center;
-  color: inherit;
-  text-decoration: none;
-  transition: padding 150ms ease, background-color 150ms ease;
-}
-
-#compact-home .compact-post > a:hover {
-  padding-right: 0.6rem;
-  padding-left: 0.6rem;
-  background: var(--card-bg);
-}
-
-#compact-home .compact-post time {
+#research-home .research-home-links a {
   color: var(--text-muted-color);
   font-size: 0.72rem;
-  white-space: nowrap;
+  text-decoration: none;
 }
 
-#compact-home .compact-post-copy {
-  min-width: 0;
-}
-
-#compact-home .compact-post h2 {
-  margin: 0 0 0.25rem;
-  color: var(--heading-color);
-  font-size: clamp(1rem, 1.55vw, 1.18rem);
-  font-weight: 650;
-  line-height: 1.35;
-}
-
-#compact-home .compact-post p {
-  margin: 0;
-  overflow: hidden;
-  display: -webkit-box;
-  color: var(--text-muted-color);
-  font-size: 0.8rem;
-  line-height: 1.45;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-#compact-home .compact-post-arrow {
+#research-home .research-home-links a:hover {
   color: var(--link-color);
-  font-size: 0.9rem;
-  transition: transform 150ms ease;
 }
 
-#compact-home .compact-post > a:hover .compact-post-arrow {
-  transform: translate(0.15rem, -0.15rem);
+#research-home .research-home-photo {
+  grid-area: photo;
+  width: 100%;
+  max-width: 420px;
+  margin: 0;
+  justify-self: end;
 }
 
-@media (max-width: 576px) {
-  #compact-home .compact-home-header {
-    align-items: start;
-    flex-direction: column;
-    gap: 0.65rem;
+#research-home .research-home-photo .preview-img,
+#research-home .research-home-photo img {
+  border-radius: 0 !important;
+}
+
+#research-home .research-home-photo .preview-img.shimmer {
+  background: none !important;
+}
+
+#research-home .research-home-photo .preview-img.shimmer::before {
+  content: none !important;
+  display: none !important;
+  animation: none !important;
+}
+
+#research-home .research-home-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  #research-home {
+    min-height: auto;
   }
 
-  #compact-home .compact-post > a {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.7rem;
+  #research-home .research-home-grid {
+    padding-top: 0.5rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "photo";
+    gap: 1.75rem;
   }
 
-  #compact-home .compact-post time {
-    grid-column: 1 / -1;
-    margin-bottom: -0.35rem;
-  }
-
-  #compact-home .compact-post p {
-    -webkit-line-clamp: 1;
+  #research-home .research-home-photo {
+    max-width: 420px;
+    justify-self: start;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #compact-home * {
-    transition-duration: 0.01ms !important;
+  #research-home * {
+    scroll-behavior: auto !important;
   }
 }

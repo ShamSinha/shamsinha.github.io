@@ -4,80 +4,44 @@ layout: default
 
 {% include lang.html %}
 
-{% assign all_pinned = site.posts | where: 'pin', 'true' %}
-{% assign all_normal = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
-{% assign posts = '' | split: '' %}
-
-{% assign visible_start = paginator.page | minus: 1 | times: paginator.per_page %}
-{% assign visible_end = visible_start | plus: paginator.per_page %}
-
-{% if all_pinned.size > visible_start %}
-  {% if all_pinned.size > visible_end %}
-    {% assign pinned_size = paginator.per_page %}
-  {% else %}
-    {% assign pinned_size = all_pinned.size | minus: visible_start %}
-  {% endif %}
-
-  {% for i in (visible_start..all_pinned.size) limit: pinned_size %}
-    {% assign posts = posts | push: all_pinned[i] %}
-  {% endfor %}
-{% else %}
-  {% assign pinned_size = 0 %}
-{% endif %}
-
-{% assign normal_size = paginator.posts | size | minus: pinned_size %}
-
-{% if normal_size > 0 %}
-  {% if pinned_size > 0 %}
-    {% assign normal_start = 0 %}
-  {% else %}
-    {% assign normal_start = visible_start | minus: all_pinned.size %}
-  {% endif %}
-
-  {% assign normal_end = normal_start | plus: normal_size | minus: 1 %}
-
-  {% for i in (normal_start..normal_end) %}
-    {% assign posts = posts | push: all_normal[i] %}
-  {% endfor %}
-{% endif %}
-
 <link rel="stylesheet" href="{{ '/assets/css/home.css' | relative_url }}">
 
-<section id="compact-home" class="px-1">
-  <header class="compact-home-header">
-    <div>
-      <h1>Latest writing</h1>
-      <p>Notes on mathematics, machine learning, and generative AI.</p>
-    </div>
-    <a href="{{ '/archives/' | relative_url }}">View all posts <span aria-hidden="true">→</span></a>
-  </header>
+<section id="research-home" class="px-1">
+  <div class="research-home-grid">
+    <div class="research-home-copy">
+      <p class="research-home-eyebrow">Senior Data Scientist · Deep Learning &amp; Computer Vision</p>
+      <h1>Hi, I’m Shubham Kumar.</h1>
+      <p class="research-home-lede">
+        I use deep learning to solve computer-vision problems across representation learning, detection,
+        segmentation, classification, and generative modeling.
+      </p>
+      <p class="research-home-detail">
+        I’m interested in the gap between why a method should work and what it takes to train and deploy it
+        reliably. My writing combines mathematical foundations, self-directed learning, and practical experience.
+      </p>
 
-  <div class="compact-post-list">
-    {% for post in posts %}
-      <article class="compact-post">
-        <a href="{{ post.url | relative_url }}">
-          <time datetime="{{ post.date | date_to_xmlschema }}">
-            {{ post.date | date: '%d %b %Y' }}
-          </time>
+      <p class="research-home-interests" aria-label="Research interests">
+        Deep learning <span>·</span> Computer vision <span>·</span> Representation learning
+        <span>·</span> Generative modeling <span>·</span> Medical AI
+      </p>
 
-          <div class="compact-post-copy">
-            <h2>{{ post.title }}</h2>
-            <p>
-              {% if post.description %}
-                {{ post.description | truncate: 150 }}
-              {% else %}
-                {% include post-summary.html max_length=150 %}
-              {% endif %}
-            </p>
-          </div>
-
-          <span class="compact-post-arrow" aria-hidden="true">↗</span>
+      <div class="research-home-actions">
+        <a class="btn btn-primary" href="{{ '/blog/' | relative_url }}">Read the blog</a>
+        <a class="btn btn-outline-primary" href="{{ '/about/' | relative_url }}">About &amp; selected work</a>
+        <a class="research-home-resume" href="{{ '/assets/files/ShubhamKumar.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">
+          Résumé <span aria-hidden="true">↗</span>
         </a>
-      </article>
-    {% endfor %}
+      </div>
+
+      <nav class="research-home-links" aria-label="Profile links">
+        <a href="https://github.com/ShamSinha">GitHub</a>
+        <a href="https://www.linkedin.com/in/shubham-kr">LinkedIn</a>
+        <a href="https://scholar.google.com/citations?hl=en&amp;user=b9zCOi8AAAAJ">Google Scholar</a>
+      </nav>
+    </div>
+
+    <figure class="research-home-photo">
+      <img src="{{ '/assets/images/profile.jpg' | relative_url }}" width="1200" height="800" alt="Shubham Kumar" fetchpriority="high">
+    </figure>
   </div>
 </section>
-
-{% if paginator.total_pages > 1 %}
-  {% include post-paginator.html %}
-{% endif %}

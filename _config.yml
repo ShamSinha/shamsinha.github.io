@@ -16,10 +16,10 @@ timezone:
 
 title: Shubham Kumar # the main title
 
-tagline: my personal blog # it will display as the subtitle
+tagline: Deep learning · computer vision · notes
 
 description: >- # used by seo meta and the atom feed
-  blog, programming, technology, and more
+  Research notes on deep learning, computer vision, generative modeling, and practical model training.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -99,7 +99,7 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://media.licdn.com/dms/image/v2/D5635AQFxKSjdB8eiGA/profile-framedphoto-shrink_200_200/B56ZWgQvq7GsAY-/0/1742150499472?e=1743919200&v=beta&t=NolMT8EOM_ZYPXAP0sxS6yVqJP9x4yWvDtnEs1izU8g
+avatar: /assets/images/sidebar-abstract.png
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
@@ -149,6 +149,7 @@ pwa:
       # - "/example"  # URLs match `<SITE_URL>/example/*` will not be cached by the PWA
 
 paginate: 6
+paginate_path: /blog/page:num/
 
 # The base URL of your site
 baseurl: ""
