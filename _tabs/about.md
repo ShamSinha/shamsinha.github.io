@@ -2,6 +2,8 @@
 # The default layout is `page`.
 icon: fas fa-info-circle
 order: 4
+custom_css:
+  - /assets/css/about.css
 ---
 
 # Hi, I’m Shubham Kumar
@@ -9,6 +11,8 @@ order: 4
 I’m a **Senior Data Scientist** who uses deep learning to solve computer-vision problems. My work spans representation learning, detection, segmentation, classification, and generative modeling—from studying the underlying ideas to training and deploying systems on real data.
 
 I’m especially interested in the gap between why a method should work and what it takes to make it work in practice. That keeps me moving between theory, experimentation, optimization, and debugging. This site is where I share the ideas and practical lessons I find useful along the way.
+
+<img src="/assets/images/profile.jpg" alt="Shubham Kumar" class="about-profile-photo" width="1200" height="800">
 
 [Download résumé](/assets/files/ShubhamKumar.pdf){: .btn .btn-primary .me-2 target="_blank" }
 [Email me](mailto:shamsinha1909@gmail.com){: .btn .btn-outline-primary }
