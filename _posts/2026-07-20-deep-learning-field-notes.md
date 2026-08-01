@@ -31,6 +31,7 @@ This post turns my original short notes into one connected guide. It is not a co
 - [Pooling in convolutional networks](#pooling)
 - [Transposed convolution](#transposed-convolution)
 - [Batch normalization](#batch-normalization)
+- [Layer normalization](#layer-normalization)
 - [Dropout](#dropout)
 - [Inference optimization](#inference-optimization)
 
@@ -609,7 +610,17 @@ y[:, c, :, :] = gamma[c] * x_hat[:, c, :, :] + beta[c]
 
 Frameworks differ in how they name the running-statistics update coefficient, so it is worth checking whether their `momentum` means the weight on the old estimate or on the new batch statistic.
 
-Small or non-independent batches can make the estimates noisy. Layer normalization uses statistics within each example, while group normalization divides channels into groups and is independent of batch size. They are useful alternatives when reliable batch statistics are unavailable.
+### Layer normalization {#layer-normalization}
+
+Layer normalization computes its statistics within each example rather than across the batch. For a sequence tensor shaped $(N,T,D)$, it typically normalizes the $D$ features of each token or time step independently:
+
+$$
+\mu_{n,t}=\frac1D\sum_{d=1}^D x_{n,t,d},
+\qquad
+\sigma_{n,t}^2=\frac1D\sum_{d=1}^D(x_{n,t,d}-\mu_{n,t})^2.
+$$
+
+It does not maintain running batch statistics, so its behavior is the same during training and inference. This makes it a natural fit for Transformers and variable-length sequences. Group normalization is another batch-independent option when reliable batch statistics are unavailable.
 
 ---
 

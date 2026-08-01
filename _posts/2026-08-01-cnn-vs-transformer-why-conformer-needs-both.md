@@ -22,11 +22,11 @@ Self-attention  -> relationships are chosen dynamically from the input
 
 The point is not that one mechanism is universally superior. Each gives the model a different way to move and combine information. Conformer works because it makes those mechanisms cooperate.
 
-This first article develops that argument. [Part 2](/posts/inside-conformer-reason-behind-every-module/) will open the Conformer block and ask why every component is there.
+This first article develops that argument. [Part 2](/posts/inside-conformer-reason-behind-every-module/) opens the Conformer block and shows how its core modules fit together.
 
 ## Begin with the shape of speech
 
-An automatic speech-recognition system rarely sends raw pressure measurements directly into its main encoder. A common front end converts an utterance into acoustic features such as log-Mel filterbanks. After subsampling and projection, we can describe the encoder input as
+The original Conformer encoder does not operate directly on raw waveform samples. Its front end receives 80-channel log-Mel filter-bank features and applies convolutional subsampling. After subsampling and projection, we can describe the encoder input as
 
 $$
 X\in\mathbb{R}^{T\times D},
@@ -47,7 +47,7 @@ Neighboring speech frames are highly correlated. Phonetic cues, formant movement
 
 ### Longer-range context
 
-The identity of a sound can also depend on a distant word, the broader utterance, or a speaker-level pattern. The useful context is not always confined to a fixed window.
+Interpreting an ambiguous sound can also depend on a distant word, the broader utterance, or a speaker-level pattern. The useful context is not always confined to a fixed window.
 
 A good speech encoder therefore needs both a microscope and a wide-angle lens.
 
@@ -64,7 +64,7 @@ The same weights are reused at every time position. The kernel does not need to 
 This gives convolution two important inductive biases:
 
 1. **Locality:** nearby positions deserve special attention.
-2. **Translation equivariance:** the same pattern should be recognizable wherever it occurs.
+2. **Time-shift equivariance:** the same pattern should be recognizable wherever it occurs in the sequence.
 
 An inductive bias is not merely a limitation. It is prior knowledge encoded in the architecture. When the prior matches the data, the model does not need to rediscover that structure entirely from examples.
 
@@ -120,7 +120,7 @@ Self-attention connects any pair of positions through a constant number of seque
 
 That short path is a powerful property when a task contains distant dependencies.
 
-## CNN and Transformer are different kinds of mixers
+## Convolution and self-attention are different kinds of mixers
 
 The comparison becomes clearer if we describe both operations as information mixers.
 
@@ -168,29 +168,9 @@ A strong matching bias can improve data efficiency because the model begins with
 
 The original Vision Transformer work provides a useful example. A pure Transformer performed very well on image classification when pretrained on large datasets, while the paper also noted that its weaker image-specific inductive biases affected performance in smaller-data regimes. That does not prove a universal law that Transformers scale forever while CNNs plateau. It shows that architecture, data scale, pretraining, and optimization interact.
 
-The safer conclusion is:
+The useful conclusion is:
 
 > Convolution spends part of its capacity budget on assumptions about locality and repeated patterns. Self-attention spends more of its capacity learning which positions should interact for the current input.
-
-## Claims that should not be mixed with the architecture comparison
-
-Several ideas are frequently attributed to Transformers even though they are not exclusive to them.
-
-### Self-supervision is a training objective
-
-Masked prediction, contrastive learning, next-token prediction, and reconstruction are training objectives. Transformers have benefited enormously from them, but CNNs can also be trained with self-supervision. The success of foundation models comes from an interaction among architecture, objectives, data, compute, and optimization.
-
-### Pooling is not mandatory in every CNN
-
-Some CNNs downsample aggressively; others preserve high-resolution features or use carefully designed multiscale paths. Similarly, Transformers may reduce information through tokenization, patch embedding, subsampling, or token merging. “CNNs discard information while Transformers preserve it” is too broad.
-
-### Tokenization is an interface, not a unique advantage
-
-A Transformer commonly receives word pieces, image patches, or acoustic embeddings rather than raw sensor values. CNN pipelines also learn feature hierarchies before later processing. The important question is what information the input representation exposes and discards, not which architecture owns the idea of preprocessing.
-
-### Scaling is empirical, not an architectural guarantee
-
-Transformers have demonstrated remarkable scaling in several domains. That observation should not become a theorem that any Transformer will beat any CNN when enlarged. Dataset, parameterization, training recipe, compute allocation, and task structure all matter.
 
 ## Conformer: assign each mechanism a suitable job
 
@@ -217,11 +197,11 @@ Output
 
 The resulting representation does not choose between local and global modeling. It is repeatedly updated by both.
 
-The order also matters. The paper compared several ways of combining convolution and attention and found an advantage in placing the convolution module after self-attention. A useful intuition is that attention first makes each time step context-rich, after which convolution examines how those enriched features evolve locally. That intuition is helpful, while the stronger evidence is the authors' ablation: they actually compared arrangements rather than relying only on a story.
+The order also matters. The paper compared several ways of combining convolution and attention and found that placing the convolution module after self-attention worked best among the tested configurations. A useful intuition is that attention first makes each time step context-rich, after which convolution examines how those enriched features evolve locally. The ablation result is stronger evidence than the intuition alone.
 
 ## What the evidence says
 
-On LibriSpeech, the original Conformer reported strong word-error rates across 10M, 30M, and 118M parameter configurations. More useful for understanding the architecture, however, are its ablation studies:
+For understanding the architecture, the paper's ablation studies are more informative than its headline word-error rates:
 
 - The convolution sub-block was the most important of the tested changes from a Transformer block.
 - Macaron-style paired feed-forward modules performed better than a single feed-forward module with the same parameter count.
@@ -245,11 +225,10 @@ Self-attention says:
 
 Speech benefits from both statements. Conformer turns that observation into an architecture: attention handles flexible global interaction, while convolution provides an efficient local temporal bias.
 
-The next question is more detailed: why does the convolution module begin with a pointwise convolution, why does it double the channels, what exactly does a GLU gate, and why use a depthwise convolution afterward? [Part 2 opens the entire block and follows every tensor through it.](/posts/inside-conformer-reason-behind-every-module/)
+That leaves a more detailed question: why does the convolution module begin with a pointwise convolution, why does it double the channels, what exactly does a GLU gate, and why use a depthwise convolution afterward? [Part 2 opens the block and follows every tensor through it.](/posts/inside-conformer-reason-behind-every-module/)
 
 ## References
 
 - Vaswani et al., [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762), 2017.
 - Gulati et al., [*Conformer: Convolution-augmented Transformer for Speech Recognition*](https://arxiv.org/abs/2005.08100), 2020.
 - Dosovitskiy et al., [*An Image Is Worth 16×16 Words: Transformers for Image Recognition at Scale*](https://arxiv.org/abs/2010.11929), 2020.
-
