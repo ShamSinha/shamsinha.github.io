@@ -112,21 +112,25 @@ Attention mixes information across positions, while the FFN transforms the chann
 
 ### Why two FFNs?
 
-Conformer uses a Macaron-style structure: one FFN before attention and convolution, and another afterward. This design was inspired by [Macaron-Net](https://arxiv.org/abs/1906.02762), which interprets the Transformer-like block through a numerical integration perspective.
+Conformer follows the [Macaron-Net](https://arxiv.org/abs/1906.02762) pattern:
 
-A useful non-technical intuition is that the first FFN prepares each position's features before contextual mixing, while the second processes the contextualized result. That is an interpretation, not the main evidence for the choice.
+```text
+½ FFN → attention → convolution → ½ FFN
+```
 
-The stronger evidence is empirical. The Conformer authors compared the paired Macaron FFNs with a single FFN having the same parameter count and found that the paired design performed better.
+The two FFNs operate on different representations. The first transforms each frame before context is exchanged; the second transforms it after attention has added global context and convolution has added local context. A simple way to remember the flow is: **transform a little, mix context, transform again.**
+
+Macaron-Net motivates this sandwich through an ODE-solver interpretation. More concretely, Conformer's ablation found that the paired FFNs outperformed a single equally parameterized FFN.
 
 ### Why multiply each FFN by one half?
 
-Following the Macaron design, the two FFNs use half-step residual weights:
+Following the Macaron design, each FFN uses a half-step residual weight:
 
 $$
 x\leftarrow x+\frac12\operatorname{FFN}(x).
 $$
 
-Following Macaron-Net, each FFN contributes half a residual step. The Conformer paper also compared full-step and half-step variants.
+The two half steps keep the FFN contribution controlled on both sides of the attention and convolution modules. The Conformer paper also compared full-step and half-step variants.
 
 ## Why self-attention comes next
 
