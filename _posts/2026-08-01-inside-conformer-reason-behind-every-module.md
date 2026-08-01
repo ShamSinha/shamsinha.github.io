@@ -120,6 +120,14 @@ Conformer follows the [Macaron-Net](https://arxiv.org/abs/1906.02762) pattern:
 
 The two FFNs operate on different representations. The first transforms each frame before context is exchanged; the second transforms it after attention has added global context and convolution has added local context. A simple way to remember the flow is: **transform a little, mix context, transform again.**
 
+This is different from making one FFN wider. A wider FFN adds capacity at one point in the block; the Macaron structure places two nonlinear transformations on opposite sides of context mixing:
+
+```text
+transform → mix global and local context → transform again
+```
+
+The benefit therefore comes from where the transformations occur, not merely from adding parameters.
+
 Macaron-Net motivates this sandwich through an ODE-solver interpretation. More concretely, Conformer's ablation found that the paired FFNs outperformed a single equally parameterized FFN.
 
 ### Why multiply each FFN by one half?
