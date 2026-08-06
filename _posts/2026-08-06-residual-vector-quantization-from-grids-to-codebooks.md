@@ -1,6 +1,6 @@
 ---
 title: "Residual Vector Quantization: From Grid Intuition to Codebooks"
-date: 2026-08-06 12:00:00 +0530
+date: 2026-08-06 10:30:00 +0530
 categories: [Machine Learning, Representation Learning]
 tags: [vector-quantization, residual-vector-quantization, codebooks, embeddings, neural-audio-codecs, compression]
 math: true
