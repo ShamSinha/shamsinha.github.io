@@ -1,6 +1,7 @@
 ---
 title: "Linear Algebra: Important Concepts and the Doubts That Connect Them"
 date: 2026-07-18 10:00:00 +0530
+last_modified_at: 2026-08-09 00:00:00 +0530
 categories: [Mathematics, Linear Algebra]
 tags: [matrices, eigenvalues, diagonalization, svd, determinants, projections, gram-schmidt, perron-frobenius, study-notes]
 math: true
@@ -11,24 +12,35 @@ permalink: /posts/linear-algebra-important-concepts/
 description: "A focused, doubt-driven guide to matrices as transformations, eigenvalues, diagonalization, SVD, projections, determinants, matrix powers, and Perron–Frobenius theory."
 ---
 
+Why can two different inputs sometimes produce the same output? Why do eigenvalues predict what happens after a matrix is applied repeatedly? Why does a zero determinant mean that no inverse can possibly exist? And why does a sufficiently connected nonnegative system reveal a positive eigenvector at its spectral radius?
+
+These questions look separate when linear algebra is presented as a list of definitions. They become connected once a matrix is viewed as an action on space.
+
 This is not a complete linear algebra textbook. It is a focused collection of the concepts I found important, organized so that each definition appears before the doubt that depends on it.
 
 The central idea connecting the whole post is:
 
 > A matrix is not merely a table of numbers. It represents a transformation, and its algebraic properties tell us what that transformation preserves, scales, collapses, or reveals.
 
-## Topic map
+## Questions that drive the article
 
-- [Matrices as transformations](#matrix-transformations)
-- [Symmetric and orthogonal matrices](#special-matrices)
-- [Eigenvalues and eigenvectors](#eigenvalues)
-- [Trace and determinant through eigenvalues](#trace-determinant)
-- [Diagonalization](#diagonalization)
-- [Spectral decomposition and SVD](#spectral-svd)
-- [Independence, orthogonality, projection, and Gram–Schmidt](#projection-gram-schmidt)
-- [Matrix powers](#matrix-powers)
-- [Perron–Frobenius theory](#perron-frobenius)
-- [Why determinant zero means non-invertible](#determinant-invertibility)
+| Question | Ideas that answer it |
+|---|---|
+| What does a matrix actually do to space? | [Matrices as transformations](#matrix-transformations) |
+| Which transformations preserve lengths, and which have especially clean directions? | [Symmetric and orthogonal matrices](#special-matrices) |
+| Are there directions a transformation changes only by scaling? | [Eigenvalues and eigenvectors](#eigenvalues) |
+| What do trace and determinant summarize geometrically? | [Trace and determinant through eigenvalues](#trace-determinant) |
+| Can a complicated transformation be separated into independent modes? | [Diagonalization](#diagonalization) and [spectral decomposition and SVD](#spectral-svd) |
+| Why is orthogonality more useful than mere independence? | [Projection and Gram–Schmidt](#projection-gram-schmidt) |
+| What survives after applying the same matrix many times? | [Matrix powers](#matrix-powers) |
+| Why does connectivity give a nonnegative system a positive eigenvector? | [Perron–Frobenius theory](#perron-frobenius) |
+| Why does one collapsed direction make inversion impossible? | [Why determinant zero means non-invertible](#determinant-invertibility) |
+
+## How to read these notes
+
+For a first pass, follow the sections in order: transformation $\rightarrow$ eigenvectors $\rightarrow$ diagonalization $\rightarrow$ repeated motion. If your immediate interest is optimization, read Sections 1–7 and then use the focused companion [Symmetric Matrices, Quadratic Forms, and Matrix Norm](/posts/symmetric-matrices-quadratic-forms-matrix-norm/). If your interest is dynamics or networks, continue through matrix powers and Perron–Frobenius theory.
+
+The companion article goes deeper into one continuous chain—symmetric matrices, quadratic forms, PSD matrices, ellipsoids, and matrix gain—while this article remains the broader map.
 
 ---
 
@@ -943,6 +955,12 @@ In particular, $A$ is singular exactly when $0$ is one of its eigenvalues. The a
 The unifying question is always geometric: **what does this matrix do to directions, lengths, dimensions, and repeated motion?**
 
 ---
+
+## Where to continue
+
+- Follow the geometric deep dive in [Symmetric Matrices, Quadratic Forms, and Matrix Norm](/posts/symmetric-matrices-quadratic-forms-matrix-norm/).
+- See how eigenvalues, PSD matrices, nullspaces, and feasible directions control optimization in [Quadratic and Constrained Convex Optimization](/posts/convex-quadratics-psd-schur-complement/).
+- Return to the broader [Convex Optimization learning map](/posts/convex-optimization-doubt-log/) when you want to connect these tools to convex sets, quasiconvexity, and conic optimization.
 
 ## Sources
 
