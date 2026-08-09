@@ -78,19 +78,53 @@ $$
 Av=\lambda v, \qquad v\neq 0.
 $$
 
-For a real symmetric matrix, the scalar $v^*Av$ equals its own complex conjugate, so it is real. But
+Let
+
+$$
+z=v^*Av.
+$$
+
+The missing step is to prove that $z$ is real. Take its complex conjugate. Since a scalar and its conjugate transpose are the same operation,
+
+$$
+\overline z
+=(v^*Av)^*
+=v^*A^*v.
+$$
+
+Because $A$ is real and symmetric,
+
+$$
+A^*=A^T=A.
+$$
+
+Therefore
+
+$$
+\overline z=v^*Av=z.
+$$
+
+A complex number equals its conjugate exactly when its imaginary part is zero, so $v^*Av$ is real.
+
+Now use the eigenvalue equation:
 
 $$
 v^*Av=\lambda v^*v.
 $$
 
-Since $v^*v>0$ is real,
+Also,
+
+$$
+v^*v=|v_1|^2+\cdots+|v_n|^2>0
+$$
+
+because $v\neq0$. Thus the denominator below is positive and real:
 
 $$
 \lambda=\frac{v^*Av}{v^*v}
 $$
 
-must also be real. Symmetry prevents the transformation from needing complex scaling directions.
+Both numerator and denominator are real, so $\lambda$ must be real. This is the precise point at which symmetry is used.
 
 ### Doubt: are all eigenvectors of a symmetric matrix orthogonal?
 

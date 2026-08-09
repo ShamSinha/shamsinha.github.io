@@ -290,6 +290,8 @@ $$
 
 For a repeated eigenvalue, arbitrary vectors in its eigenspace need not already be orthogonal, but we can choose an orthonormal basis for that eigenspace.
 
+The companion article [Symmetric Matrices, Quadratic Forms, and Matrix Norms](/posts/symmetric-matrices-quadratic-forms-matrix-norm/) proves the other crucial fact in full detail: **every eigenvalue of a real symmetric matrix is real**, even if we initially allow a complex eigenvector.
+
 ---
 
 ## 4. Trace and determinant through eigenvalues {#trace-determinant}

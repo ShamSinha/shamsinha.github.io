@@ -1,1602 +1,230 @@
 ---
-title: "Convex Optimization: Foundations and a Doubt-Driven Guide"
+title: "Convex Optimization: Introduction and Learning Map"
 date: 2026-07-17 00:00:00 +0000
+last_modified_at: 2026-08-09 00:00:00 +0530
 categories: [Mathematics, Optimization]
-tags: [convexity, quasiconvexity, linear-programming, quadratic-programming, doubts, study-notes]
+tags: [convexity, convex-optimization, linear-programming, quadratic-programming, study-notes]
 math: true
 toc: true
 comments: true
 published: true
 permalink: /posts/convex-optimization-doubt-log/
-description: "A foundations-first guide to convex optimization that preserves the questions, corrections, intuition, proofs, and examples from the learning conversation."
+description: "A growing, foundations-first map of convex optimization definitions, intuition, proofs, examples, and doubts."
 ---
 
-This is a single, foundations-first guide built from the original learning conversation.
+Convex optimization is too large for one endlessly growing article. This page is now the stable entry point: it introduces the language of optimization and links each topic to a focused chapter where its definitions and doubts stay together.
 
-The definitions come before the doubts that depend on them. At the same time, the doubts, almost-correct statements, corrections, geometric intuition, and small examples have been preserved rather than polished away.
+The notes currently follow the early part of Stephen Boyd's convex optimization course, through material being studied around Lecture 7. As the course continues, new topics can be added here without making any one chapter unmanageable.
 
-The progression is:
+## 1. What is an optimization problem?
 
-1. convex sets and functions;
-2. gradients, quadratics, and common representations;
-3. quasiconvexity and bisection;
-4. LP and QP geometry;
-5. constrained optimality and log-concavity.
+A standard constrained optimization problem looks like
 
-## Topic map
-
-- [Convex sets, halfspaces, and polyhedra](#convex-sets)
-- [Convex functions, Jensen's inequality, and gradients](#convex-functions)
-- [Convex quadratics and PSD matrices](#convex-quadratics)
-- [Symmetric and block quadratic forms](#symmetric-quadratics)
-- [Epigraph form and piecewise-linear minimization](#epigraph-form)
-- [Quasiconvexity, quasiconcavity, and examples](#quasiconvexity)
-- [Quasiconvex optimization by bisection](#quasiconvex-bisection)
-- [Linear and quadratic programming geometry](#lp-qp-geometry)
-- [First-order optimality and equality constraints](#constrained-optimality)
-- [Log-concavity and Gaussian distributions](#log-concavity)
-
----
-
-## 1. Convex sets, halfspaces, and polyhedra {#convex-sets}
-
-A set $C\subseteq\mathbb R^n$ is convex when, for every $x,y\in C$ and every $\theta\in[0,1]$,
-
-$$
-\theta x+(1-\theta)y\in C.
-$$
-
-In plain language: draw the line segment between any two points in the set. The whole segment must stay inside the set.
-
-### Why are halfspaces convex?
-
-A halfspace has the form
-
-$$
-\{x\mid a^Tx\le b\}.
-$$
-
-Suppose
-
-$$
-a^Tx\le b,
-\qquad
-a^Ty\le b.
-$$
-
-For $z=\theta x+(1-\theta)y$,
-
-$$
-a^Tz
-=\theta a^Tx+(1-\theta)a^Ty
-\le \theta b+(1-\theta)b=b.
-$$
-
-Thus $z$ also belongs to the halfspace.
-
-The equality set
-
-$$
-\{x\mid a^Tx=b\}
-$$
-
-is a hyperplane and is also convex.
-
-### Why do intersections remain convex?
-
-If every set $C_i$ contains the segment between any two of its points, then a pair of points belonging to every $C_i$ has its entire segment in every $C_i$. Hence the segment belongs to their intersection.
-
-This explains why a finite system of linear constraints produces a convex feasible set.
-
-### What is a linear program (LP)?
-
-**LP** stands for **linear program** or **linear programming problem**. Its standard form is
-
-$$
-\begin{array}{ll}
-\text{minimize} & c^Tx+d\\
-\text{subject to} & Gx\le h,\\
-& Ax=b.
-\end{array}
-$$
-
-Here:
-
-- $x\in\mathbb R^n$ is the decision vector we choose;
-- $c^Tx+d$ is the scalar objective we want to minimize;
-- $Gx\le h$ represents linear inequality constraints, interpreted componentwise;
-- $Ax=b$ represents linear equality constraints.
-
-The word **linear** means that the objective and constraints contain no products such as $x_1x_2$, powers such as $x_1^2$, or other nonlinear functions of $x$. Strictly speaking, expressions with constant terms are affine, but “linear program” is the standard name.
-
-The **feasible set** depends only on the constraints, not on the objective:
-
-$$
-\mathcal F=\{x\mid Gx\le h,\ Ax=b\}.
-$$
-
-### Doubt: why is an LP feasible set a polyhedron?
-
-Take one row of $G$:
-
-$$
-g_i^Tx\le h_i.
-$$
-
-This defines a halfspace. In two dimensions, it is one side of a line. In three dimensions, it is one side of a plane.
-
-Take one row of $A$:
-
-$$
-a_j^Tx=b_j.
-$$
-
-This defines a hyperplane.
-
-A polyhedron is exactly an intersection of finitely many halfspaces and hyperplanes. Therefore, an LP feasible set is a polyhedron.
-
-### Polyhedron versus polytope
-
-A polyhedron can be unbounded.
-
-A polytope is a bounded polyhedron.
-
-For example,
-
-$$
-x_1\ge0,\qquad x_2\ge0,\qquad x_1+x_2\le1
-$$
-
-forms a triangle, hence a bounded polyhedron and therefore a polytope.
-
----
-
-## 2. Convex functions and Jensen's inequality {#convex-functions}
-
-A function $f$ is convex if
-
-$$
-f(\theta x+(1-\theta)y)
-\le
-\theta f(x)+(1-\theta)f(y)
-$$
-
-for all $x,y$ in its domain and all $\theta\in[0,1]$.
-
-The graph lies below the chord joining two graph points.
-
-### Jensen's inequality
-
-For nonnegative weights $\theta_i$ satisfying $\sum_i\theta_i=1$,
-
-$$
-f\left(\sum_i\theta_i x_i\right)
-\le
-\sum_i\theta_i f(x_i).
-$$
-
-For a random variable $X$,
-
-$$
-f(\mathbb E[X])\le \mathbb E[f(X)].
-$$
-
-The two-point definition is the basic version; Jensen is the many-point or probabilistic version.
-
----
-
-## 3. Why does the gradient define a tangent or supporting hyperplane?
-
-For a differentiable function,
-
-$$
-f(x+v)\approx f(x)+\nabla f(x)^Tv.
-$$
-
-The inner product tells us the first-order change:
-
-- $\nabla f(x)^Tv>0$: increase;
-- $\nabla f(x)^Tv<0$: decrease;
-- $\nabla f(x)^Tv=0$: no first-order change.
-
-Suppose $x(t)$ moves along a level set
-
-$$
-f(x(t))=c.
-$$
-
-Differentiate:
-
-$$
-\frac{d}{dt}f(x(t))
-=\nabla f(x(t))^Tx'(t)=0.
-$$
-
-The tangent direction $x'(t)$ is orthogonal to the gradient. Therefore the gradient is normal to the level set.
-
-For a differentiable convex function,
-
-$$
-f(y)\ge f(x)+\nabla f(x)^T(y-x).
-$$
-
-So the tangent hyperplane lies below the graph. That is why it is called a supporting hyperplane.
-
----
-
-## 4. Why does convexity make every local minimum global?
-
-Suppose $x$ is a local minimum but there exists a feasible $y$ with
-
-$$
-f(y)<f(x).
-$$
-
-Take a point close to $x$ on the segment toward $y$:
-
-$$
-z_\theta=(1-\theta)x+\theta y,
-\qquad \theta>0\text{ small}.
-$$
-
-Convexity gives
-
-$$
-f(z_\theta)
-\le(1-\theta)f(x)+\theta f(y)
-<f(x).
-$$
-
-But $z_\theta$ can be made arbitrarily close to $x$, contradicting local optimality.
-
-This is one of the main reasons convex optimization is special.
-
----
-
-## 5. What does a convex quadratic mean? {#convex-quadratics}
-
-> **Doubt:** I think $P$ is a positive-semidefinite matrix or cone.
-
-A quadratic function has the form
-
-$$
-f(x)=\frac12x^TPx+q^Tx+r.
-$$
-
-Here:
-
-- $x\in\mathbb R^n$;
-- $P\in\mathbb R^{n\times n}$;
-- $q\in\mathbb R^n$;
-- $r\in\mathbb R$.
-
-Assume $P$ is symmetric. Then
-
-$$
-\nabla f(x)=Px+q,
-\qquad
-\nabla^2f(x)=P.
-$$
-
-A twice-differentiable function is convex when its Hessian is positive semidefinite everywhere. Therefore,
-
-$$
-f\text{ is convex}\iff P\succeq0.
-$$
-
-### What does positive semidefinite mean?
-
-It means
-
-$$
-z^TPz\ge0\qquad\text{for every }z.
-$$
-
-Equivalently, when $P$ is symmetric, all eigenvalues of $P$ are nonnegative.
-
-Geometrically, the quadratic has nonnegative curvature in every direction.
-
-### Is P a matrix or a cone?
-
-$P$ is one matrix.
-
-The notation
-
-$$
-P\in\mathbf S_+^n
-$$
-
-means that $P$ belongs to the set of all symmetric positive-semidefinite $n\times n$ matrices.
-
-The set $\mathbf S_+^n$ is a convex cone.
-
-Why is it a cone? If $P\succeq0$ and $\alpha\ge0$, then
-
-$$
-z^T(\alpha P)z=\alpha z^TPz\ge0.
-$$
-
-Why is it convex? If $P,Q\succeq0$ and $0\le\theta\le1$, then
-
-$$
-z^T(\theta P+(1-\theta)Q)z
-=\theta z^TPz+(1-\theta)z^TQz\ge0.
-$$
-
-So the precise statement is:
-
-- $P$ is a PSD matrix;
-- $\mathbf S_+^n$ is the PSD cone.
-
-### Why the factor one-half?
-
-It is only a convenience:
-
-$$
-\nabla\left(\frac12x^TPx\right)=Px
-$$
-
-for symmetric $P$.
-
----
-
-## 6. What happens when P is not PSD?
-
-Take
-
-$$
-P=\begin{bmatrix}1&0\\0&-1\end{bmatrix}.
-$$
-
-Then
-
-$$
-f(x)=\frac12(x_1^2-x_2^2).
-$$
-
-Along the $x_1$ direction it curves upward. Along the $x_2$ direction it curves downward. The graph is a saddle, not a bowl, so the function is not convex.
-
-If $P\succ0$, the quadratic is strictly convex and has a unique unconstrained minimizer.
-
-If $P\succeq0$ but is singular, the function may be flat in some directions, so minimizers need not be unique.
-
----
-
-## 7. Why can every quadratic form be represented by a symmetric matrix? {#symmetric-quadratics}
-
-The phrase "we can assume that $P$ is symmetric" can be misleading. We are not proving that the original matrix $P$ is symmetric. Instead, we are showing that every possibly nonsymmetric matrix can be replaced by a symmetric matrix without changing the quadratic function.
-
-Start with a general square matrix
-
-$$
-P\in\mathbb{R}^{n\times n}.
-$$
-
-It can always be decomposed as
-
-$$
-P=H+K,
-$$
-
-where
-
-$$
-H=\frac{P+P^T}{2}
-$$
-
-and
-
-$$
-K=\frac{P-P^T}{2}.
-$$
-
-The matrix $H$ is symmetric because
-
-$$
-H^T
-=\left(\frac{P+P^T}{2}\right)^T
-=\frac{P^T+P}{2}
-=H.
-$$
-
-The matrix $K$ is skew-symmetric because
-
-$$
-K^T
-=\left(\frac{P-P^T}{2}\right)^T
-=\frac{P^T-P}{2}
-=-K.
-$$
-
-Thus every square matrix is the sum of a symmetric part and a skew-symmetric part.
-
-### Why does the skew-symmetric part disappear?
-
-Consider the scalar
-
-$$
-a=x^TKx.
-$$
-
-Because $a$ is a scalar, transposing it does not change it:
-
-$$
-a=a^T.
-$$
-
-Now transpose the complete product:
-
-$$
-a^T
-=(x^TKx)^T
-=x^TK^Tx.
-$$
-
-Since $K^T=-K$,
-
-$$
-a^T=x^T(-K)x=-x^TKx=-a.
-$$
-
-We have therefore shown both
-
-$$
-a=a^T
-$$
-
-and
-
-$$
-a^T=-a.
-$$
-
-Hence $a=-a$, which is possible only when
-
-$$
-a=0.
-$$
-
-Therefore every skew-symmetric matrix satisfies
-
-$$
-x^TKx=0
-$$
-
-for every vector $x$.
-
-### Apply this result to the quadratic form
-
-Using $P=H+K$,
-
-$$
-x^TPx
-=x^T(H+K)x
-=x^THx+x^TKx.
-$$
-
-The second term is zero, so
-
-$$
-x^TPx=x^THx
-=x^T\left(\frac{P+P^T}{2}\right)x.
-$$
-
-This is the precise meaning of "we can assume $P$ is symmetric": the original $P$ need not be symmetric, but its symmetric part represents exactly the same quadratic form.
-
-### Concrete example
-
-Take the nonsymmetric matrix
-
-$$
-P=
-\begin{bmatrix}
-1&1\\
--1&1
-\end{bmatrix}.
-$$
-
-Its symmetric part is
-
-$$
-H
-=\frac{P+P^T}{2}
-=\begin{bmatrix}
-1&0\\
-0&1
-\end{bmatrix}
-=I,
-$$
-
-and its skew-symmetric part is
-
-$$
-K
-=\frac{P-P^T}{2}
-=\begin{bmatrix}
-0&1\\
--1&0
-\end{bmatrix}.
-$$
-
-For
-
-$$
-x=\begin{bmatrix}x_1\\x_2\end{bmatrix},
-$$
-
-direct expansion gives
-
-$$
-x^TPx
-=x_1^2+x_1x_2-x_1x_2+x_2^2
-=x_1^2+x_2^2.
-$$
-
-The two cross terms cancel. This is exactly the same expression obtained from the symmetric part:
-
-$$
-x^THx=x^TIx=x_1^2+x_2^2.
-$$
-
-### What happens to the gradient and Hessian?
-
-For a general matrix $P$, consider
-
-$$
-f(x)=\frac12x^TPx+q^Tx+r.
 $$
-
-Before making any symmetry assumption, the gradient is
-
-$$
-\nabla f(x)
-=\frac12(P+P^T)x+q,
-$$
-
-and the Hessian is
-
-$$
-\nabla^2f(x)=\frac{P+P^T}{2}=H.
-$$
-
-The Hessian is necessarily symmetric, and the skew-symmetric part of $P$ has no effect on either the function or its derivatives.
-
-After replacing $P$ by $H$, we may rename $H$ as $P$. Then $P=P^T$, and the familiar formulas become
-
-$$
-\nabla f(x)=Px+q,
-\qquad
-\nabla^2f(x)=P.
-$$
-
-Therefore the correct convexity condition for a quadratic written with an arbitrary matrix is
-
-$$
-\frac{P+P^T}{2}\succeq0.
+\begin{aligned}
+\text{minimize}\quad & f_0(x)\\
+\text{subject to}\quad & f_i(x)\le0,\qquad i=1,\ldots,m,\\
+& h_j(x)=0,\qquad j=1,\ldots,p.
+\end{aligned}
 $$
 
-Once the symmetric representative is used, this is written more simply as
-
-$$
-P\succeq0.
-$$
+The pieces have different jobs:
 
-The key conclusion is not that every matrix is symmetric. It is that every quadratic form has an equivalent symmetric matrix representation, and only that symmetric part determines its curvature and convexity.
+- $x$ is the **decision variable**. It may be a scalar, vector, or matrix.
+- $f_0(x)$ is the **objective function**. It returns the scalar quantity we want to minimize.
+- The inequalities and equalities are the **constraints**.
+- The values of $x$ satisfying every constraint form the **feasible set**.
+- A feasible point with the smallest objective value is an **optimal point** $x^\star$.
+- The number $p^\star=f_0(x^\star)$ is the **optimal value**.
 
----
+This distinction prevents a recurring confusion: the point $x^\star$ and the value $p^\star$ are not the same object.
 
-## 8. Block quadratic forms and the Schur complement
+### A tiny example
 
 Consider
 
 $$
-f(x,y)=x^TAx+2x^TBy+y^TCy.
+\begin{aligned}
+\text{minimize}\quad & (x-3)^2\\
+\text{subject to}\quad & x\le2.
+\end{aligned}
 $$
 
-It can be written as
+Without the constraint, the minimum occurs at $x=3$. That point is infeasible, so the constrained optimum is
 
 $$
-\begin{bmatrix}x\\y\end{bmatrix}^T
-\begin{bmatrix}A&B\\B^T&C\end{bmatrix}
-\begin{bmatrix}x\\y\end{bmatrix}.
-$$
-
-The function is jointly convex in $(x,y)$ exactly when
-
-$$
-\begin{bmatrix}A&B\\B^T&C\end{bmatrix}\succeq0.
-$$
-
-If $C\succ0$, minimize over $y$:
-
-$$
-\nabla_y f=2B^Tx+2Cy=0,
-$$
-
-so
-
-$$
-y^\star=-C^{-1}B^Tx.
-$$
-
-Substituting back gives
-
-$$
-\min_y f(x,y)
-=x^T(A-BC^{-1}B^T)x.
-$$
-
-The matrix
-
-$$
-A-BC^{-1}B^T
-$$
-
-is the Schur complement of $C$.
-
-The intuition is that optimizing out $y$ leaves an effective quadratic curvature in $x$.
-
----
-
-## 9. Epigraph form and piecewise-linear minimization {#epigraph-form}
-
-Before the piecewise-linear example, it helps to understand a general representation used throughout convex optimization.
-
-For a convex objective, the problem
-
-$$
-\min_x f_0(x)
-$$
-
-is equivalent to its **epigraph form**:
-
-$$
-\begin{array}{ll}
-\text{minimize} & t\\
-\text{subject to} & f_0(x)\le t.
-\end{array}
-$$
-
-At an optimum, $t=f_0(x)$; otherwise $t$ could be reduced. The objective is now linear, while the original objective appears as a convex constraint.
-
-This does **not** mean that convex optimization requires a linear objective. Epigraph form is simply a useful equivalent representation.
-
-It is also different from quasiconvex bisection later in this guide:
-
-- for a convex $f_0$, the entire epigraph $\{(x,t)\mid f_0(x)\le t\}$ is convex, so $x$ and $t$ can be optimized jointly;
-- for a merely quasiconvex $f_0$, only each fixed-$t$ sublevel set is guaranteed to be convex, so bisection handles $t$ externally.
-
-### Piecewise-linear objectives
-
-A standard convex piecewise-linear function is
-
-$$
-f(x)=\max_{i=1,\ldots,m}(a_i^Tx+b_i).
-$$
-
-Different affine pieces dominate in different regions. Their maximum forms an upper envelope with flat pieces and corners.
-
-### Why is it convex?
-
-Each affine function is convex, and the pointwise maximum of convex functions is convex.
-
-### How do we minimize it?
-
-Start from
-
-$$
-\min_x\max_i(a_i^Tx+b_i).
-$$
-
-Introduce a scalar $t$:
-
-$$
-\begin{array}{ll}
-\text{minimize} & t\\
-\text{subject to} & a_i^Tx+b_i\le t,\quad i=1,\ldots,m.
-\end{array}
-$$
-
-The constraints say that $t$ must lie above every affine piece. Minimizing $t$ pushes it down until it touches the upper envelope.
-
-If the remaining constraints are linear, this is a linear program.
-
-### Small example
-
-$$
-\min_x\max(x+1,-x+2).
-$$
-
-Equivalent LP:
-
-$$
-\min_{x,t}t
-$$
-
-subject to
-
-$$
-x+1\le t,
+x^\star=2,
 \qquad
--x+2\le t.
+p^\star=(2-3)^2=1.
 $$
 
-At the optimum, the two active pieces meet:
+Optimization is therefore not only about the shape of the objective. It is about how that shape interacts with the feasible set.
 
-$$
-x+1=-x+2,
-$$
-
-so
-
-$$
-x=\frac12,
-\qquad t=\frac32.
-$$
-
----
-
-## 10. Convex versus quasiconvex {#quasiconvexity}
-
-A function is quasiconvex when every sublevel set
-
-$$
-S_\alpha=\{x\mid f(x)\le\alpha\}
-$$
-
-is convex.
-
-This is weaker than ordinary convexity.
-
-A quasiconvex function need not lie below its chords. Instead, it satisfies
-
-$$
-f(\theta x+(1-\theta)y)
-\le\max\{f(x),f(y)\}.
-$$
-
-The important geometric idea is that low-value regions do not split into separated pieces.
-
-### Convex implies quasiconvex
-
-If $f$ is convex, then
-
-$$
-f(\theta x+(1-\theta)y)
-\le\theta f(x)+(1-\theta)f(y)
-\le\max\{f(x),f(y)\}.
-$$
-
-The reverse is false.
-
-### First-order condition for a differentiable quasiconvex function
-
-For differentiable $f$ on a convex domain, quasiconvexity is equivalent to
-
-$$
-f(y)\le f(x)
-\implies
-\nabla f(x)^T(y-x)\le0.
-$$
-
-Why? If $f(y)\le f(x)$, then $y$ belongs to the sublevel set
-
-$$
-\{z\mid f(z)\le f(x)\}.
-$$
-
-The vector $y-x$ points from $x$ into that convex low-value region, while $\nabla f(x)$ points toward increasing values. Their inner product therefore cannot be positive.
-
-Compare this with the stronger convex condition
-
-$$
-f(y)\ge f(x)+\nabla f(x)^T(y-x),
-$$
-
-which supplies a global affine lower bound. Quasiconvexity gives only the directional implication above.
-
----
-
-## 11. Why is a linear-fractional objective quasiconvex?
-
-Consider
-
-$$
-f(x)=\frac{c^Tx+d}{e^Tx+f},
-\qquad e^Tx+f>0.
-$$
-
-To prove quasiconvexity, examine a sublevel set:
-
-$$
-\frac{c^Tx+d}{e^Tx+f}\le t.
-$$
-
-Because the denominator is positive, multiplication does not reverse the inequality:
-
-$$
-c^Tx+d\le t(e^Tx+f).
-$$
-
-Rearrange:
-
-$$
-(c-te)^Tx+(d-tf)\le0.
-$$
-
-For fixed $t$, this is an affine inequality in $x$, hence a halfspace.
-
-The domain condition
-
-$$
-e^Tx+f>0
-$$
-
-is also a halfspace. Their intersection is convex. Thus every sublevel set is convex, so the function is quasiconvex.
-
-### Why is it actually quasilinear?
-
-A function is quasiconcave when all superlevel sets are convex.
-
-Here,
-
-$$
-\frac{c^Tx+d}{e^Tx+f}\ge t
-$$
-
-becomes
-
-$$
-(c-te)^Tx+(d-tf)\ge0,
-$$
-
-which is another halfspace. Therefore the function is both quasiconvex and quasiconcave: it is quasilinear.
-
-### Why is positivity of the denominator crucial?
-
-If the denominator could be negative, multiplying by it might reverse the inequality. If it could be zero, the ratio would not even be defined. The domain condition is essential, not decorative.
-
----
-
-## 12. Proof: the square root of an absolute value is quasiconvex
-
-Consider
-
-$$
-f(x)=\sqrt{|x|}.
-$$
-
-For $\alpha<0$, the sublevel set is empty, which is convex.
-
-For $\alpha\ge0$,
-
-$$
-\sqrt{|x|}\le\alpha
-\iff |x|\le\alpha^2
-\iff -\alpha^2\le x\le\alpha^2.
-$$
-
-Thus every sublevel set is an interval, hence convex.
-
-The function is quasiconvex even though it is not convex on all of $\mathbb R$.
-
----
-
-## 13. Proof: the ceiling function is quasilinear
-
-The ceiling function is monotone nondecreasing.
-
-For a real number $\alpha$, let $m=\lfloor\alpha\rfloor$. Then
-
-$$
-\{x\mid\lceil x\rceil\le\alpha\}
-=\{x\mid x\le m\}
-=(-\infty,m],
-$$
-
-which is convex.
-
-For the superlevel set, let $k=\lceil\alpha\rceil$. Then
-
-$$
-\{x\mid\lceil x\rceil\ge\alpha\}
-=\{x\mid x>k-1\}
-=(k-1,\infty),
-$$
-
-also convex.
-
-Therefore $\lceil x\rceil$ is both quasiconvex and quasiconcave.
-
-A discontinuous function can be quasilinear; quasilinear does not mean affine.
-
----
-
-## 14. Proof: the logarithm is quasilinear on the positive domain
-
-For a sublevel set,
-
-$$
-\log x\le\alpha
-\iff x\le e^\alpha.
-$$
-
-Including the domain $x>0$ gives
-
-$$
-(0,e^\alpha],
-$$
-
-an interval.
-
-For a superlevel set,
-
-$$
-\log x\ge\alpha
-\iff x\ge e^\alpha,
-$$
-
-so the set is
-
-$$
-[e^\alpha,\infty).
-$$
-
-Both are convex. Therefore $\log x$ is quasilinear on $\mathbb R_{++}$.
-
-It is also concave, but it is not affine.
-
----
-
-## 15. Proof: the product of two positive variables is quasiconcave
-
-We inspect superlevel sets:
-
-$$
-\{(x_1,x_2)\mid x_1x_2\ge\alpha,\ x_1>0,\ x_2>0\}.
-$$
-
-If $\alpha\le0$, the entire positive orthant satisfies the inequality.
-
-If $\alpha>0$, take logarithms:
-
-$$
-x_1x_2\ge\alpha
-\iff
-\log x_1+\log x_2\ge\log\alpha.
-$$
-
-The function
-
-$$
-g(x_1,x_2)=\log x_1+\log x_2
-$$
-
-is concave. A superlevel set of a concave function is convex. Therefore $x_1x_2$ is quasiconcave on the positive orthant.
-
-Another geometric form is
-
-$$
-x_2\ge\frac{\alpha}{x_1},
-$$
-
-which is the region above the convex curve $\alpha/x_1$.
-
----
-
-## 16. Quasiconvex optimization by bisection: x versus t {#quasiconvex-bisection}
-
-Consider
-
-$$
-\begin{array}{ll}
-\text{minimize} & f_0(x)\\
-\text{subject to} & f_i(x)\le0,\quad i=1,\ldots,m,\\
-& Ax=b,
-\end{array}
-$$
-
-where $f_0$ is quasiconvex and the remaining constraints define a convex feasible set.
-
-Here, $x$ is the original **decision variable**. It can be a scalar, but it is usually a vector in $\mathbb R^n$. The function $f_0$ maps each $x$ to a scalar objective value.
-
-The optimal objective value is
-
-$$
-p^\star
-=
-\inf\{f_0(x)\mid f_i(x)\le0,\ Ax=b\}.
-$$
-
-If this value is attained, an optimal point is denoted by $x^\star$, and
-
-$$
-f_0(x^\star)=p^\star.
-$$
-
-### Why introduce t?
-
-The original problem contains no $t$. We introduce it only as a **trial objective value**.
-
-For a fixed scalar $t$, solve the feasibility problem
-
-$$
-\begin{array}{ll}
-\text{find} & x\\
-\text{subject to} & f_0(x)\le t,\\
-& f_i(x)\le0,\quad i=1,\ldots,m,\\
-& Ax=b.
-\end{array}
-$$
-
-This asks one yes-or-no question:
-
-$$
-\text{Does there exist an }x\text{ satisfying every constraint and }f_0(x)\le t?
-$$
-
-Because $f_0$ is quasiconvex, the sublevel set
-
-$$
-\{x\mid f_0(x)\le t\}
-$$
-
-is convex for every fixed $t$. Intersecting it with the original convex constraints leaves a convex feasibility problem.
-
-This is the context in which the following doubt arose:
-
-> **Doubt:** Here we want the optimal value of $x$ or $t$? $t$ is scalar, while $x$ may or may not be scalar.
-
-The phrase “optimal value of $x$” mixes two different objects:
-
-- $x^\star$ is an **optimal point**. It has the same dimension as $x$.
-- $p^\star$ is the **optimal value** of the objective. It is always scalar.
-- $t$ is a temporary scalar guess for $p^\star$.
-
-For each guess, the feasibility solver searches for an $x$, while $t$ remains fixed. It is not minimizing $x$; it only needs to find one witness satisfying all the constraints.
-
-### Why bisection works
-
-Feasibility is monotone in $t$:
-
-- feasible at $t$ implies feasible at every larger value;
-- infeasible at $t$ implies infeasible at every smaller value.
-
-Maintain a lower bound $l$ known to be infeasible and an upper bound $u$ known to be feasible.
-
-Set
-
-$$
-t=\frac{l+u}{2}.
-$$
-
-- If feasible, store the witness $x$ and set $u=t$.
-- If infeasible, set $l=t$.
-
-Stop when $u-l$ is small.
-
-Then:
-
-- the shrinking scalar interval approximates $p^\star$;
-- the best stored feasible witness approximates an optimizer $x^\star$.
-
-There may be several optimal points $x^\star$, but the optimal objective value $p^\star$ is a single scalar. It is also possible for the infimum to exist without being attained, in which case no exact optimizer exists.
-
-### A tiny numerical example
-
-Consider
-
-$$
-\begin{array}{ll}
-\text{minimize} & x^2\\
-\text{subject to} & x\ge1.
-\end{array}
-$$
-
-The answer is
-
-$$
-x^\star=1,
-\qquad
-p^\star=1.
-$$
-
-Pretend we do not yet know it.
-
-- Try $t=4$. An $x\ge1$ with $x^2\le4$ exists; for example, $x=1.5$. The test is feasible, so $p^\star\le4$.
-- Try $t=0.5$. No $x\ge1$ can satisfy $x^2\le0.5$. The test is infeasible, so $p^\star>0.5$.
-
-Bisection keeps updating $t$ to locate the smallest feasible threshold. Successful tests also provide candidate points $x$.
-
-### Why not optimize x and t jointly?
-
-For a general quasiconvex function, the epigraph
-
-$$
-\{(x,t)\mid f_0(x)\le t\}
-$$
-
-need not be convex. Quasiconvexity guarantees convexity of the sublevel set in $x$ only after $t$ has been fixed. That is why bisection handles $t$ externally.
-
-So the final mental model is:
-
-- bisection searches over $t$ to approximate $p^\star$;
-- each feasibility test searches for an $x$;
-- the result includes both an objective value and, when it is attained, an optimizer.
-
----
-
-## 17. Ratio example in quasiconvex optimization
-
-Suppose
-
-$$
-f_0(x)=\frac{p(x)}{q(x)},
-$$
-
-where
-
-- $p$ is convex;
-- $q$ is concave and positive;
-- $p(x)\ge0$.
-
-For fixed $t\ge0$,
-
-$$
-\frac{p(x)}{q(x)}\le t
-\iff
-p(x)-tq(x)\le0.
-$$
-
-Since $q$ is concave, $-q$ is convex. For a fixed nonnegative $t$, $-tq$ is convex. Hence
-
-$$
-\phi_t(x)=p(x)-tq(x)
-$$
-
-is convex in $x$.
-
-The word **fixed** matters. If $t$ were simultaneously a variable, the product $tq(x)$ would generally destroy convexity.
-
-Also notice the inequality is
-
-$$
-p(x)-tq(x)\le0,
-$$
-
-not an equality.
-
----
-
-## 18. LP optimum: must it always be a vertex? {#lp-qp-geometry}
-
-> **Doubt:** In a linear program, the solution is always present on a vertex of a face of the polyhedron, right?
-
-The careful statement is:
-
-> If an LP has an attained optimum and the feasible polyhedron has extreme points relevant to the optimum, then there exists at least one optimal extreme point.
-
-It is not true that every optimal solution must be a vertex.
-
-### Example: an entire edge is optimal
-
-Minimize
-
-$$
-x_1
-$$
-
-subject to
-
-$$
-0\le x_1\le1,
-\qquad
-0\le x_2\le1.
-$$
-
-Every point with $x_1=0$ is optimal:
-
-$$
-\{(0,x_2)\mid0\le x_2\le1\}.
-$$
-
-This includes the vertices $(0,0)$ and $(0,1)$, but also the interior point $(0,1/2)$ of the edge.
-
-So:
-
-- the optimal set may be a face;
-- at least one vertex of that face is optimal.
-
-### Why can we move to a vertex without changing a linear objective?
-
-If an optimal point $x$ is a convex combination
-
-$$
-x=\theta u+(1-\theta)v,
-$$
-
-then
-
-$$
-c^Tx=\theta c^Tu+(1-\theta)c^Tv.
-$$
-
-If $x$ has the minimum value, neither $u$ nor $v$ can have a smaller value. Therefore both must also be optimal. Repeating this movement leads to an extreme point, provided the relevant face contains one.
-
-### Important caveat
-
-Some polyhedra contain no vertices. For example, an affine line is a polyhedron but has no extreme points. A constant objective on that line has an optimum everywhere but no optimal vertex. Thus the slogan needs its usual assumptions.
-
----
-
-## 19. Why can a quadratic-program solution be inside a face or in the interior?
-
-A convex QP has objective
-
-$$
-\frac12x^TPx+q^Tx+r,
-\qquad P\succeq0.
-$$
-
-Its level sets are curved rather than parallel hyperplanes.
-
-Therefore the first contact with a feasible set can occur:
-
-- at a vertex;
-- in the relative interior of an edge or face;
-- strictly inside the feasible region.
-
-### Interior optimum example
-
-Minimize
-
-$$
-x_1^2+x_2^2
-$$
-
-over
-
-$$
-[-1,1]^2.
-$$
-
-The minimum is at
-
-$$
-(0,0),
-$$
-
-which lies strictly inside the square.
-
-The unconstrained stationary condition is
-
-$$
-\nabla f(x)=0.
-$$
-
-If that stationary point is feasible, it can be the constrained optimum without touching any boundary.
-
-### Face-interior example
-
-Minimize
-
-$$
-(x_1-2)^2+x_2^2
-$$
-
-over the square $[-1,1]^2$.
-
-The unconstrained minimizer is $(2,0)$, which is outside. The closest feasible point is $(1,0)$, lying in the interior of the right edge, not at a vertex.
-
-### Main contrast
-
-A linear objective has flat level sets. If one interior point of a face is optimal, the objective is flat along the relevant face, so vertices can also be optimal.
-
-A strictly convex quadratic has curved level sets. Curvature can select one unique point in the middle of a face or in the interior.
-
----
-
-## 20. First-order optimality over a convex feasible set {#constrained-optimality}
-
-For a differentiable convex function over a convex set $X$, $x^\star$ is optimal if and only if
-
-$$
-\nabla f(x^\star)^T(y-x^\star)\ge0
-\qquad\text{for every }y\in X.
-$$
+## 2. What makes an optimization problem convex?
 
-The vector $y-x^\star$ points from the candidate toward another feasible point.
+A convex optimization problem has:
 
-If the inner product were negative for some feasible $y$, a small step toward $y$ would reduce the objective.
+1. a convex objective $f_0$;
+2. convex inequality functions $f_i$;
+3. affine equality functions $h_j$.
 
-At an interior optimum, all sufficiently small directions are feasible. Both $v$ and $-v$ are allowed, forcing
+These conditions make the feasible set convex. More importantly, they give the problem a powerful local-to-global property: every local minimum is global.
 
-$$
-\nabla f(x^\star)=0.
-$$
-
-At a boundary optimum, the gradient need not vanish. It must point so that no feasible direction is a descent direction.
-
----
-
-## 21. Equality constraints and the nullspace
-
-Consider
-
-$$
-\min f(x)
-\qquad\text{subject to}\qquad Ax=b.
-$$
-
-If $x$ and $y$ are both feasible, then
-
-$$
-Ax=b,
-\qquad
-Ay=b.
-$$
-
-Subtract:
-
-$$
-A(y-x)=0.
-$$
-
-Thus every feasible displacement
-
-$$
-v=y-x
-$$
-
-belongs to the nullspace $\mathcal N(A)$.
-
-The first-order optimality condition becomes
-
-$$
-\nabla f(x)^Tv\ge0
-\qquad\text{for every }v\in\mathcal N(A).
-$$
-
-But the nullspace is a subspace: if $v$ is allowed, then $-v$ is also allowed. Applying the condition to both signs forces
-
-$$
-\nabla f(x)^Tv=0
-\qquad\text{for every }v\in\mathcal N(A).
-$$
-
-Therefore
-
-$$
-\nabla f(x)\in\mathcal N(A)^\perp.
-$$
-
-Using
-
-$$
-\mathcal N(A)^\perp=\mathcal R(A^T),
-$$
-
-we get
-
-$$
-\nabla f(x)=A^T\nu
-$$
-
-for some multiplier $\nu$.
-
-Depending on the sign convention for the Lagrangian, this may be written
-
-$$
-\nabla f(x)+A^T\lambda=0.
-$$
-
----
-
-## 22. Eliminating equality constraints
-
-Choose one feasible point $x_0$ satisfying
-
-$$
-Ax_0=b.
-$$
+Convexity does **not** mean every expression is linear. Quadratic functions, norms, exponential functions, and matrix inequalities can all appear in convex problems when their domains and curvature satisfy the right conditions.
 
-Let the columns of $F$ form a basis for $\mathcal N(A)$. Every feasible point can be written as
+### Why the assumptions matter
 
-$$
-x=x_0+Fz.
-$$
-
-Then the constrained problem becomes the unconstrained problem
-
-$$
-\min_z f(x_0+Fz).
-$$
-
-This is useful both conceptually and computationally: $z$ represents exactly the directions that preserve feasibility.
-
----
-
-## 23. Nonnegative orthant constraints
-
-Consider
-
-$$
-\min f(x)
-\quad\text{subject to}\quad
-x\succeq0.
-$$
-
-The first-order condition requires
-
-$$
-\nabla f(x)^T(y-x)\ge0
-$$
-
-for every $y\succeq0$.
-
-This implies
-
-$$
-x\succeq0,
-\qquad
-\nabla f(x)\succeq0,
-\qquad
-x^T\nabla f(x)=0.
-$$
-
-Componentwise,
-
-$$
-x_i\nabla_i f(x)=0.
-$$
+A slogan such as “a local minimum is global” is only useful with its assumptions attached. Remove convexity and a function may contain many local valleys. Reverse an inequality involving a convex function and the feasible set may become nonconvex. Use an indefinite quadratic and the supposed bowl can become a saddle.
 
-Thus, for each coordinate, either $x_i>0$ and the corresponding gradient component is zero, or the gradient component is positive and $x_i=0$. This is the basic geometry behind complementary slackness.
+The detailed chapters below keep those assumptions beside the doubts they answer.
 
----
+## 3. Learning path
 
-## 24. Log-concavity and the Gaussian example {#log-concavity}
+The chapters are ordered so that each one supplies the definitions needed by the next.
 
-A positive function $p$ is log-concave when
+<span id="convex-sets"></span>
+<span id="convex-functions"></span>
+<span id="log-concavity"></span>
 
-$$
-\log p(x)
-$$
-
-is concave.
-
-For a multivariate Gaussian density,
-
-$$
-p(x)=C\exp\left(
--\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)
-\right),
-$$
-
-we have
-
-$$
-\log p(x)
-=
--\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)
-+\text{constant}.
-$$
-
-Its Hessian is
-
-$$
--\Sigma^{-1}.
-$$
-
-If $\Sigma\succ0$, then $\Sigma^{-1}\succ0$, so
-
-$$
--\Sigma^{-1}\prec0.
-$$
-
-Thus $\log p$ is concave and the Gaussian density is log-concave.
+### 3.1 [Convex Sets, Functions, and First-Order Geometry](/posts/convex-sets-functions-first-order-geometry/)
 
-### Why is a covariance matrix PSD?
+Start here. This chapter covers convex combinations, halfspaces, affine sets, polyhedra, Jensen's inequality, supporting hyperplanes, local versus global minima, and log-concavity.
 
-For any vector $v$,
+Doubts answered include:
 
-$$
-v^T\Sigma v
-=
-\mathbb E\left[(v^T(X-\mu))^2\right]
-\ge0.
-$$
-
-A variance cannot be negative.
+- What is an LP, and why is its feasible set a polyhedron?
+- Why do intersections preserve convexity?
+- Why does the gradient define a supporting hyperplane?
+- Why does convexity make a local minimum global?
+- Why is a covariance matrix PSD?
 
----
+<span id="convex-quadratics"></span>
+<span id="symmetric-quadratics"></span>
 
-## 25. Frequent statements that need correction
+### 3.2 [Convex Quadratics, PSD Matrices, and the Schur Complement](/posts/convex-quadratics-psd-schur-complement/)
 
-### "Quasiconvex means positive curvature"
+This is where linear algebra begins controlling curvature. The chapter explains convex quadratic objectives, positive-semidefinite matrices, symmetric and skew-symmetric parts, Hessians, block quadratic forms, and the Schur complement.
 
-No. Quasiconvexity is defined by convex sublevel sets, not by a Hessian condition.
+Doubts answered include:
 
-### "Quasilinear means affine"
+- Does $P$ mean one PSD matrix or the entire PSD cone?
+- Why is there a factor of $1/2$ in a quadratic objective?
+- Why does the skew-symmetric part disappear from $x^TPx$?
+- What goes wrong when the Hessian is not PSD?
+- Why does minimizing over one block produce a Schur complement?
 
-No. It means both quasiconvex and quasiconcave. Functions such as $\log x$ and $\lceil x\rceil$ are quasilinear on their domains but not affine.
+<span id="epigraph-form"></span>
+<span id="quasiconvexity"></span>
+<span id="quasiconvex-bisection"></span>
 
-### "The LP solution is always a single vertex"
+### 3.3 [Quasiconvex Optimization and Bisection](/posts/quasiconvex-optimization-bisection/)
 
-No. The optimal set can be an edge or a higher-dimensional face. Under standard assumptions, at least one vertex is optimal.
+Convexity is a curvature condition; quasiconvexity is a sublevel-set condition. This chapter develops epigraph formulations, piecewise-linear minimization, quasiconvex and quasiconcave functions, linear-fractional objectives, and bisection.
 
-### "A QP optimum cannot be at a vertex"
+Its central doubt is:
 
-It can be at a vertex. It simply does not have to be.
+> In quasiconvex bisection, are we optimizing $x$ or $t$?
 
-### "P is the PSD cone"
+The original decision variable remains $x$. During each feasibility test, $t$ is a fixed candidate objective level. Bisection updates $t$ outside that feasibility problem. The full chapter builds the context needed for that distinction instead of presenting it as an isolated rule.
 
-No. $P$ is one PSD matrix. $\mathbf S_+^n$ is the PSD cone.
+<span id="lp-qp-geometry"></span>
+<span id="constrained-optimality"></span>
 
-### "In bisection, t is the decision vector"
+### 3.4 [LP and QP Geometry, Constraints, and First-Order Optimality](/posts/optimality-constraint-geometry/)
 
-No. $t$ is a scalar candidate objective level. $x$ remains the original decision variable.
+This chapter asks where optimal points can occur and how constraints change the usual gradient condition. It covers LP vertices and optimal faces, QP interior solutions, first-order optimality over a convex set, equality-constraint nullspaces, elimination of equalities, and the nonnegative orthant.
 
-### "The ratio inequality becomes an equality"
-
-No. It becomes
-
-$$
-p(x)-tq(x)\le0.
-$$
+Doubts answered include:
 
-### "For a ratio, multiply by the denominator without checking it"
+- Must an LP have one unique optimal vertex?
+- Can a QP optimum lie on a face or at a vertex?
+- Why is $\nabla f(x^\star)=0$ insufficient under constraints?
+- Why must the gradient be orthogonal to feasible equality-constrained directions?
+- What changes when a variable is already at the boundary $x_i=0$?
 
-Never. The sign of the denominator determines whether the inequality direction is preserved.
+### 3.5 [Conic Optimization: From LPs to SOCPs and SDPs](/posts/conic-optimization-socp-sdp/)
 
-### "Every polyhedron has a vertex"
+Conic optimization shows that LPs, second-order cone programs, and semidefinite programs share one structure. The chapter covers convex cones, cone-induced partial orders, the nonnegative orthant, second-order and PSD cones, LMIs, the Schur complement, and SDP applications.
 
-No. An affine line or affine plane is a polyhedron and may have no extreme points.
+Doubts answered include:
 
----
+- How can a cone define “less than or equal to”?
+- Why can two vectors be incomparable?
+- Are the variables of an SDP vectors or matrices?
+- Why must LMI coefficient matrices be symmetric?
+- Why is every diagonal entry of a PSD matrix nonnegative?
+- How can an LP or SOCP be represented as an SDP?
 
-## 26. A compact comparison table
+## 4. A compact map of problem families
 
-| Topic | Key object | Convexity condition | Where an optimum may occur |
+| Problem family | Typical objective | Characteristic constraints | Main geometry |
 |---|---|---|---|
-| LP | $c^Tx$ | objective affine, feasible set polyhedral | vertex, edge, face; an optimal vertex often exists |
-| Convex QP | $\frac12x^TPx+q^Tx+r$ | $P\succeq0$ | interior, face interior, edge, or vertex |
-| Piecewise-linear | $\max_i(a_i^Tx+b_i)$ | maximum of affine functions | often at a nonsmooth intersection, but not necessarily |
-| Quasiconvex problem | convex sublevel sets | fixed-level feasibility must be convex | found by objective-level search such as bisection |
-| Linear-fractional | ratio of affine functions | positive denominator | level sets are halfspaces |
+| LP | affine | affine equalities and inequalities | polyhedra and the nonnegative orthant |
+| Convex QP | convex quadratic | affine, sometimes convex quadratic | ellipsoidal level sets meeting a convex feasible set |
+| Quasiconvex problem | quasiconvex | convex fixed-level feasibility tests | nested convex sublevel sets |
+| SOCP | affine | affine expressions in second-order cones | norm cones |
+| SDP | affine | affine matrix expressions in the PSD cone | positive-semidefinite matrix cone |
 
----
+These families overlap. An LP is a conic program over the nonnegative orthant. Many convex quadratic constraints can be represented with second-order cones. LPs and SOCPs can also be embedded in SDPs, although the smallest suitable formulation is usually preferable computationally.
 
-## 27. A practical mental checklist
+## 5. Doubts worth keeping
 
-When you see a new optimization problem, ask:
+Good doubts expose missing assumptions. These recur across the chapters:
 
-1. What is the decision variable? Is it scalar or vector?
-2. Is the objective scalar-valued?
-3. What is the feasible set?
-4. Are the constraints convex?
-5. Is the objective convex, quasiconvex, or neither?
-6. For a quadratic, is the symmetric Hessian PSD?
-7. For a ratio, what is the sign of the denominator?
-8. Can a max objective be converted using an epigraph variable $t$?
-9. Does $t$ represent a joint variable or a fixed level in a feasibility test?
-10. Is the claim about an optimal vertex an existence statement or a statement about every optimizer?
+### “Convex means the Hessian is positive definite.”
 
-That checklist prevents many common mistakes.
+Not always. For twice-differentiable functions, a PSD Hessian is enough. Convexity is also defined for nonsmooth functions, where a Hessian may not exist.
 
----
+### “An LP solution is always one vertex.”
 
-## 28. Final picture
+No. A linear objective can be constant across an entire edge or face. Under common conditions an optimal vertex exists, but other points may also be optimal.
 
-Convex optimization becomes easier when the algebra and geometry are connected:
+### “Quasiconvex means positive curvature.”
 
-- linear inequalities create halfspaces;
-- intersections of halfspaces create polyhedra;
-- gradients are normals to level sets;
-- PSD Hessians mean nonnegative curvature;
-- max-of-affine objectives become LPs through an epigraph variable;
-- quasiconvexity is about the shape of sublevel sets;
-- bisection searches objective values using convex feasibility tests;
-- linear objectives can be flat across a face;
-- curved quadratic objectives can choose an interior point of a face or of the entire feasible set.
+No. Quasiconvexity means every sublevel set is convex. A quasiconvex function need not be convex.
 
-The main lesson is not to memorize slogans such as "LP means vertex" or "PSD means bowl." Keep the assumptions attached to every statement and test each claim with a two-dimensional example.
+### “A matrix with nonnegative diagonal entries is PSD.”
+
+Not necessarily. PSD implies nonnegative diagonal entries, but the converse fails because off-diagonal coupling can create a negative eigenvalue.
+
+### “A matrix inequality compares entries one by one.”
+
+Only when the cone is the nonnegative orthant applied to a vector of entries. The PSD order $X\preceq Y$ instead means $Y-X\succeq0$, or
+
+$$
+z^TXz\le z^TYz
+$$
+
+for every direction $z$.
+
+## 6. A practical checklist
+
+When you meet a new optimization problem, ask:
+
+1. What exactly is the decision variable?
+2. What scalar quantity is being minimized or maximized?
+3. What is the domain?
+4. Which points are feasible?
+5. Is the feasible set convex?
+6. Is the objective convex, quasiconvex, or neither?
+7. For a quadratic, is its symmetric Hessian PSD?
+8. For a ratio, is the denominator known to be positive?
+9. Does an auxiliary $t$ represent an epigraph variable or a fixed bisection level?
+10. Can an unfamiliar constraint be expressed as membership in a standard cone?
+11. Is a statement about an optimizer claiming existence, uniqueness, or both?
+
+## 7. Where the map grows next
+
+As later Boyd lectures are studied, the natural next chapters are:
+
+- Lagrange duality, weak and strong duality;
+- KKT conditions and complementary slackness;
+- optimization applications and modeling patterns;
+- numerical algorithms, Newton's method, and interior-point methods.
+
+They will become separate topic pages and will be linked here. That keeps the introduction readable while allowing the detailed doubt log to grow without losing context.
+
+## Sources and further study
+
+- Stephen Boyd and Lieven Vandenberghe, [*Convex Optimization*](https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf).
+- Stephen Boyd, [EE364A lecture slides](https://web.stanford.edu/class/ee364a/lectures.html).
