@@ -85,10 +85,13 @@ The chapters are ordered so that each one supplies the definitions needed by the
 <span id="convex-sets"></span>
 <span id="convex-functions"></span>
 <span id="log-concavity"></span>
+<span id="epigraph-form"></span>
+<span id="quasiconvexity"></span>
+<span id="quasiconvex-bisection"></span>
 
-### 3.1 [Convex Sets, Functions, and First-Order Geometry](/posts/convex-sets-functions-first-order-geometry/)
+### 3.1 [Convex Sets, Functions, and Quasiconvex Optimization](/posts/convex-sets-functions-first-order-geometry/)
 
-Start here. This chapter covers convex combinations, halfspaces, affine sets, polyhedra, Jensen's inequality, supporting hyperplanes, local versus global minima, and log-concavity.
+Start here. This combined chapter covers convex combinations, halfspaces, affine sets, polyhedra, Jensen's inequality, supporting hyperplanes, local versus global minima, log-concavity, epigraph formulations, quasiconvex and quasiconcave functions, and optimization by bisection.
 
 Doubts answered include:
 
@@ -97,6 +100,9 @@ Doubts answered include:
 - Why does the gradient define a supporting hyperplane?
 - Why does convexity make a local minimum global?
 - Why is a covariance matrix PSD?
+- How is quasiconvexity different from convexity?
+- In quasiconvex bisection, are we optimizing $x$ or $t$?
+- Why must the denominator of a linear-fractional objective be positive?
 
 <span id="convex-quadratics"></span>
 <span id="symmetric-quadratics"></span>
@@ -113,24 +119,10 @@ Doubts answered include:
 - What goes wrong when the Hessian is not PSD?
 - Why does minimizing over one block produce a Schur complement?
 
-<span id="epigraph-form"></span>
-<span id="quasiconvexity"></span>
-<span id="quasiconvex-bisection"></span>
-
-### 3.3 [Quasiconvex Optimization and Bisection](/posts/quasiconvex-optimization-bisection/)
-
-Convexity is a curvature condition; quasiconvexity is a sublevel-set condition. This chapter develops epigraph formulations, piecewise-linear minimization, quasiconvex and quasiconcave functions, linear-fractional objectives, and bisection.
-
-Its central doubt is:
-
-> In quasiconvex bisection, are we optimizing $x$ or $t$?
-
-The original decision variable remains $x$. During each feasibility test, $t$ is a fixed candidate objective level. Bisection updates $t$ outside that feasibility problem. The full chapter builds the context needed for that distinction instead of presenting it as an isolated rule.
-
 <span id="lp-qp-geometry"></span>
 <span id="constrained-optimality"></span>
 
-### 3.4 [LP and QP Geometry, Constraints, and First-Order Optimality](/posts/optimality-constraint-geometry/)
+### 3.3 [LP and QP Geometry, Constraints, and First-Order Optimality](/posts/optimality-constraint-geometry/)
 
 This chapter asks where optimal points can occur and how constraints change the usual gradient condition. It covers LP vertices and optimal faces, QP interior solutions, first-order optimality over a convex set, equality-constraint nullspaces, elimination of equalities, and the nonnegative orthant.
 
@@ -142,9 +134,9 @@ Doubts answered include:
 - Why must the gradient be orthogonal to feasible equality-constrained directions?
 - What changes when a variable is already at the boundary $x_i=0$?
 
-### 3.5 [Conic Optimization: From LPs to SOCPs and SDPs](/posts/conic-optimization-socp-sdp/)
+### 3.4 [Conic Optimization: From LPs to SOCPs and SDPs](/posts/conic-optimization-socp-sdp/)
 
-Conic optimization shows that LPs, second-order cone programs, and semidefinite programs share one structure. The chapter covers convex cones, cone-induced partial orders, the nonnegative orthant, second-order and PSD cones, LMIs, the Schur complement, and SDP applications.
+Conic optimization shows that LPs, second-order cone programs, and semidefinite programs share one structure. The chapter covers convex and proper cones, cone-induced partial orders, the nonnegative orthant, second-order and PSD cones, LMIs, the Schur complement, and exact conic representations.
 
 Doubts answered include:
 
