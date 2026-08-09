@@ -161,33 +161,13 @@ These families overlap. An LP is a conic program over the nonnegative orthant. M
 
 ## 5. Doubts worth keeping
 
-Good doubts expose missing assumptions. These recur across the chapters:
+Good doubts expose missing assumptions. The hub indexes them without repeating their answers:
 
-### “Convex means the Hessian is positive definite.”
-
-Not always. For twice-differentiable functions, a PSD Hessian is enough. Convexity is also defined for nonsmooth functions, where a Hessian may not exist.
-
-### “An LP solution is always one vertex.”
-
-No. A linear objective can be constant across an entire edge or face. Under common conditions an optimal vertex exists, but other points may also be optimal.
-
-### “Quasiconvex means positive curvature.”
-
-No. Quasiconvexity means every sublevel set is convex. A quasiconvex function need not be convex.
-
-### “A matrix with nonnegative diagonal entries is PSD.”
-
-Not necessarily. PSD implies nonnegative diagonal entries, but the converse fails because off-diagonal coupling can create a negative eigenvalue.
-
-### “A matrix inequality compares entries one by one.”
-
-Only when the cone is the nonnegative orthant applied to a vector of entries. The PSD order $X\preceq Y$ instead means $Y-X\succeq0$, or
-
-$$
-z^TXz\le z^TYz
-$$
-
-for every direction $z$.
+- [Does convexity require a positive-definite Hessian?](/posts/convex-quadratics-psd-schur-complement/#convex-quadratics)
+- [Must an LP solution be a single vertex?](/posts/optimality-constraint-geometry/#lp-qp-geometry)
+- [Is quasiconvexity a curvature condition?](/posts/convex-sets-functions-first-order-geometry/#quasiconvexity)
+- [Do nonnegative diagonal entries imply PSD?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#psd-diagonal-entries)
+- [Does a PSD matrix inequality compare entries one by one?](/posts/conic-optimization-socp-sdp/#matrix-order)
 
 ## 6. A practical checklist
 

@@ -106,22 +106,7 @@ $$
 
 The members of this cone are matrices. One matrix $P\succeq0$ is an element of $\mathbf S_+^n$; it is not the entire cone.
 
-The PSD cone is convex. If $X,Y\succeq0$ and $\alpha,\beta\ge0$, then for every $z$,
-
-$$
-z^T(\alpha X+\beta Y)z
-=
-\alpha z^TXz+\beta z^TYz
-\ge0.
-$$
-
-Therefore,
-
-$$
-\alpha X+\beta Y\succeq0.
-$$
-
-For more linear-algebra background, see [Convex Quadratics, PSD Matrices, and the Schur Complement](/posts/convex-quadratics-psd-schur-complement/) and [Symmetric Matrices, Quadratic Forms, and Matrix Norms](/posts/symmetric-matrices-quadratic-forms-matrix-norm/).
+The eigenvalue interpretation and the distinction between PSD and positive definite matrices are kept in [Positive semidefinite matrices](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#positive-semidefinite). The closure argument is in [Why do PSD matrices form a convex cone?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#psd-convex-cone).
 
 ## 3. Proper cones and generalized inequalities
 
@@ -196,7 +181,7 @@ x_i\le y_i
 \text{for every }i.
 $$
 
-### Matrix order
+### Matrix order {#matrix-order}
 
 For $K=\mathbf S_+^n$,
 
@@ -206,13 +191,7 @@ X\preceq Y
 Y-X\succeq0.
 $$
 
-This is not an entrywise comparison. It means
-
-$$
-z^TXz\le z^TYz
-\qquad
-\text{for every }z\in\mathbb R^n.
-$$
+This is not an entrywise comparison. Its directional meaning and examples of incomparable matrices are explained once in [Comparing quadratic forms: the Loewner order](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#loewner-order).
 
 ### Doubt: must every pair be comparable?
 
@@ -272,13 +251,7 @@ $$
 
 Therefore an LP is a conic program over the nonnegative orthant.
 
-### Doubt: why is it called linear when the feasible set has corners?
-
-“Linear” describes the algebraic expressions in the objective and constraints. It does not mean that the feasible set is a line.
-
-Each scalar affine inequality defines a halfspace. The intersection of finitely many halfspaces and affine sets is a polyhedron, which may have faces, edges, vertices, and unbounded directions.
-
-For more about this geometry, see [LP and QP Geometry, Constraints, and First-Order Optimality](/posts/optimality-constraint-geometry/).
+The definition of an LP and the proof that its feasible set is a polyhedron are given once in [Convex sets, halfspaces, and polyhedra](/posts/convex-sets-functions-first-order-geometry/#convex-sets). Here we only need its conic representation.
 
 ## 6. Second-order cone programming
 
@@ -384,47 +357,15 @@ Therefore every point on the segment between $x$ and $y$ is feasible.
 
 ## 8. Why LMIs use symmetric matrices
 
-Positive semidefiniteness is defined through a quadratic form. For any real square matrix $F$, write
+Only the symmetric part of a real matrix affects its quadratic form:
 
 $$
-F=S+N,
+z^TFz
+=
+z^T\left(\frac{F+F^T}{2}\right)z.
 $$
 
-where
-
-$$
-S=\frac{F+F^T}{2},
-\qquad
-N=\frac{F-F^T}{2}.
-$$
-
-The matrix $S$ is symmetric and $N$ is skew-symmetric.
-
-Let
-
-$$
-a=z^TNz.
-$$
-
-Because $a$ is a scalar,
-
-$$
-a=a^T=z^TN^Tz.
-$$
-
-Since $N^T=-N$,
-
-$$
-a=-z^TNz=-a.
-$$
-
-Hence $a=0$, and therefore
-
-$$
-z^TFz=z^TSz.
-$$
-
-Only the symmetric part affects the quadratic form. Restricting an LMI to symmetric matrices removes the redundant skew-symmetric part and gives a real spectral description of positive semidefiniteness.
+The full skew-symmetric cancellation proof is given in [Must the matrix in a quadratic form be symmetric?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#symmetric-part-quadratic-form). For an LMI, the consequence is that restricting $F$ to symmetric matrices removes a redundant part and gives a real spectral description of positive semidefiniteness.
 
 For complex matrices, “symmetric” is replaced by **Hermitian**:
 
@@ -476,31 +417,9 @@ $$
 
 The first inclusion holds because a scalar nonnegativity constraint is a one-dimensional second-order cone constraint. The second inclusion is proved explicitly in Section 11 by representing a second-order cone constraint as an LMI.
 
-### Doubt: why is every diagonal entry of a PSD matrix nonnegative?
+This diagonal construction uses the fact that every diagonal entry of a PSD matrix is nonnegative. Its proof—and why the converse fails—is in [Must every diagonal entry of a PSD matrix be nonnegative?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#psd-diagonal-entries).
 
-Let $e_i$ be the $i$-th standard basis vector. If $X\succeq0$, then
-
-$$
-e_i^TXe_i\ge0.
-$$
-
-But
-
-$$
-e_i^TXe_i=X_{ii}.
-$$
-
-Therefore,
-
-$$
-X_{ii}\ge0
-\qquad
-\text{for every }i.
-$$
-
-The converse does not hold for a general symmetric matrix. Nonnegative diagonal entries control only the quadratic form along the coordinate axes. Off-diagonal terms can still make the quadratic form negative in another direction.
-
-## 10. The Schur complement
+## 10. The Schur complement {#the-schur-complement}
 
 Consider the symmetric block matrix
 
@@ -662,17 +581,13 @@ This is why matrix-cone constraints are more expressive than componentwise scala
 
 ## 13. Connection to Perron–Frobenius theory
 
-A cone selects which directions count as positive. This same idea appears in Perron–Frobenius theory.
-
-If a linear map satisfies
+A cone selects which directions count as positive. Perron–Frobenius theory uses the same idea: a map satisfying
 
 $$
 AK\subseteq K,
 $$
 
-then it preserves the cone: applying $A$ to a positive direction produces another positive direction. When $K$ induces an order, the map respects that ordered geometry.
-
-This viewpoint connects generalized inequalities with positive linear systems, invariant cones, and eigenvector theory. The role of the cone is consistent across both subjects.
+preserves those positive directions. The theorem, irreducibility conditions, eigenvector conclusions, and corrections are explained in [Perron–Frobenius theory](/posts/linear-algebra-important-concepts/#perron-frobenius); they are not repeated here.
 
 ## 14. Consistency checklist
 

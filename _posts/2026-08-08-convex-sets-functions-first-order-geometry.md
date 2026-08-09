@@ -271,7 +271,7 @@ $$
 
 Thus $\log p$ is concave and the Gaussian density is log-concave.
 
-### Why is a covariance matrix PSD?
+### Why is a covariance matrix PSD? {#why-is-a-covariance-matrix-psd}
 
 Let $X\in\mathbb R^n$ be a random vector with mean
 

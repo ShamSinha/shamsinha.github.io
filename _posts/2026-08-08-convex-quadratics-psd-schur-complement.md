@@ -48,15 +48,13 @@ $$
 
 ### What does positive semidefinite mean?
 
-It means
+For the optimization argument, we need the condition
 
 $$
 z^TPz\ge0\qquad\text{for every }z.
 $$
 
-Equivalently, when $P$ is symmetric, all eigenvalues of $P$ are nonnegative.
-
-Geometrically, the quadratic has nonnegative curvature in every direction.
+This says that the quadratic has nonnegative curvature in every direction. The eigenvalue characterization and full PSD theory are explained in [Positive semidefinite matrices](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#positive-semidefinite).
 
 ### Is P a matrix or a cone?
 
@@ -72,20 +70,7 @@ means that $P$ belongs to the set of all symmetric positive-semidefinite $n\time
 
 The set $\mathbf S_+^n$ is a convex cone.
 
-Why is it a cone? If $P\succeq0$ and $\alpha\ge0$, then
-
-$$
-z^T(\alpha P)z=\alpha z^TPz\ge0.
-$$
-
-Why is it convex? If $P,Q\succeq0$ and $0\le\theta\le1$, then
-
-$$
-z^T(\theta P+(1-\theta)Q)z
-=\theta z^TPz+(1-\theta)z^TQz\ge0.
-$$
-
-So the precise statement is:
+The proof that this set is closed under nonnegative combinations is kept in [Why do PSD matrices form a convex cone?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#psd-convex-cone). The precise distinction here is:
 
 - $P$ is a PSD matrix;
 - $\mathbf S_+^n$ is the PSD cone.
@@ -124,230 +109,57 @@ If $P\succeq0$ but is singular, the function may be flat in some directions, so 
 
 ---
 
-## 3. Why can every quadratic form be represented by a symmetric matrix? {#symmetric-quadratics}
+## 3. Why can every quadratic form use a symmetric matrix? {#symmetric-quadratics}
 
-The phrase "we can assume that $P$ is symmetric" can be misleading. We are not proving that the original matrix $P$ is symmetric. Instead, we are showing that every possibly nonsymmetric matrix can be replaced by a symmetric matrix without changing the quadratic function.
-
-Start with a general square matrix
-
-$$
-P\in\mathbb{R}^{n\times n}.
-$$
-
-It can always be decomposed as
-
-$$
-P=H+K,
-$$
-
-where
-
-$$
-H=\frac{P+P^T}{2}
-$$
-
-and
-
-$$
-K=\frac{P-P^T}{2}.
-$$
-
-The matrix $H$ is symmetric because
-
-$$
-H^T
-=\left(\frac{P+P^T}{2}\right)^T
-=\frac{P^T+P}{2}
-=H.
-$$
-
-The matrix $K$ is skew-symmetric because
-
-$$
-K^T
-=\left(\frac{P-P^T}{2}\right)^T
-=\frac{P^T-P}{2}
-=-K.
-$$
-
-Thus every square matrix is the sum of a symmetric part and a skew-symmetric part.
-
-### Why does the skew-symmetric part disappear?
-
-Consider the scalar
-
-$$
-a=x^TKx.
-$$
-
-Because $a$ is a scalar, transposing it does not change it:
-
-$$
-a=a^T.
-$$
-
-Now transpose the complete product:
-
-$$
-a^T
-=(x^TKx)^T
-=x^TK^Tx.
-$$
-
-Since $K^T=-K$,
-
-$$
-a^T=x^T(-K)x=-x^TKx=-a.
-$$
-
-We have therefore shown both
-
-$$
-a=a^T
-$$
-
-and
-
-$$
-a^T=-a.
-$$
-
-Hence $a=-a$, which is possible only when
-
-$$
-a=0.
-$$
-
-Therefore every skew-symmetric matrix satisfies
-
-$$
-x^TKx=0
-$$
-
-for every vector $x$.
-
-### Apply this result to the quadratic form
-
-Using $P=H+K$,
+For any square matrix $P$,
 
 $$
 x^TPx
-=x^T(H+K)x
-=x^THx+x^TKx.
+=
+x^T\left(\frac{P+P^T}{2}\right)x.
 $$
 
-The second term is zero, so
+The skew-symmetric part contributes zero. The complete cancellation proof is kept in [Must the matrix in a quadratic form be symmetric?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#symmetric-part-quadratic-form).
+
+The optimization consequence is worth stating here. For
 
 $$
-x^TPx=x^THx
-=x^T\left(\frac{P+P^T}{2}\right)x.
+f(x)=\frac12x^TPx+q^Tx+r
 $$
 
-This is the precise meaning of "we can assume $P$ is symmetric": the original $P$ need not be symmetric, but its symmetric part represents exactly the same quadratic form.
-
-### Concrete example
-
-Take the nonsymmetric matrix
-
-$$
-P=
-\begin{bmatrix}
-1&1\\
--1&1
-\end{bmatrix}.
-$$
-
-Its symmetric part is
-
-$$
-H
-=\frac{P+P^T}{2}
-=\begin{bmatrix}
-1&0\\
-0&1
-\end{bmatrix}
-=I,
-$$
-
-and its skew-symmetric part is
-
-$$
-K
-=\frac{P-P^T}{2}
-=\begin{bmatrix}
-0&1\\
--1&0
-\end{bmatrix}.
-$$
-
-For
-
-$$
-x=\begin{bmatrix}x_1\\x_2\end{bmatrix},
-$$
-
-direct expansion gives
-
-$$
-x^TPx
-=x_1^2+x_1x_2-x_1x_2+x_2^2
-=x_1^2+x_2^2.
-$$
-
-The two cross terms cancel. This is exactly the same expression obtained from the symmetric part:
-
-$$
-x^THx=x^TIx=x_1^2+x_2^2.
-$$
-
-### What happens to the gradient and Hessian?
-
-For a general matrix $P$, consider
-
-$$
-f(x)=\frac12x^TPx+q^Tx+r.
-$$
-
-Before making any symmetry assumption, the gradient is
+with a possibly nonsymmetric $P$,
 
 $$
 \nabla f(x)
-=\frac12(P+P^T)x+q,
+=
+\frac12(P+P^T)x+q,
 $$
 
-and the Hessian is
+and
 
 $$
-\nabla^2f(x)=\frac{P+P^T}{2}=H.
+\nabla^2f(x)
+=
+\frac{P+P^T}{2}.
 $$
 
-The Hessian is necessarily symmetric, and the skew-symmetric part of $P$ has no effect on either the function or its derivatives.
-
-After replacing $P$ by $H$, we may rename $H$ as $P$. Then $P=P^T$, and the familiar formulas become
-
-$$
-\nabla f(x)=Px+q,
-\qquad
-\nabla^2f(x)=P.
-$$
-
-Therefore the correct convexity condition for a quadratic written with an arbitrary matrix is
+Thus the skew-symmetric part affects neither the function nor its derivatives. The correct convexity condition is
 
 $$
 \frac{P+P^T}{2}\succeq0.
 $$
 
-Once the symmetric representative is used, this is written more simply as
+After replacing $P$ by its symmetric part, we may rename that representative $P$ and write the familiar condition
 
 $$
 P\succeq0.
 $$
 
-The key conclusion is not that every matrix is symmetric. It is that every quadratic form has an equivalent symmetric matrix representation, and only that symmetric part determines its curvature and convexity.
-
 ---
 
 ## 4. Block quadratic forms and the Schur complement
+
+The full block-matrix Schur-complement theorem and its congruence proof are given in [The Schur complement](/posts/conic-optimization-socp-sdp/#the-schur-complement). Here we keep only its optimization-specific interpretation.
 
 Consider
 

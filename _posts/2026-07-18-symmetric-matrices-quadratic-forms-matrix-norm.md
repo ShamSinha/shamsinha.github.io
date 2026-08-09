@@ -264,7 +264,7 @@ $$
 
 This is the mathematical core of many smoothing and regularization methods.
 
-### Doubt: must $A$ be symmetric in $x^TAx$?
+### Doubt: must $A$ be symmetric in $x^TAx$? {#symmetric-part-quadratic-form}
 
 We lose nothing by assuming symmetry. Decompose any square matrix as
 
@@ -410,7 +410,26 @@ A\succ0
 \lambda_i>0\text{ for every }i.
 $$
 
-### Doubt: must every diagonal entry of a PSD matrix be nonnegative?
+### Why do PSD matrices form a convex cone? {#psd-convex-cone}
+
+If $A,B\succeq0$ and $\alpha,\beta\ge0$, then for every $x$,
+
+$$
+x^T(\alpha A+\beta B)x
+=
+\alpha x^TAx+\beta x^TBx
+\ge0.
+$$
+
+Therefore,
+
+$$
+\alpha A+\beta B\succeq0.
+$$
+
+So $\mathbf S_+^n$ is closed under nonnegative linear combinations: it is a convex cone.
+
+### Doubt: must every diagonal entry of a PSD matrix be nonnegative? {#psd-diagonal-entries}
 
 Yes. Let $e_i$ be the $i$-th standard basis vector: it has a $1$ in position $i$ and zeros everywhere else. Since a PSD matrix satisfies $x^TAx\geq0$ for every $x$, we may choose $x=e_i$ and obtain
 
@@ -479,11 +498,11 @@ $$
 This explains why PSD matrices appear in many places:
 
 - **least squares:** the Hessian of $\lVert Bx-b\rVert_2^2$ is a multiple of $B^TB$;
-- **covariance:** $z^T\Sigma z$ is the variance in direction $z$;
+- **covariance:** the full directional-variance proof is in [Why is a covariance matrix PSD?](/posts/convex-sets-functions-first-order-geometry/#why-is-a-covariance-matrix-psd);
 - **convex optimization:** a twice-differentiable function is convex when its Hessian is PSD everywhere;
 - **energy models:** a PSD quadratic form cannot assign negative energy.
 
-### Comparing quadratic forms: the Loewner order
+### Comparing quadratic forms: the Loewner order {#loewner-order}
 
 For symmetric matrices, define
 

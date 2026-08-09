@@ -252,45 +252,12 @@ For example, a two-dimensional rotation through an angle other than $0$ or $\pi$
 
 ### Doubt: are eigenvectors of a symmetric matrix always orthogonal?
 
-The careful statement is:
+The careful statements are:
 
-> Eigenvectors of a real symmetric matrix that correspond to distinct eigenvalues are orthogonal.
+- eigenvectors belonging to distinct eigenvalues are orthogonal;
+- within a repeated eigenspace, arbitrary eigenvectors need not already be orthogonal, but an orthonormal basis can be chosen.
 
-Suppose
-
-$$
-Av=\lambda v,
-\qquad
-Aw=\mu w,
-$$
-
-with $A=A^T$ and $\lambda\ne\mu$. Then
-
-$$
-v^TAw=\mu v^Tw.
-$$
-
-But symmetry also gives
-
-$$
-v^TAw=(Av)^Tw=\lambda v^Tw.
-$$
-
-Therefore
-
-$$
-(\lambda-\mu)v^Tw=0.
-$$
-
-Since $\lambda\ne\mu$,
-
-$$
-v^Tw=0.
-$$
-
-For a repeated eigenvalue, arbitrary vectors in its eigenspace need not already be orthogonal, but we can choose an orthonormal basis for that eigenspace.
-
-The companion article [Symmetric Matrices, Quadratic Forms, and Matrix Norms](/posts/symmetric-matrices-quadratic-forms-matrix-norm/) proves the other crucial fact in full detail: **every eigenvalue of a real symmetric matrix is real**, even if we initially allow a complex eigenvector.
+The proof, together with the proof that every eigenvalue is real, is kept in [Why symmetric matrices are special](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#symmetric-matrices).
 
 ---
 
@@ -469,175 +436,43 @@ The geometric multiplicity can never exceed the algebraic multiplicity. Assuming
 
 ## 6. Spectral decomposition and SVD {#spectral-svd}
 
+This section records the distinction needed for a general linear-algebra map. The geometric derivations, matrix-norm connection, and detailed proofs are kept in [Symmetric Matrices, Quadratic Forms, and Matrix Norms](/posts/symmetric-matrices-quadratic-forms-matrix-norm/).
+
 ### Spectral decomposition
 
-Every real symmetric matrix has an orthonormal eigenbasis. Therefore
-
-$$
-A=Q\Lambda Q^T,
-$$
-
-where $Q$ is orthogonal and $\Lambda$ is diagonal.
-
-Equivalently,
-
-$$
-A=\sum_{i=1}^n\lambda_iq_iq_i^T.
-$$
-
-Each term acts along one orthogonal eigenvector direction.
-
-#### Doubt: is spectral decomposition only for symmetric matrices?
-
-The terminology varies, so it helps to separate two statements:
-
-- Every diagonalizable square matrix has an eigenvalue decomposition $A=V\Lambda V^{-1}$.
-- A real symmetric matrix has the stronger **orthogonal spectral decomposition** $A=Q\Lambda Q^T$.
-
-For the second form, collect the orthonormal eigenvectors into $Q$. Then
-
-$$
-AQ=Q\Lambda.
-$$
-
-Because $Q^{-1}=Q^T$, multiplying on the right by $Q^T$ gives
+A real symmetric matrix has an orthogonal spectral decomposition
 
 $$
 A=Q\Lambda Q^T.
 $$
 
-This is special: the eigenvalues are real, the eigenvectors can be chosen orthonormally, and the inverse is just a transpose. For complex normal matrices, the corresponding statement uses the conjugate transpose: $A=Q\Lambda Q^*$.
+The columns of $Q$ are orthonormal eigenvectors and $\Lambda$ contains the real eigenvalues. Conceptually, $Q^T$ changes to eigenvector coordinates, $\Lambda$ scales those coordinates, and $Q$ changes back.
 
-#### Geometric meaning: one transformation, three simpler steps
-
-Matrix multiplication **composes** transformations. Matrix decomposition asks the reverse question: can one complicated transformation be expressed as a sequence of simpler transformations?
-
-The columns of $Q$ are the orthonormal eigenvectors, so
+A general diagonalizable matrix instead has
 
 $$
-Qe_i=q_i.
+A=V\Lambda V^{-1},
 $$
 
-Thus $Q$ maps the standard basis to the eigenvector basis, while $Q^T$ maps a vector into eigenvector coordinates. Remember that the rightmost matrix acts first in
-
-$$
-Ax=Q\Lambda Q^Tx.
-$$
-
-The sequence is therefore:
-
-1. $Q^T$ expresses $x$ in the eigenvector basis.
-2. $\Lambda$ scales each eigenvector coordinate independently. A negative eigenvalue also reverses that direction.
-3. $Q$ maps the result back to the original coordinate system.
-
-So the geometric memory aid is
-
-$$
-\boxed{
-\text{change to eigenbasis}
-\;\longrightarrow\;
-\text{scale}
-\;\longrightarrow\;
-\text{change back}
-}
-$$
+where $V$ need not be orthogonal. The stronger orthogonal form is a consequence of symmetry.
 
 ### Singular value decomposition
 
-The singular value decomposition applies to **every** real matrix, including rectangular and non-diagonalizable matrices:
+Every real matrix, including rectangular and nondiagonalizable matrices, has an SVD:
 
 $$
 A=U\Sigma V^T.
 $$
 
-Here:
+The columns of $V$ are orthonormal input directions, the columns of $U$ are orthonormal output directions, and the singular values in $\Sigma$ are nonnegative gains. Unlike symmetric eigendecomposition, SVD may use different input and output directions.
 
-- the columns of $V$ are orthonormal input directions;
-- $\Sigma$ scales those directions by nonnegative singular values;
-- the columns of $U$ are orthonormal output directions.
-
-Geometrically:
+For the derivation from $A^TA$, the interpretation of singular values, and the relation
 
 $$
-\text{rotate/reflect input}
-\;\longrightarrow\;
-\text{scale}
-\;\longrightarrow\;
-\text{rotate/reflect output}.
+\lVert A\rVert_2=\sigma_{\max}(A),
 $$
 
-The singular values satisfy
-
-$$
-\sigma_i=\sqrt{\lambda_i(A^TA)}.
-$$
-
-#### How is SVD derived?
-
-Start with $A^TA$. It is symmetric and positive semidefinite because
-
-$$
-x^TA^TAx=\lVert Ax\rVert_2^2\ge0.
-$$
-
-Therefore it has an orthonormal eigenbasis $v_i$ with nonnegative eigenvalues:
-
-$$
-A^TAv_i=\sigma_i^2v_i.
-$$
-
-For every nonzero singular value, define
-
-$$
-u_i=\frac{Av_i}{\sigma_i}.
-$$
-
-Then
-
-$$
-Av_i=\sigma_i u_i.
-$$
-
-The $u_i$ are orthonormal because, for $i\ne j$,
-
-$$
-u_i^Tu_j
-=\frac{v_i^TA^TAv_j}{\sigma_i\sigma_j}
-=0,
-$$
-
-and $u_i^Tu_i=1$. Collecting these equations gives
-
-$$
-AV=U\Sigma,
-$$
-
-so
-
-$$
-A=U\Sigma V^T.
-$$
-
-If some singular values are zero, the remaining columns of $U$ and $V$ are chosen to complete orthonormal bases. This is why SVD exists even when $A$ is rectangular, singular, or not diagonalizable.
-
-The singular values also reveal rank and approximation quality. If
-
-$$
-\sigma_1\ge\sigma_2\ge\cdots\ge0,
-$$
-
-then the number of nonzero singular values is $\operatorname{rank}(A)$. Keeping only the largest singular values produces a low-rank approximation, which is the basic idea behind PCA, image compression, and noise reduction. SVD also gives the pseudoinverse used for singular or rectangular least-squares problems.
-
-### Spectral decomposition versus SVD
-
-| Question | Spectral decomposition | SVD |
-|---|---|---|
-| Applies to | Symmetric/normal matrices | Every matrix |
-| Matrix shape | Square | Square or rectangular |
-| Diagonal values | Eigenvalues, possibly negative | Singular values, always nonnegative |
-| Same input/output directions? | Eigenvector directions | Left and right singular vectors may differ |
-
-For a symmetric PSD matrix, the two decompositions align closely because its eigenvalues are already nonnegative.
+continue with [SVD as the full directional explanation of matrix norm](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#svd-and-norm).
 
 ---
 
