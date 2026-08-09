@@ -228,17 +228,6 @@ $$
 
 The component along the diagonal line $q_1$ is unchanged. The component along the perpendicular diagonal $q_2$ is doubled and reversed. This geometric description says much more than multiplying entries mechanically.
 
-### Why these matrices appear so often
-
-Symmetric matrices arise whenever a quantity treats pairs of coordinates without an orientation:
-
-- a Gram matrix $B^TB$ records inner products;
-- a covariance matrix records how variables vary together;
-- the Hessian of a sufficiently smooth scalar function records local curvature;
-- graph Laplacians encode pairwise differences across edges.
-
-The common benefit is the same: orthogonal directions in which the system decouples.
-
 ---
 
 ## 2. Quadratic forms: turning a direction into a number {#quadratic-forms}
