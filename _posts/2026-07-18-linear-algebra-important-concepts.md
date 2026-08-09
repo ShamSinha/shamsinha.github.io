@@ -12,9 +12,9 @@ permalink: /posts/linear-algebra-important-concepts/
 description: "A focused, doubt-driven guide to matrices as transformations, eigenvalues, diagonalization, SVD, projections, determinants, matrix powers, and Perron–Frobenius theory."
 ---
 
-Why can two different inputs sometimes produce the same output? Why do eigenvalues predict what happens after a matrix is applied repeatedly? Why does a zero determinant mean that no inverse can possibly exist? And why does a sufficiently connected nonnegative system reveal a positive eigenvector at its spectral radius?
+A matrix can stretch, rotate, reflect, mix, or collapse directions. The notation $Ax$ hides all of this behavior inside one short expression. Linear algebra gives us different tools for exposing that behavior: eigenvectors reveal simple directions, diagonalization separates coupled motion, determinants detect lost dimensions, and matrix powers describe repeated action.
 
-These questions look separate when linear algebra is presented as a list of definitions. They become connected once a matrix is viewed as an action on space.
+These tools can look like unrelated definitions. They become one story once a matrix is viewed as an action on space.
 
 This is not a complete linear algebra textbook. It is a focused collection of the concepts I found important, organized so that each definition appears before the doubt that depends on it.
 
@@ -22,19 +22,19 @@ The central idea connecting the whole post is:
 
 > A matrix is not merely a table of numbers. It represents a transformation, and its algebraic properties tell us what that transformation preserves, scales, collapses, or reveals.
 
-## Questions that drive the article
+## How the ideas solve different problems
 
-| Question | Ideas that answer it |
-|---|---|
-| What does a matrix actually do to space? | [Matrices as transformations](#matrix-transformations) |
-| Which transformations preserve lengths, and which have especially clean directions? | [Symmetric and orthogonal matrices](#special-matrices) |
-| Are there directions a transformation changes only by scaling? | [Eigenvalues and eigenvectors](#eigenvalues) |
-| What do trace and determinant summarize geometrically? | [Trace and determinant through eigenvalues](#trace-determinant) |
-| Can a complicated transformation be separated into independent modes? | [Diagonalization](#diagonalization) and [spectral decomposition and SVD](#spectral-svd) |
-| Why is orthogonality more useful than mere independence? | [Projection and Gram–Schmidt](#projection-gram-schmidt) |
-| What survives after applying the same matrix many times? | [Matrix powers](#matrix-powers) |
-| Why does connectivity give a nonnegative system a positive eigenvector? | [Perron–Frobenius theory](#perron-frobenius) |
-| Why does one collapsed direction make inversion impossible? | [Why determinant zero means non-invertible](#determinant-invertibility) |
+| Starting problem | Idea introduced | What becomes clear |
+|---|---|---|
+| A table of coefficients does not show what happens geometrically to an input. | [Matrices as transformations](#matrix-transformations) | The columns show where basis directions go, and therefore determine every output. |
+| Some transformations preserve lengths, while others have especially clean directional structure. | [Symmetric and orthogonal matrices](#special-matrices) | Orthogonal matrices preserve geometry; symmetric matrices admit orthogonal eigenvector coordinates. |
+| A transformation mixes coordinates, making its behavior difficult to follow. | [Eigenvalues and eigenvectors](#eigenvalues) | Certain directions change only by a scalar factor. |
+| We need compact summaries of scaling and dimensional collapse. | [Trace and determinant](#trace-determinant) | Trace adds the eigenvalues; determinant multiplies them and detects singularity. |
+| Even after finding eigenvectors, the original matrix may still look coupled. | [Diagonalization](#diagonalization), [spectral decomposition, and SVD](#spectral-svd) | The transformation separates into independent modes or input-output directions. |
+| An independent basis need not make lengths, angles, or nearest points easy to compute. | [Projection and Gram–Schmidt](#projection-gram-schmidt) | Orthogonal coordinates separate components and make projection direct. |
+| Applying the same matrix repeatedly is expensive and hard to interpret entry by entry. | [Matrix powers](#matrix-powers) | Eigenmodes and graph walks explain repeated evolution. |
+| In a connected system with nonnegative interactions, we want to identify a mode whose entries are all positive. | [Perron–Frobenius theory](#perron-frobenius) | Under the theorem's conditions, the spectral radius has a positive eigenvector. |
+| A transformation may lose information, making reversal impossible. | [Determinant and invertibility](#determinant-invertibility) | A zero determinant, a collapsed direction, a nontrivial nullspace, and non-invertibility are the same failure viewed differently. |
 
 ## How to read these notes
 
