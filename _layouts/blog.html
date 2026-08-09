@@ -76,8 +76,53 @@ layout: default
       </article>
     {% endfor %}
   </div>
-</section>
 
-{% if paginator.total_pages > 1 %}
-  {% include post-paginator.html %}
-{% endif %}
+  {% if paginator.total_pages > 1 %}
+    <nav class="compact-pagination" aria-label="Blog pages">
+      {% if paginator.page > 1 %}
+        {% assign previous_number = paginator.page | minus: 1 %}
+        {% if previous_number == 1 %}
+          {% assign previous_path = '/blog/' %}
+        {% else %}
+          {% capture previous_path %}/blog/page{{ previous_number }}/{% endcapture %}
+        {% endif %}
+        <a class="compact-pagination-direction" href="{{ previous_path | relative_url }}" rel="prev">
+          <span aria-hidden="true">←</span> Previous
+        </a>
+      {% else %}
+        <span class="compact-pagination-direction is-disabled" aria-disabled="true">
+          <span aria-hidden="true">←</span> Previous
+        </span>
+      {% endif %}
+
+      <ol class="compact-pagination-pages">
+        {% for page_number in (1..paginator.total_pages) %}
+          <li>
+            {% if page_number == paginator.page %}
+              <span class="is-current" aria-current="page">{{ page_number }}</span>
+            {% else %}
+              {% if page_number == 1 %}
+                {% assign page_path = '/blog/' %}
+              {% else %}
+                {% capture page_path %}/blog/page{{ page_number }}/{% endcapture %}
+              {% endif %}
+              <a href="{{ page_path | relative_url }}" aria-label="Blog page {{ page_number }}">{{ page_number }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+
+      {% if paginator.page < paginator.total_pages %}
+        {% assign next_number = paginator.page | plus: 1 %}
+        {% capture next_path %}/blog/page{{ next_number }}/{% endcapture %}
+        <a class="compact-pagination-direction" href="{{ next_path | relative_url }}" rel="next">
+          Next <span aria-hidden="true">→</span>
+        </a>
+      {% else %}
+        <span class="compact-pagination-direction is-disabled" aria-disabled="true">
+          Next <span aria-hidden="true">→</span>
+        </span>
+      {% endif %}
+    </nav>
+  {% endif %}
+</section>
