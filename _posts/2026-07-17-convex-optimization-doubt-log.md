@@ -78,7 +78,16 @@ A slogan such as “a local minimum is global” is only useful with its assumpt
 
 The detailed chapters below keep those assumptions beside the doubts they answer.
 
-## 3. Learning path
+## 3. Mathematical prerequisites
+
+You do not need to finish all of linear algebra before beginning convex optimization. However, the later chapters assume that vectors, matrices, nullspaces, eigenvalues, and quadratic forms are familiar.
+
+- Use [Linear Algebra: Important Concepts and the Doubts That Connect Them](/posts/linear-algebra-important-concepts/) for the broad concepts and their connections.
+- Use [Symmetric Matrices, Quadratic Forms, and Matrix Norm](/posts/symmetric-matrices-quadratic-forms-matrix-norm/) when a chapter refers to symmetric eigenvalues, positive-semidefinite matrices, quadratic forms, or matrix norms.
+
+The optimization chapters link directly to the relevant sections when these ideas are needed, so their proofs do not have to be repeated.
+
+## 4. Learning path
 
 The chapters are ordered so that each one supplies the definitions needed by the next.
 
@@ -89,7 +98,7 @@ The chapters are ordered so that each one supplies the definitions needed by the
 <span id="quasiconvexity"></span>
 <span id="quasiconvex-bisection"></span>
 
-### 3.1 [Convex Sets, Functions, and Quasiconvex Optimization](/posts/convex-sets-functions-first-order-geometry/)
+### 4.1 [Convex Sets, Functions, and Quasiconvex Optimization](/posts/convex-sets-functions-first-order-geometry/)
 
 Start here. This combined chapter covers convex combinations, halfspaces, affine sets, polyhedra, Jensen's inequality, supporting hyperplanes, local versus global minima, log-concavity, epigraph formulations, quasiconvex and quasiconcave functions, and optimization by bisection.
 
@@ -106,10 +115,12 @@ Doubts answered include:
 
 <span id="convex-quadratics"></span>
 <span id="symmetric-quadratics"></span>
+<span id="lp-qp-geometry"></span>
+<span id="constrained-optimality"></span>
 
-### 3.2 [Convex Quadratics, PSD Matrices, and the Schur Complement](/posts/convex-quadratics-psd-schur-complement/)
+### 4.2 [Quadratic and Constrained Convex Optimization: Curvature, Geometry, and Optimality](/posts/convex-quadratics-psd-schur-complement/)
 
-This is where linear algebra begins controlling curvature. The chapter explains convex quadratic objectives, positive-semidefinite matrices, symmetric and skew-symmetric parts, Hessians, block quadratic forms, and the Schur complement.
+This is where matrix curvature meets constraint geometry. The combined chapter explains convex quadratic objectives, positive-semidefinite Hessians, LP vertices and optimal faces, QP interior solutions, first-order optimality over a convex set, equality-constraint nullspaces, the nonnegative orthant, and the Schur complement.
 
 Doubts answered include:
 
@@ -117,24 +128,14 @@ Doubts answered include:
 - Why is there a factor of $1/2$ in a quadratic objective?
 - Why does the skew-symmetric part disappear from $x^TPx$?
 - What goes wrong when the Hessian is not PSD?
-- Why does minimizing over one block produce a Schur complement?
-
-<span id="lp-qp-geometry"></span>
-<span id="constrained-optimality"></span>
-
-### 3.3 [LP and QP Geometry, Constraints, and First-Order Optimality](/posts/optimality-constraint-geometry/)
-
-This chapter asks where optimal points can occur and how constraints change the usual gradient condition. It covers LP vertices and optimal faces, QP interior solutions, first-order optimality over a convex set, equality-constraint nullspaces, elimination of equalities, and the nonnegative orthant.
-
-Doubts answered include:
-
 - Must an LP have one unique optimal vertex?
 - Can a QP optimum lie on a face or at a vertex?
 - Why is $\nabla f(x^\star)=0$ insufficient under constraints?
 - Why must the gradient be orthogonal to feasible equality-constrained directions?
 - What changes when a variable is already at the boundary $x_i=0$?
+- Why does minimizing over one block produce a Schur complement?
 
-### 3.4 [Conic Optimization: From LPs to SOCPs and SDPs](/posts/conic-optimization-socp-sdp/)
+### 4.3 [Conic Optimization: From LPs to SOCPs and SDPs](/posts/conic-optimization-socp-sdp/)
 
 Conic optimization shows that LPs, second-order cone programs, and semidefinite programs share one structure. The chapter covers convex and proper cones, cone-induced partial orders, the nonnegative orthant, second-order and PSD cones, LMIs, the Schur complement, and exact conic representations.
 
@@ -147,7 +148,7 @@ Doubts answered include:
 - Why is every diagonal entry of a PSD matrix nonnegative?
 - How can an LP or SOCP be represented as an SDP?
 
-## 4. A compact map of problem families
+## 5. A compact map of problem families
 
 | Problem family | Typical objective | Characteristic constraints | Main geometry |
 |---|---|---|---|
@@ -159,17 +160,17 @@ Doubts answered include:
 
 These families overlap. An LP is a conic program over the nonnegative orthant. Many convex quadratic constraints can be represented with second-order cones. LPs and SOCPs can also be embedded in SDPs, although the smallest suitable formulation is usually preferable computationally.
 
-## 5. Doubts worth keeping
+## 6. Doubts worth keeping
 
 Good doubts expose missing assumptions. The hub indexes them without repeating their answers:
 
 - [Does convexity require a positive-definite Hessian?](/posts/convex-quadratics-psd-schur-complement/#convex-quadratics)
-- [Must an LP solution be a single vertex?](/posts/optimality-constraint-geometry/#lp-qp-geometry)
+- [Must an LP solution be a single vertex?](/posts/convex-quadratics-psd-schur-complement/#lp-qp-geometry)
 - [Is quasiconvexity a curvature condition?](/posts/convex-sets-functions-first-order-geometry/#quasiconvexity)
 - [Do nonnegative diagonal entries imply PSD?](/posts/symmetric-matrices-quadratic-forms-matrix-norm/#psd-diagonal-entries)
 - [Does a PSD matrix inequality compare entries one by one?](/posts/conic-optimization-socp-sdp/#matrix-order)
 
-## 6. A practical checklist
+## 7. A practical checklist
 
 When you meet a new optimization problem, ask:
 
@@ -185,7 +186,7 @@ When you meet a new optimization problem, ask:
 10. Can an unfamiliar constraint be expressed as membership in a standard cone?
 11. Is a statement about an optimizer claiming existence, uniqueness, or both?
 
-## 7. Where the map grows next
+## 8. Where the map grows next
 
 As later Boyd lectures are studied, the natural next chapters are:
 

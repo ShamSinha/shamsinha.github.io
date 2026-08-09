@@ -1,6 +1,7 @@
 ---
 title: "Convex Sets, Functions, and Quasiconvex Optimization"
 date: 2026-08-08 10:00:00 +0530
+last_modified_at: 2026-08-09 00:00:00 +0530
 categories: [Mathematics, Optimization]
 tags: [convexity, convex-sets, convex-functions, quasiconvexity, bisection, log-concavity, study-notes]
 math: true
@@ -13,7 +14,19 @@ description: "A doubt-driven guide to convex sets, convex functions, first-order
 
 Convex optimization begins with two geometric questions: what makes a set convex, and what makes a function convex? This chapter develops those definitions before using them to answer the doubts that naturally follow.
 
+## Why this chapter exists
+
+Before studying particular optimization models, we need a reliable way to recognize convex sets and convex functions. These definitions explain why local information can solve a global problem and why a quasiconvex objective can be handled through convex feasibility tests even when it is not itself convex.
+
+## Before you start
+
+Only basic vector and matrix notation is assumed. If terms such as affine map, inner product, matrix transpose, or covariance are unfamiliar, keep [Linear Algebra: Important Concepts and the Doubts That Connect Them](/posts/linear-algebra-important-concepts/) nearby as a reference.
+
+## What you will learn
+
 You will see why LP feasible sets are polyhedra, how Jensen's inequality encodes the shape of a convex function, why gradients define supporting hyperplanes, and why local minima become global. The same set-based viewpoint then leads to log-concavity, quasiconvexity, epigraph formulations, and optimization by bisection.
+
+The chapter moves from convex sets, to convex functions, to first-order geometry, and finally to quasiconvex optimization. Each later section uses the definitions established before it.
 
 ## 1. Convex sets, halfspaces, and polyhedra {#convex-sets}
 
@@ -970,9 +983,18 @@ p(x)-tq(x)\le0,
 $$
 
 not an equality.
+
 ---
 
-This article is part of the [Convex Optimization learning map](/posts/convex-optimization-doubt-log/).
+## What you should now understand
+
+You should now be able to test whether a set is convex, recognize why affine constraints produce polyhedra, and use definitions, gradients, or Hessians to reason about convex functions. You should also be able to distinguish convexity from quasiconvexity and explain why quasiconvex bisection searches over a scalar level while each subproblem searches for a feasible point.
+
+---
+
+**Next:** [Quadratic and Constrained Convex Optimization: Curvature, Geometry, and Optimality](/posts/convex-quadratics-psd-schur-complement/)
+
+Return to the [Convex Optimization learning map](/posts/convex-optimization-doubt-log/).
 
 ## Sources and further study
 

@@ -20,6 +20,18 @@ The cone determines what “nonnegative” means. For a vector, it can mean comp
 
 This viewpoint is useful because many nonlinear-looking constraints become affine membership statements once we choose the right cone.
 
+## Why this chapter exists
+
+LPs, SOCPs, and SDPs are easier to compare when their different notions of positivity are separated from their common optimization structure. Cones provide exactly that language. They let us treat a componentwise inequality, a norm bound, and a matrix PSD constraint as instances of affine cone membership.
+
+## Before you start
+
+Read [Convex Sets, Functions, and Quasiconvex Optimization](/posts/convex-sets-functions-first-order-geometry/) for convex sets and affine constraints, then [Quadratic and Constrained Convex Optimization](/posts/convex-quadratics-psd-schur-complement/) for PSD curvature and the optimization meaning of the Schur complement. For eigenvalues, symmetric matrices, matrix spaces, and quadratic forms, use [Linear Algebra: Important Concepts and the Doubts That Connect Them](/posts/linear-algebra-important-concepts/) and its focused companion [Symmetric Matrices, Quadratic Forms, and Matrix Norm](/posts/symmetric-matrices-quadratic-forms-matrix-norm/).
+
+## What you will learn
+
+The chapter begins with cones and cone-induced inequalities, builds the standard LP, SOCP, and SDP forms, and then proves the representations connecting them. By the end, you should be able to identify the decision variable, the affine expression, and the cone that stores the nonlinear geometry of a conic model.
+
 ## 1. Cone and convex cone
 
 A nonempty set $K$ is a **cone** if
@@ -609,7 +621,15 @@ The unifying idea is:
 
 ---
 
-This article is part of the [Convex Optimization learning map](/posts/convex-optimization-doubt-log/).
+## What you should now understand
+
+You should now be able to explain how a proper cone defines a generalized inequality, distinguish vector variables from matrix-valued affine expressions, and recognize the standard forms of LPs, SOCPs, and SDPs. You should also know why PSD order is not entrywise order, when a Schur complement equivalence is valid, and why a smaller exact cone model is usually preferable to a larger embedding.
+
+---
+
+**Previous:** [Quadratic and Constrained Convex Optimization: Curvature, Geometry, and Optimality](/posts/convex-quadratics-psd-schur-complement/)
+
+Return to the [Convex Optimization learning map](/posts/convex-optimization-doubt-log/). Future chapters will continue from here with duality and KKT conditions.
 
 ## Sources and further study
 
