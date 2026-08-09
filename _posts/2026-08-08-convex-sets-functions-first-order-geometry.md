@@ -273,16 +273,171 @@ Thus $\log p$ is concave and the Gaussian density is log-concave.
 
 ### Why is a covariance matrix PSD?
 
-For any vector $v$,
+Let $X\in\mathbb R^n$ be a random vector with mean
+
+$$
+\mu=\mathbb E[X].
+$$
+
+Its covariance matrix is
+
+$$
+\Sigma
+=
+\mathbb E\left[(X-\mu)(X-\mu)^T\right].
+$$
+
+For every realization of $X$, the outer-product matrix
+
+$$
+(X-\mu)(X-\mu)^T
+$$
+
+is symmetric. Taking its expectation preserves symmetry, so $\Sigma=\Sigma^T$.
+
+The diagonal entry $\Sigma_{ii}$ is the variance of $X_i$, while an off-diagonal entry $\Sigma_{ij}$ measures how $X_i$ and $X_j$ vary together. But checking the entries individually is not enough to prove that the whole matrix is PSD. We must prove
+
+$$
+v^T\Sigma v\ge0
+$$
+
+for **every** direction $v\in\mathbb R^n$.
+
+Take an arbitrary $v$. Substituting the definition of $\Sigma$ gives
+
+$$
+\begin{aligned}
+v^T\Sigma v
+&=
+v^T\mathbb E\left[(X-\mu)(X-\mu)^T\right]v\\
+&=
+\mathbb E\left[
+v^T(X-\mu)(X-\mu)^Tv
+\right]\\
+&=
+\mathbb E\left[
+\left(v^T(X-\mu)\right)^2
+\right].
+\end{aligned}
+$$
+
+The last step works because $(X-\mu)^Tv$ is the same scalar as $v^T(X-\mu)$.
+
+Now define the scalar random variable
+
+$$
+Y=v^TX.
+$$
+
+Its mean is
+
+$$
+\mathbb E[Y]
+=
+v^T\mathbb E[X]
+=
+v^T\mu.
+$$
+
+Therefore,
 
 $$
 v^T\Sigma v
 =
-\mathbb E\left[(v^T(X-\mu))^2\right]
+\mathbb E\left[
+\left(Y-\mathbb E[Y]\right)^2
+\right]
+=
+\operatorname{Var}(Y)
+=
+\operatorname{Var}(v^TX).
+$$
+
+This gives the geometric meaning of the quadratic form:
+
+> $v^T\Sigma v$ is the variance of the data after projecting it onto the direction $v$.
+
+For every outcome, the squared quantity
+
+$$
+\left(Y-\mathbb E[Y]\right)^2
+$$
+
+is nonnegative. Its expectation therefore cannot be negative:
+
+$$
+v^T\Sigma v
+=
+\operatorname{Var}(v^TX)
 \ge0.
 $$
 
-A variance cannot be negative.
+Since the inequality holds for every $v$,
+
+$$
+\boxed{\Sigma\succeq0}.
+$$
+
+### Why is a covariance matrix not always positive definite?
+
+Positive definite would require
+
+$$
+v^T\Sigma v>0
+$$
+
+for every nonzero $v$. This fails when the data has no variation along some direction.
+
+For example, suppose $Z$ has mean zero and variance $\sigma^2$, and let
+
+$$
+X=
+\begin{bmatrix}
+Z\\
+2Z
+\end{bmatrix}.
+$$
+
+Then
+
+$$
+\Sigma
+=
+\sigma^2
+\begin{bmatrix}
+1&2\\
+2&4
+\end{bmatrix}.
+$$
+
+Choose
+
+$$
+v=
+\begin{bmatrix}
+2\\
+-1
+\end{bmatrix}.
+$$
+
+The projection in this direction is
+
+$$
+v^TX=2Z-2Z=0.
+$$
+
+Hence
+
+$$
+v^T\Sigma v
+=
+\operatorname{Var}(v^TX)
+=0
+$$
+
+even though $v\ne0$. The covariance matrix is PSD but not positive definite. Geometrically, all observations lie on the line $x_2=2x_1$, so there is no spread in the perpendicular direction.
+
+This also explains the assumption $\Sigma\succ0$ in the Gaussian formula above. A full-dimensional Gaussian density needs $\Sigma^{-1}$. If $\Sigma$ is singular, the Gaussian distribution is confined to a lower-dimensional subspace and does not have the usual density over all of $\mathbb R^n$.
 
 ---
 
