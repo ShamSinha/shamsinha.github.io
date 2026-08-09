@@ -34,15 +34,17 @@ This is the focused deep dive: instead of surveying many matrix ideas, it follow
 
 ## The map of the ideas
 
-| Question | Concept that answers it |
-|---|---|
-| Can a transformation be separated into independent directions? | Spectral decomposition of a symmetric matrix |
-| How can a matrix assign one scalar to a vector? | Quadratic form $x^TAx$ |
-| What are the largest and smallest possible values? | Rayleigh quotient and extreme eigenvalues |
-| How do we certify that the value is never negative? | Positive semidefinite matrices |
-| What geometry does $x^TAx\leq 1$ describe? | Ellipsoids |
-| What is the largest factor by which $A$ can stretch a vector? | Matrix $2$-norm |
-| What are all the input and output stretching directions? | Singular value decomposition |
+Each concept appears because the previous viewpoint leaves a useful problem unsolved:
+
+| Problem we encounter | Tool introduced | What the tool gives us |
+|---|---|---|
+| A symmetric matrix can mix many coordinates at once. We want coordinates in which its action separates. | [Spectral decomposition](#symmetric-matrices) | Orthonormal directions that the matrix scales independently. |
+| We need one scalar that measures a vector as a cost, curvature, variance, or energy. | [Quadratic form](#quadratic-forms) $x^TAx$ | A scalar measurement that depends on both the vector's length and direction. |
+| The quadratic value changes with direction. We need to find its largest and smallest values without checking every vector. | [Rayleigh quotient](#rayleigh-quotient) | The extreme eigenvalues identify the extreme directional values. |
+| In many applications, a cost, variance, or curvature must never be negative. | [Positive-semidefinite matrices](#positive-semidefinite) | A matrix condition equivalent to $x^TAx\geq0$ in every direction. |
+| An inequality such as $x^TAx\leq1$ is algebraic; we want to see its shape. | [Ellipsoids](#ellipsoids) | Eigenvectors give the axes, and eigenvalues determine their widths. |
+| For a general matrix, we need one bound on how much any input or error can be amplified. | [Matrix $2$-norm](#matrix-norm) | The largest possible gain over all input directions. |
+| A rectangular or nonsymmetric matrix may send input directions to different output directions. | [Singular value decomposition](#svd-and-norm) | Every principal input direction, output direction, and associated gain. |
 
 ---
 
