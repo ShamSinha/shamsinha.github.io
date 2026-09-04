@@ -1,5 +1,5 @@
 ---
-title: "Weight Initialization: Why Zero Fails, and Why Xavier and He Work"
+title: "Weight Initialization: Why Zero Fails and Xavier/He Stabilize Gradients"
 date: 2026-09-04 10:00:00 +0530
 categories: [Machine Learning, Deep Learning]
 tags: [weight-initialization, xavier-initialization, he-initialization, neural-networks, backpropagation, activation-functions]
@@ -8,22 +8,35 @@ toc: true
 comments: true
 published: true
 permalink: /posts/weight-initialization-zero-xavier-he/
-description: "Why neural networks need random but carefully scaled weights, how zero initialization creates symmetry, and how Xavier and He initialization preserve signals through deep networks."
+description: "A question-driven guide to zero and random initialization, vanishing and exploding gradients, activation-dependent scaling, and the derivation of Xavier and He initialization."
 ---
 
 Why do neural networks need a special initialization scheme? Why not set every weight to zero? And if zero is a bad choice, why not simply sample every weight from a random distribution?
 
+Most importantly: **does initialization help with vanishing and exploding gradients? Yes.** That is one of its central jobs. A well-scaled initialization tries to stop activations and gradients from systematically shrinking or growing as they cross many layers.
+
+It is not a permanent guarantee. Gradients can still become unstable later because of the architecture, activation, optimizer, data, or learned weights. Initialization gives training a healthy starting regime in which useful gradients can reach both early and late layers.
+
 The short answer is:
 
 1. **All-zero weights fail to break symmetry.** Neurons in the same layer begin identically and cannot learn different features.
-2. **Arbitrarily scaled random weights can still fail.** Signals and gradients may shrink toward zero or grow without bound as they pass through many layers.
-3. **Xavier and He initialization are random initializations with carefully chosen scales.** Their job is to keep information flowing at a reasonable magnitude.
+2. **Arbitrarily scaled random weights can still fail.** Activations and gradients may vanish or explode as they pass through many layers.
+3. **Xavier and He initialization are random initializations with carefully chosen scales.** Their job is to keep forward signals and backward gradients at reasonable magnitudes.
 
 So the real comparison is not *random initialization versus Xavier or He*. Xavier and He are particular forms of random initialization.
 
-This post develops that idea from first principles.
+This post follows the questions that naturally lead to that conclusion:
 
-## What initialization actually chooses
+1. What is initialization trying to accomplish?
+2. Why does setting every weight to zero fail?
+3. If zero fails, why is arbitrary randomness not enough?
+4. Why should input and output variance remain comparable?
+5. Do sigmoid, tanh, or ReLU solve the scaling problem themselves?
+6. Where exactly does initial weight variance enter vanishing and exploding gradients?
+7. Why does the starting point matter if training later changes the weights?
+8. Why do Xavier and He use different formulas?
+
+## What problem is initialization solving?
 
 Consider layer $\ell$ of a feed-forward network:
 
@@ -42,32 +55,6 @@ Before training begins, we must assign initial values to every weight matrix $W^
 - how easily the optimizer can make useful progress in its first updates.
 
 Initialization does not need to find a good solution by itself. It needs to place the network in a state from which learning is possible and numerically stable.
-
-## If training changes the weights, why does the starting point matter?
-
-It is tempting to think that initialization becomes irrelevant because training eventually changes every weight. But an optimizer does not overwrite the weights independently of their current values. Its first update is
-
-$$
-W_1=W_0-\eta\left.\frac{\partial L}{\partial W}\right|_{W=W_0}.
-$$
-
-The gradient is evaluated using the activations produced by $W_0$. The next gradient depends on $W_1$, which depends on the previous gradient, and so on. Initialization therefore affects the entire optimization trajectory:
-
-```text
-initial weights
-      ↓
-initial activations
-      ↓
-initial gradients
-      ↓
-first update
-      ↓
-all later states
-```
-
-If the initial state saturates every sigmoid, kills every ReLU, or produces enormous intermediate values, the optimizer receives poor information for making its very first move. It cannot simply promise to repair the weights later, because the route to those later weights is built from gradients computed now.
-
-In a deep network the problem compounds. If every layer multiplies a signal's variance by $0.5$, then after 100 layers the multiplier is $0.5^{100}$. If every layer multiplies it by $1.5$, the multiplier becomes $1.5^{100}$. A modest per-layer distortion can therefore produce an unusable network before training has a chance to correct it.
 
 ## Why not initialize every weight to zero?
 
@@ -135,9 +122,9 @@ Zero initialization is safe in some narrower settings:
 
 The rule is therefore not “no parameter may equal zero.” The rule is that trainable units that should learn different features must not begin in a symmetry that gradient descent cannot break.
 
-## Why not use arbitrary random weights?
+## If zero fails, why not just use random weights?
 
-Randomness solves symmetry, but not signal scale.
+We do use random weights. Randomness solves symmetry, but arbitrary randomness does not control signal scale.
 
 Imagine sampling every weight independently from a standard normal distribution, $w_{ij}\sim\mathcal{N}(0,1)$. If a neuron has 1,000 inputs, it adds 1,000 randomly weighted terms. Even when the individual inputs are moderate, the sum can have a very large variance. Repeating this across layers can make activations explode.
 
@@ -153,7 +140,19 @@ The three regimes look like this:
 
 To choose the useful scale, we need to see how variance travels through a layer.
 
-## Variance propagation through a linear layer
+## Why should output variance stay near input variance?
+
+There is no rule saying that every layer's variance must be exactly identical. The goal is to avoid a **systematic multiplicative drift** across depth.
+
+If every layer doubles variance, then after $L$ layers the multiplier is $2^L$. If every layer halves it, the multiplier is $(1/2)^L$:
+
+```text
+exploding signal:  1 -> 2 -> 4 -> 8 -> 16 -> ...
+vanishing signal:  1 -> .5 -> .25 -> .125 -> ...
+healthy signal:    1 -> approximately 1 -> approximately 1 -> ...
+```
+
+Keeping consecutive layers at comparable scales prevents depth from turning a small mismatch into an enormous one. We can see the desired weight scale by following variance through one linear layer.
 
 Take one pre-activation with $n_{\text{in}}$ inputs:
 
@@ -211,7 +210,7 @@ For a width of $1{,}000$:
 - weights with standard deviation $0.01$ have variance $10^{-4}$, so the layer multiplies variance by roughly $0.1$;
 - weights with standard deviation $1/\sqrt{1000}\approx0.0316$ keep the multiplier near $1$.
 
-The difference appears small at one layer and enormous after many layers. A variance multiplier of $0.1$ repeated ten times becomes $10^{-10}$.
+The difference appears small at one layer and enormous after many layers. A variance multiplier of $0.1$ repeated ten times becomes $10^{-10}$. This is why “preserve variance” is a useful initialization principle rather than an arbitrary mathematical preference.
 
 ## Do sigmoid and tanh solve the scaling problem?
 
@@ -244,7 +243,7 @@ $$
 
 It does not cap a large positive activation, and its positive-side derivative does not automatically damp a large gradient. This avoids one source of vanishing gradients but makes sensible weight scaling especially important. Activation functions change the failure mode; they do not eliminate the need for initialization.
 
-## The backward pass imposes another constraint
+## Where does initialization enter vanishing and exploding gradients?
 
 For a layer's input gradient, backpropagation contains a weighted sum over the layer's outputs:
 
@@ -273,9 +272,71 @@ $$
 
 This equation shows exactly where the initial weight variance enters gradient stability. If the multiplicative factor is consistently greater than $1$, gradient variance can grow exponentially with depth. If it is consistently below $1$, gradient variance can vanish.
 
+Define that per-layer multiplier as
+
+$$
+r_\ell
+=
+n_{\text{out}}^{(\ell)}
+\operatorname{Var}\!\left(W^{(\ell)}\right)
+\mathbb{E}\!\left[\phi'\!\left(z^{(\ell-1)}\right)^2\right].
+$$
+
+Across many layers, the approximate relation becomes
+
+$$
+\operatorname{Var}\!\left(\delta^{(0)}\right)
+\approx
+\left(\prod_{\ell=1}^{L}r_\ell\right)
+\operatorname{Var}\!\left(\delta^{(L)}\right).
+$$
+
+Now the two failure modes are explicit:
+
+- if most $r_\ell<1$, their product approaches zero and the gradient **vanishes** before reaching early layers;
+- if most $r_\ell>1$, their product grows rapidly and the gradient **explodes**;
+- if the factors stay near $1$, gradient magnitudes have a better chance of remaining usable.
+
+The same weights appear in both directions:
+
+```text
+forward:   activations are repeatedly multiplied by W
+backward:  gradients are repeatedly multiplied by Wᵀ and activation derivatives
+```
+
+That is the direct mathematical reason initialization influences gradient flow.
+
 The precise claim is not “any large initial variance always causes unstable gradients.” What counts as large depends on fan-out, the activation derivative, width, depth, normalization, and the rest of the architecture. The problem is a variance that is too large *relative to those quantities*.
 
+Large weights can even cause **vanishing**, rather than exploding, gradients in sigmoid or tanh networks. They produce large pre-activations, which push the units into saturation where $\phi'(z)\approx0$. With ReLU, the positive-side derivative is $1$, so an excessive weight scale is more directly able to amplify activations and gradients. Weight scale and activation behavior must be considered together.
+
 The forward pass points to fan-in; the backward pass points to fan-out. When the input and output widths differ, one weight variance cannot satisfy both equations exactly. Xavier initialization uses a compromise between them.
+
+## Why does initialization matter if training overwrites the weights?
+
+It is tempting to think that initialization becomes irrelevant because training eventually changes every weight. But an optimizer does not overwrite the weights independently of their current values. Its first update is
+
+$$
+W_1=W_0-\eta\left.\frac{\partial L}{\partial W}\right|_{W=W_0}.
+$$
+
+The gradient is evaluated using the activations and derivatives produced by $W_0$. The next gradient depends on $W_1$, which depends on that first gradient, and so on. Initialization therefore affects the entire optimization trajectory:
+
+```text
+initial weights
+      ↓
+initial activations and activation derivatives
+      ↓
+initial gradients
+      ↓
+first update
+      ↓
+all later states
+```
+
+If the initial state saturates every sigmoid, kills every ReLU, or creates an exploding backward signal, the optimizer receives poor information for its first move. It cannot simply repair the weights later because reaching those later weights requires usable gradients now.
+
+Initialization is therefore not an attempt to guess the final parameters. It establishes the starting conditions under which the optimizer can begin learning.
 
 ## Xavier initialization
 
@@ -323,7 +384,23 @@ The constant $6$ is not a different principle. A uniform random variable on $[-a
 
 Tanh and sigmoid saturate when their inputs have large magnitudes. In those regions their derivatives are small, so gradients vanish. Xavier initialization tries to keep initial pre-activations within a moderate range rather than immediately pushing most units into saturation.
 
+For a constant-width layer with $n_{\text{in}}=n_{\text{out}}=n$, Xavier gives
+
+$$
+\operatorname{Var}(w)=\frac{1}{n}.
+$$
+
+Near the approximately linear region of tanh, $\mathbb{E}[\phi'(z)^2]$ is not extremely small, so the backward multiplier is roughly
+
+$$
+r\approx n\cdot\frac{1}{n}\cdot\mathbb{E}[\phi'(z)^2].
+$$
+
+The weight contribution is therefore near $1$ rather than systematically amplifying or shrinking the gradient. Keeping $z$ moderate also prevents the activation-derivative factor from collapsing immediately.
+
 Tanh is zero-centered and fits the assumptions better than sigmoid. Xavier is still commonly associated with sigmoid networks, but initialization cannot remove sigmoid's nonzero mean or prevent saturation throughout a very deep unnormalized network.
+
+So Xavier **helps reduce** vanishing and exploding gradients at initialization. It does not make arbitrarily deep sigmoid networks immune to them.
 
 ## Why Xavier is not ideal for ReLU
 
@@ -363,6 +440,23 @@ $$
 \underbrace{\frac12}_{\text{ReLU}}
 \approx1.
 $$
+
+The same compensation appears in the backward pass. For a constant-width ReLU layer, approximately half the units have a nonzero derivative, so
+
+$$
+\mathbb{E}[\operatorname{ReLU}'(z)^2]\approx\frac12.
+$$
+
+Using He variance gives the approximate gradient multiplier
+
+$$
+r
+\approx
+n\cdot\frac{2}{n}\cdot\frac12
+=1.
+$$
+
+This is the direct connection between He initialization and gradient stability: its factor of $2$ compensates for ReLU gating in both signal and gradient propagation under the derivation's assumptions.
 
 ### He normal
 
@@ -565,6 +659,19 @@ Weight initialization solves two different problems:
 
 1. **Randomness breaks symmetry**, allowing neurons in the same layer to learn different features.
 2. **Careful scaling preserves signal**, keeping activations and gradients usable across depth.
+
+The complete question trail can be summarized as follows:
+
+| Question | Answer |
+| --- | --- |
+| Why not initialize all weights to zero? | Hidden units remain symmetric and cannot learn different features. |
+| Why not use ordinary random values? | Randomness breaks symmetry, but an arbitrary scale can destroy activations and gradients. |
+| Why preserve variance? | Small per-layer changes multiply across depth and become vanishing or exploding signals. |
+| Do sigmoid and tanh control large values? | They bound activations, but large inputs saturate them and make gradients vanish. |
+| What changes with ReLU? | It does not cap positive activations, while zeroing roughly half the signal. |
+| Why care if weights later change? | Every update depends on gradients produced by the current weights, beginning with the initialization. |
+| Does good initialization prevent gradient problems forever? | No. It reduces the initial tendency to vanish or explode; the rest of training still matters. |
+| Why Xavier versus He? | Their scales compensate for different fan-in, fan-out, and activation behavior. |
 
 Xavier initialization chooses a variance that balances fan-in and fan-out for approximately linear, tanh-like propagation:
 
