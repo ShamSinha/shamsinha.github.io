@@ -135,7 +135,7 @@ The three regimes look like this:
 | Weight scale | Forward activations | Backward gradients | Likely result |
 | --- | --- | --- | --- |
 | Too small | Shrink with depth | Vanish | Early layers learn very slowly |
-| Too large | Grow with depth | Explode or become unstable | Saturation, overflow, unstable updates |
+| Too large | Grow, or push bounded activations into saturation | Explode, or vanish because of saturation | Overflow, unstable updates, or stalled learning |
 | Well scaled | Remain comparable | Remain usable | Optimization starts in a trainable regime |
 
 To choose the useful scale, we need to see how variance travels through a layer.
@@ -245,6 +245,24 @@ It does not cap a large positive activation, and its positive-side derivative do
 
 ## Where does initialization enter vanishing and exploding gradients?
 
+First separate three different quantities:
+
+| Quantity | Meaning | What can happen across depth? |
+| --- | --- | --- |
+| $\operatorname{Var}(W^{(\ell)})$ | Variance of the weights initialized in layer $\ell$ | It sets the layer's multiplication scale. |
+| $\operatorname{Var}(a^{(\ell)})$ | Variance of forward activations | It can repeatedly shrink or grow across layers. |
+| $\operatorname{Var}(\delta^{(\ell)})$ | Variance of backward error signals or gradients | It can repeatedly vanish or explode while moving backward. |
+
+The main issue is **not that one layer's weight variance travels through the network and becomes another layer's weight variance**. Each layer's weights are initialized separately. Their variances act as multiplicative factors that control the quantities flowing through them:
+
+```text
+chosen weight variance
+        ├── controls forward activation variance
+        └── controls backward gradient variance
+```
+
+So when initialization is badly scaled, both activation variance and gradient variance may explode or vanish. Weight variance is one of the causes; the forward and backward signals are the quantities that accumulate the effect across depth.
+
 For a layer's input gradient, backpropagation contains a weighted sum over the layer's outputs:
 
 $$
@@ -305,6 +323,16 @@ backward:  gradients are repeatedly multiplied by Wᵀ and activation derivative
 ```
 
 That is the direct mathematical reason initialization influences gradient flow.
+
+The parameter gradient also combines the forward and backward signals:
+
+$$
+\frac{\partial L}{\partial W^{(\ell)}}
+=
+\delta^{(\ell)}a^{(\ell-1)T}.
+$$
+
+If the backward error $\delta^{(\ell)}$ has vanished, the layer receives an almost-zero update. If it has exploded—or if the incoming activation is enormous—the parameter gradient can be enormous. Initialization therefore affects not only internal activations but the actual updates applied to the weights.
 
 The precise claim is not “any large initial variance always causes unstable gradients.” What counts as large depends on fan-out, the activation derivative, width, depth, normalization, and the rest of the architecture. The problem is a variance that is too large *relative to those quantities*.
 
