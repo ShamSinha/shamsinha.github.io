@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="convex-optimization-doubt-log-title convex-optimization-doubt-log-desc">
+<title id="convex-optimization-doubt-log-title">A route through convex optimization</title>
+<desc id="convex-optimization-doubt-log-desc">The objective ranks answers; constraints decide which answers are allowed. Learn the geometry before choosing a solver.</desc>
+<defs><marker id="convex-optimization-doubt-log-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="35" y="40" width="210" height="250" rx="10" class="box"/>
+<text x="140" y="72" class="label" text-anchor="middle">1 · Geometry</text>
+<text x="140" y="270" class="small" text-anchor="middle">What is feasible?</text>
+<rect x="295" y="40" width="210" height="250" rx="10" class="box"/>
+<text x="400" y="72" class="label" text-anchor="middle">2 · Curvature</text>
+<text x="400" y="270" class="small" text-anchor="middle">How does cost change?</text>
+<rect x="555" y="40" width="210" height="250" rx="10" class="box"/>
+<text x="660" y="72" class="label" text-anchor="middle">3 · Model family</text>
+<text x="660" y="270" class="small" text-anchor="middle">Which constraints fit?</text>
+<polygon points="82,218 75,156 140,112 210,145 195,218" class="wash-teal"/>
+<circle cx="108" cy="177" r="4" class="teal"/>
+<circle cx="177" cy="165" r="4" class="teal"/>
+<line x1="108" y1="177" x2="177" y2="165" class="stroke-teal"/>
+<line x1="325" y1="222" x2="470" y2="222" class="axis"/>
+<line x1="325" y1="222" x2="325" y2="117" class="axis"/>
+<path d="M325.00,180.00 L326.45,181.58 L327.90,183.14 L329.35,184.66 L330.80,186.14 L332.25,187.60 L333.70,189.02 L335.15,190.42 L336.60,191.78 L338.05,193.10 L339.50,194.40 L340.95,195.66 L342.40,196.90 L343.85,198.10 L345.30,199.26 L346.75,200.40 L348.20,201.50 L349.65,202.58 L351.10,203.62 L352.55,204.62 L354.00,205.60 L355.45,206.54 L356.90,207.46 L358.35,208.34 L359.80,209.18 L361.25,210.00 L362.70,210.78 L364.15,211.54 L365.60,212.26 L367.05,212.94 L368.50,213.60 L369.95,214.22 L371.40,214.82 L372.85,215.38 L374.30,215.90 L375.75,216.40 L377.20,216.86 L378.65,217.30 L380.10,217.70 L381.55,218.06 L383.00,218.40 L384.45,218.70 L385.90,218.98 L387.35,219.22 L388.80,219.42 L390.25,219.60 L391.70,219.74 L393.15,219.86 L394.60,219.94 L396.05,219.98 L397.50,220.00 L398.95,219.98 L400.40,219.94 L401.85,219.86 L403.30,219.74 L404.75,219.60 L406.20,219.42 L407.65,219.22 L409.10,218.98 L410.55,218.70 L412.00,218.40 L413.45,218.06 L414.90,217.70 L416.35,217.30 L417.80,216.86 L419.25,216.40 L420.70,215.90 L422.15,215.38 L423.60,214.82 L425.05,214.22 L426.50,213.60 L427.95,212.94 L429.40,212.26 L430.85,211.54 L432.30,210.78 L433.75,210.00 L435.20,209.18 L436.65,208.34 L438.10,207.46 L439.55,206.54 L441.00,205.60 L442.45,204.62 L443.90,203.62 L445.35,202.58 L446.80,201.50 L448.25,200.40 L449.70,199.26 L451.15,198.10 L452.60,196.90 L454.05,195.66 L455.50,194.40 L456.95,193.10 L458.40,191.78 L459.85,190.42 L461.30,189.02 L462.75,187.60 L464.20,186.14 L465.65,184.66 L467.10,183.14 L468.55,181.58 L470.00,180.00" class="stroke-blue"/>
+<text x="400" y="243" class="small" text-anchor="middle">convex objective</text>
+<text x="660" y="120" class="" text-anchor="middle">LP  ·  linear</text>
+<text x="660" y="170" class="" text-anchor="middle">QP  ·  quadratic</text>
+<text x="660" y="220" class="" text-anchor="middle">SOCP / SDP  ·  cones</text>
+<line x1="252" y1="165" x2="287" y2="165" class="axis" marker-end="url(#convex-optimization-doubt-log-arrow)"/>
+<line x1="512" y1="165" x2="547" y2="165" class="axis" marker-end="url(#convex-optimization-doubt-log-arrow)"/>
+<text x="400" y="325" class="label" text-anchor="middle">Best feasible answer = objective + geometry</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="shannon-information-entropy-doubt-log-title shannon-information-entropy-doubt-log-desc">
+<title id="shannon-information-entropy-doubt-log-title">A fair coin is hardest to predict</title>
+<desc id="shannon-information-entropy-doubt-log-desc">For a binary source, uncertainty peaks at p = ½. When either outcome is certain, no bits are needed to describe which outcome occurred.</desc>
+<defs><marker id="shannon-information-entropy-doubt-log-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<line x1="70" y1="270" x2="460" y2="270" class="axis"/>
+<line x1="70" y1="270" x2="70" y2="50" class="axis"/>
+<path d="M70.00,270.00 L73.90,254.65 L77.80,243.13 L81.70,233.07 L85.60,223.96 L89.50,215.58 L93.40,207.79 L97.30,200.47 L101.20,193.59 L105.10,187.07 L109.00,180.89 L112.90,175.02 L116.80,169.42 L120.70,164.09 L124.60,158.99 L128.50,154.13 L132.40,149.48 L136.30,145.04 L140.20,140.79 L144.10,136.72 L148.00,132.83 L151.90,129.12 L155.80,125.57 L159.70,122.18 L163.60,118.94 L167.50,115.86 L171.40,112.92 L175.30,110.12 L179.20,107.46 L183.10,104.94 L187.00,102.55 L190.90,100.30 L194.80,98.17 L198.70,96.16 L202.60,94.28 L206.50,92.53 L210.40,90.89 L214.30,89.37 L218.20,87.97 L222.10,86.69 L226.00,85.52 L229.90,84.46 L233.80,83.52 L237.70,82.70 L241.60,81.98 L245.50,81.37 L249.40,80.88 L253.30,80.49 L257.20,80.22 L261.10,80.05 L265.00,80.00 L268.90,80.05 L272.80,80.22 L276.70,80.49 L280.60,80.88 L284.50,81.37 L288.40,81.98 L292.30,82.70 L296.20,83.52 L300.10,84.46 L304.00,85.52 L307.90,86.69 L311.80,87.97 L315.70,89.37 L319.60,90.89 L323.50,92.53 L327.40,94.28 L331.30,96.16 L335.20,98.17 L339.10,100.30 L343.00,102.55 L346.90,104.94 L350.80,107.46 L354.70,110.12 L358.60,112.92 L362.50,115.86 L366.40,118.94 L370.30,122.18 L374.20,125.57 L378.10,129.12 L382.00,132.83 L385.90,136.72 L389.80,140.79 L393.70,145.04 L397.60,149.48 L401.50,154.13 L405.40,158.99 L409.30,164.09 L413.20,169.42 L417.10,175.02 L421.00,180.89 L424.90,187.07 L428.80,193.59 L432.70,200.47 L436.60,207.79 L440.50,215.58 L444.40,223.96 L448.30,233.07 L452.20,243.13 L456.10,254.65 L460.00,270.00" class="stroke-blue"/>
+<circle cx="265" cy="80" r="6" class="teal"/>
+<text x="265" y="52" class="label" text-anchor="middle">fair coin: 1 bit</text>
+<text x="70" y="295" class="small" text-anchor="start">0</text>
+<text x="265" y="295" class="small" text-anchor="middle">0.5</text>
+<text x="460" y="295" class="small" text-anchor="end">1</text>
+<text x="265" y="330" class="small" text-anchor="middle">probability of heads</text>
+<text x="530" y="85" class="label" text-anchor="start">Fair: 50 / 50</text>
+<rect x="530" y="105" width="105.0" height="22" rx="4" class="wash-teal"/>
+<rect x="635.0" y="105" width="105.0" height="22" rx="4" class="wash"/>
+<text x="530" y="155" class="small" text-anchor="start">H = 1.000 bit</text>
+<text x="530" y="220" class="label" text-anchor="start">Biased: 90 / 10</text>
+<rect x="530" y="240" width="189.0" height="22" rx="4" class="wash-teal"/>
+<rect x="719.0" y="240" width="20.999999999999996" height="22" rx="4" class="wash"/>
+<text x="530" y="290" class="small" text-anchor="start">H = 0.469 bits</text>
+</svg>

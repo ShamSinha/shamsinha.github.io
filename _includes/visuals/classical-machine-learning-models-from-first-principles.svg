@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="classical-machine-learning-models-from-first-principles-title classical-machine-learning-models-from-first-principles-desc">
+<title id="classical-machine-learning-models-from-first-principles-title">Different questions need different geometry</title>
+<desc id="classical-machine-learning-models-from-first-principles-desc">These are schematic examples: a regression line predicts a number, a decision boundary separates labels, and clusters group nearby points.</desc>
+<defs><marker id="classical-machine-learning-models-from-first-principles-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="35" y="45" width="210" height="260" rx="10" class="box"/>
+<text x="140" y="77" class="label" text-anchor="middle">Predict</text>
+<text x="140" y="283" class="small" text-anchor="middle">regression</text>
+<line x1="60" y1="250" x2="220" y2="250" class="axis"/>
+<line x1="60" y1="250" x2="60" y2="110" class="axis"/>
+<rect x="295" y="45" width="210" height="260" rx="10" class="box"/>
+<text x="400" y="77" class="label" text-anchor="middle">Separate</text>
+<text x="400" y="283" class="small" text-anchor="middle">classification</text>
+<line x1="320" y1="250" x2="480" y2="250" class="axis"/>
+<line x1="320" y1="250" x2="320" y2="110" class="axis"/>
+<rect x="555" y="45" width="210" height="260" rx="10" class="box"/>
+<text x="660" y="77" class="label" text-anchor="middle">Group</text>
+<text x="660" y="283" class="small" text-anchor="middle">clustering</text>
+<line x1="580" y1="250" x2="740" y2="250" class="axis"/>
+<line x1="580" y1="250" x2="580" y2="110" class="axis"/>
+<circle cx="65" cy="220" r="4" class="blue"/>
+<circle cx="77" cy="223" r="4" class="blue"/>
+<circle cx="89" cy="226" r="4" class="blue"/>
+<circle cx="101" cy="199" r="4" class="blue"/>
+<circle cx="113" cy="202" r="4" class="blue"/>
+<circle cx="125" cy="175" r="4" class="blue"/>
+<circle cx="137" cy="178" r="4" class="blue"/>
+<circle cx="149" cy="181" r="4" class="blue"/>
+<circle cx="161" cy="154" r="4" class="blue"/>
+<circle cx="173" cy="157" r="4" class="blue"/>
+<circle cx="185" cy="130" r="4" class="blue"/>
+<circle cx="197" cy="133" r="4" class="blue"/>
+<line x1="60" y1="240" x2="225" y2="112" class="stroke-teal"/>
+<circle cx="325" cy="120" r="4" class="teal"/>
+<circle cx="362" cy="173" r="4" class="teal"/>
+<circle cx="399" cy="226" r="4" class="teal"/>
+<circle cx="436" cy="159" r="4" class="blue"/>
+<circle cx="473" cy="212" r="4" class="blue"/>
+<circle cx="360" cy="145" r="4" class="blue"/>
+<circle cx="397" cy="198" r="4" class="teal"/>
+<circle cx="434" cy="131" r="4" class="blue"/>
+<circle cx="471" cy="184" r="4" class="blue"/>
+<circle cx="358" cy="237" r="4" class="teal"/>
+<circle cx="395" cy="170" r="4" class="blue"/>
+<circle cx="432" cy="223" r="4" class="blue"/>
+<circle cx="469" cy="156" r="4" class="blue"/>
+<circle cx="356" cy="209" r="4" class="teal"/>
+<circle cx="393" cy="142" r="4" class="blue"/>
+<circle cx="430" cy="195" r="4" class="blue"/>
+<line x1="322" y1="118" x2="480" y2="250" class="stroke-orange"/>
+<circle cx="578" cy="135" r="4" class="blue"/>
+<circle cx="694" cy="172" r="4" class="teal"/>
+<circle cx="665" cy="218" r="4" class="orange"/>
+<circle cx="611" cy="155" r="4" class="blue"/>
+<circle cx="692" cy="161" r="4" class="teal"/>
+<circle cx="663" cy="238" r="4" class="orange"/>
+<circle cx="609" cy="144" r="4" class="blue"/>
+<circle cx="690" cy="181" r="4" class="teal"/>
+<circle cx="661" cy="227" r="4" class="orange"/>
+<circle cx="607" cy="164" r="4" class="blue"/>
+<circle cx="688" cy="170" r="4" class="teal"/>
+<circle cx="659" cy="216" r="4" class="orange"/>
+<circle cx="605" cy="153" r="4" class="blue"/>
+<circle cx="686" cy="159" r="4" class="teal"/>
+<circle cx="657" cy="236" r="4" class="orange"/>
+<circle cx="603" cy="142" r="4" class="blue"/>
+<circle cx="684" cy="179" r="4" class="teal"/>
+<circle cx="655" cy="225" r="4" class="orange"/>
+<text x="400" y="340" class="small" text-anchor="middle">First identify the question. Then choose the model and metric.</text>
+</svg>

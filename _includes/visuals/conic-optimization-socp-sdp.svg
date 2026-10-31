@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="conic-optimization-socp-sdp-title conic-optimization-socp-sdp-desc">
+<title id="conic-optimization-socp-sdp-title">Three meanings of nonnegative</title>
+<desc id="conic-optimization-socp-sdp-desc">The orthant constrains entries; a second-order cone bounds a norm; the PSD cone constrains every quadratic direction. The sketches are schematic.</desc>
+<defs><marker id="conic-optimization-socp-sdp-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="30" y="40" width="210" height="265" rx="10" class="box"/>
+<text x="135" y="74" class="label" text-anchor="middle">LP · orthant</text>
+<rect x="295" y="40" width="210" height="265" rx="10" class="box"/>
+<text x="400" y="74" class="label" text-anchor="middle">SOCP · norm</text>
+<rect x="560" y="40" width="210" height="265" rx="10" class="box"/>
+<text x="665" y="74" class="label" text-anchor="middle">SDP · matrix</text>
+<line x1="65" y1="240" x2="210" y2="240" class="axis"/>
+<line x1="65" y1="240" x2="65" y2="115" class="axis"/>
+<rect x="65" y="117" width="140" height="123" rx="0" class="wash-teal"/>
+<text x="135" y="280" class="small" text-anchor="middle">x₁ ≥ 0, x₂ ≥ 0</text>
+<path d="M335 233 L400 105 L465 233 Z" class="wash-teal"/>
+<ellipse cx="400" cy="233" rx="65" ry="18" class="stroke-teal"/>
+<line x1="400" y1="250" x2="400" y2="100" class="line dash"/>
+<text x="400" y="280" class="small" text-anchor="middle">‖u‖₂ ≤ t</text>
+<rect x="592" y="112" width="146" height="116" rx="4" class="wash-teal"/>
+<text x="665" y="153" class="label" text-anchor="middle">a    b</text>
+<text x="665" y="198" class="label" text-anchor="middle">b    c</text>
+<text x="665" y="280" class="small" text-anchor="middle">zᵀXz ≥ 0 for every z</text>
+<text x="400" y="340" class="small" text-anchor="middle">All three: an affine expression must belong to a convex cone.</text>
+</svg>

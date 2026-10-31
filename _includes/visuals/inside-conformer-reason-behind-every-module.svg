@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="inside-conformer-reason-behind-every-module-title inside-conformer-reason-behind-every-module-desc">
+<title id="inside-conformer-reason-behind-every-module-title">Follow one tensor through the block</title>
+<desc id="inside-conformer-reason-behind-every-module-desc">The two half-step FFNs surround attention and convolution. The convolution inset shows how channel mixing and time mixing are separated.</desc>
+<defs><marker id="inside-conformer-reason-behind-every-module-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="25" y="75" width="160" height="72" rx="10" class="wash"/>
+<text x="105.0" y="104" class="label" text-anchor="middle">½ FFN</text>
+<text x="105.0" y="127" class="small" text-anchor="middle">per frame</text>
+<line x1="191" y1="111" x2="216" y2="111" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<path d="M35 68 V40 H175 V68" class="line dash"/>
+<text x="105" y="32" class="tiny" text-anchor="middle">residual +</text>
+<rect x="223" y="75" width="160" height="72" rx="10" class="wash"/>
+<text x="303.0" y="104" class="label" text-anchor="middle">Attention</text>
+<text x="303.0" y="127" class="small" text-anchor="middle">global context</text>
+<line x1="389" y1="111" x2="414" y2="111" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<path d="M233 68 V40 H373 V68" class="line dash"/>
+<text x="303" y="32" class="tiny" text-anchor="middle">residual +</text>
+<rect x="421" y="75" width="160" height="72" rx="10" class="wash-teal"/>
+<text x="501.0" y="104" class="label" text-anchor="middle">Convolution</text>
+<text x="501.0" y="127" class="small" text-anchor="middle">local context</text>
+<line x1="587" y1="111" x2="612" y2="111" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<path d="M431 68 V40 H571 V68" class="line dash"/>
+<text x="501" y="32" class="tiny" text-anchor="middle">residual +</text>
+<rect x="619" y="75" width="160" height="72" rx="10" class="wash"/>
+<text x="699.0" y="104" class="label" text-anchor="middle">½ FFN + LN</text>
+<text x="699.0" y="127" class="small" text-anchor="middle">per frame</text>
+<path d="M629 68 V40 H769 V68" class="line dash"/>
+<text x="699" y="32" class="tiny" text-anchor="middle">residual +</text>
+<line x1="500" y1="160" x2="500" y2="205" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<text x="40" y="218" class="small" text-anchor="start">Inside convolution</text>
+<rect x="25" y="245" width="160" height="72" rx="10" class="wash-teal"/>
+<text x="105.0" y="274" class="label" text-anchor="middle">Pointwise</text>
+<text x="105.0" y="297" class="small" text-anchor="middle">D → 2D</text>
+<line x1="191" y1="281" x2="216" y2="281" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<rect x="223" y="245" width="160" height="72" rx="10" class="wash-teal"/>
+<text x="303.0" y="274" class="label" text-anchor="middle">GLU</text>
+<text x="303.0" y="297" class="small" text-anchor="middle">2D → D</text>
+<line x1="389" y1="281" x2="414" y2="281" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<rect x="421" y="245" width="160" height="72" rx="10" class="wash-teal"/>
+<text x="501.0" y="274" class="label" text-anchor="middle">Depthwise</text>
+<text x="501.0" y="297" class="small" text-anchor="middle">mix time</text>
+<line x1="587" y1="281" x2="612" y2="281" class="axis" marker-end="url(#inside-conformer-reason-behind-every-module-arrow)"/>
+<rect x="619" y="245" width="160" height="72" rx="10" class="wash-teal"/>
+<text x="699.0" y="274" class="label" text-anchor="middle">Pointwise</text>
+<text x="699.0" y="297" class="small" text-anchor="middle">mix channels</text>
+</svg>

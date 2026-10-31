@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="how-dinov2-dinov3-learn-without-labels-title how-dinov2-dinov3-learn-without-labels-desc">
+<title id="how-dinov2-dinov3-learn-without-labels-title">The teacher supplies targets; the student learns</title>
+<desc id="how-dinov2-dinov3-learn-without-labels-desc">Only the student receives gradients. Its EMA teacher sees global unmasked views; the student also sees local crops and masked patches. DINOv3 later anchors patch relationships to a Gram teacher.</desc>
+<defs><marker id="how-dinov2-dinov3-learn-without-labels-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="35" y="140" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="48" y="140" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="61" y="140" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="74" y="140" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="87" y="140" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="100" y="140" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="35" y="153" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="48" y="153" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="61" y="153" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="74" y="153" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="87" y="153" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="100" y="153" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="35" y="166" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="48" y="166" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="61" y="166" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="74" y="166" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="87" y="166" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="100" y="166" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="35" y="179" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="48" y="179" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="61" y="179" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="74" y="179" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="87" y="179" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="100" y="179" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="35" y="192" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="48" y="192" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="61" y="192" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="74" y="192" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="87" y="192" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="100" y="192" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="35" y="205" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="48" y="205" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="61" y="205" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="74" y="205" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="87" y="205" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="100" y="205" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<text x="75" y="251" class="small" text-anchor="middle">one image</text>
+<line x1="120" y1="175" x2="150" y2="175" class="axis"/>
+<line x1="150" y1="175" x2="150" y2="90" class="axis"/>
+<line x1="150" y1="175" x2="150" y2="255" class="axis"/>
+<line x1="150" y1="90" x2="200" y2="90" class="axis" marker-end="url(#how-dinov2-dinov3-learn-without-labels-arrow)"/>
+<line x1="150" y1="255" x2="200" y2="255" class="axis" marker-end="url(#how-dinov2-dinov3-learn-without-labels-arrow)"/>
+<rect x="210" y="55" width="225" height="72" rx="10" class="wash"/>
+<text x="322.5" y="84" class="label" text-anchor="middle">EMA teacher</text>
+<text x="322.5" y="107" class="small" text-anchor="middle">global, unmasked views</text>
+<rect x="210" y="220" width="225" height="72" rx="10" class="wash-teal"/>
+<text x="322.5" y="249" class="label" text-anchor="middle">Student</text>
+<text x="322.5" y="272" class="small" text-anchor="middle">global + local; masking</text>
+<rect x="535" y="55" width="235" height="72" rx="10" class="wash"/>
+<text x="652.5" y="84" class="label" text-anchor="middle">Teacher targets</text>
+<text x="652.5" y="107" class="small" text-anchor="middle">stop-gradient</text>
+<rect x="535" y="220" width="235" height="72" rx="10" class="wash-teal"/>
+<text x="652.5" y="249" class="label" text-anchor="middle">Student predictions</text>
+<text x="652.5" y="272" class="small" text-anchor="middle">receives gradients</text>
+<line x1="445" y1="91" x2="525" y2="91" class="axis" marker-end="url(#how-dinov2-dinov3-learn-without-labels-arrow)"/>
+<line x1="445" y1="256" x2="525" y2="256" class="axis" marker-end="url(#how-dinov2-dinov3-learn-without-labels-arrow)"/>
+<line x1="652" y1="136" x2="652" y2="210" class="axis" marker-end="url(#how-dinov2-dinov3-learn-without-labels-arrow)"/>
+<text x="665" y="174" class="small" text-anchor="start">match</text>
+<path d="M322 211 V137" class="stroke-teal dash" marker-end="url(#how-dinov2-dinov3-learn-without-labels-arrow)"/>
+<text x="305" y="174" class="small" text-anchor="end">EMA</text>
+<text x="400" y="335" class="label" text-anchor="middle">Global agreement + masked patch prediction + feature diversity</text>
+</svg>

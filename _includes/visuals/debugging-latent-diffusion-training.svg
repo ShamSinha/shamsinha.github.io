@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="debugging-latent-diffusion-training-title debugging-latent-diffusion-training-desc">
+<title id="debugging-latent-diffusion-training-title">A diagnostic ladder</title>
+<desc id="debugging-latent-diffusion-training-desc">Check the codec, scaling, a tiny-set overfit, sampler agreement, and evaluation in that order. Move onward when the previous boundary behaves as expected.</desc>
+<defs><marker id="debugging-latent-diffusion-training-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="35" y="45" width="132" height="67" rx="10" class="wash"/>
+<text x="101" y="71" class="" text-anchor="middle">1 · Codec</text>
+<text x="101" y="92" class="tiny" text-anchor="middle">real image round trip</text>
+<line x1="169" y1="95" x2="182" y2="121" class="axis" marker-end="url(#debugging-latent-diffusion-training-arrow)"/>
+<rect x="185" y="87" width="132" height="67" rx="10" class="wash"/>
+<text x="251" y="113" class="" text-anchor="middle">2 · Latents</text>
+<text x="251" y="134" class="tiny" text-anchor="middle">shape, scale, convention</text>
+<line x1="319" y1="137" x2="332" y2="163" class="axis" marker-end="url(#debugging-latent-diffusion-training-arrow)"/>
+<rect x="335" y="129" width="132" height="67" rx="10" class="wash"/>
+<text x="401" y="155" class="" text-anchor="middle">3 · Training</text>
+<text x="401" y="176" class="tiny" text-anchor="middle">tiny-set overfit</text>
+<line x1="469" y1="179" x2="482" y2="205" class="axis" marker-end="url(#debugging-latent-diffusion-training-arrow)"/>
+<rect x="485" y="171" width="132" height="67" rx="10" class="wash"/>
+<text x="551" y="197" class="" text-anchor="middle">4 · Sampler</text>
+<text x="551" y="218" class="tiny" text-anchor="middle">target + schedule agree</text>
+<line x1="619" y1="221" x2="632" y2="247" class="axis" marker-end="url(#debugging-latent-diffusion-training-arrow)"/>
+<rect x="635" y="213" width="132" height="67" rx="10" class="wash-teal"/>
+<text x="701" y="239" class="" text-anchor="middle">5 · Evaluation</text>
+<text x="701" y="260" class="tiny" text-anchor="middle">fixed seeds + complete state</text>
+<text x="400" y="327" class="label" text-anchor="middle">Fix the first failed boundary before tuning the next one.</text>
+</svg>

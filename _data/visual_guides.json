@@ -1,0 +1,860 @@
+{
+  "convex-optimization-doubt-log": {
+    "short": "Convex optimization",
+    "idea": "Choose the best allowed answer. Convexity makes that search easier because every local minimum is global.",
+    "visual": "A route through convex optimization",
+    "caption": "The objective ranks answers; constraints decide which answers are allowed. Learn the geometry before choosing a solver.",
+    "cards": [
+      {
+        "title": "Objective",
+        "text": "A score to minimize, such as cost, error, or energy."
+      },
+      {
+        "title": "Feasible set",
+        "text": "All choices that satisfy the constraints. A convex set contains every segment joining two of its points."
+      },
+      {
+        "title": "Convex problem",
+        "text": "A convex objective, convex inequality functions, and affine equality constraints."
+      }
+    ],
+    "equation": "\\min_x f_0(x)\\quad\\text{subject to}\\quad f_i(x)\\leq0,\\;Ax=b",
+    "note": "A convex objective alone is not enough: the feasible set must also be convex.",
+    "rows": [
+      [
+        "Starting from scratch",
+        "Learn sets and functions first."
+      ],
+      [
+        "Working with squared errors",
+        "Study PSD matrices and quadratic programs."
+      ],
+      [
+        "Facing norm or matrix constraints",
+        "Move to second-order and semidefinite cones."
+      ]
+    ],
+    "next_slug": "convex-sets-functions-first-order-geometry",
+    "next_title": "Convex sets and functions",
+    "lab": null
+  },
+  "linear-algebra-important-concepts": {
+    "short": "Linear algebra",
+    "idea": "A matrix moves space. Eigenvectors reveal unchanged directions; SVD reveals how any matrix rotates, stretches, and rotates again.",
+    "visual": "See a matrix act on space",
+    "caption": "A = diag(2, 1) doubles horizontal lengths. The unit circle becomes an ellipse; the coordinate axes remain eigenvector directions.",
+    "cards": [
+      {
+        "title": "Columns are instructions",
+        "text": "The columns of A are where the coordinate basis vectors land."
+      },
+      {
+        "title": "Eigenvectors keep direction",
+        "text": "Av = λv: the vector stays on its line, with scaling or reversal set by λ."
+      },
+      {
+        "title": "SVD works broadly",
+        "text": "A = UΣVᵀ separates input directions, stretching, and output directions, including for rectangular matrices."
+      }
+    ],
+    "equation": "A=U\\Sigma V^T",
+    "note": "For this diagonal example, the singular values are 2 and 1. The largest is the maximum length gain.",
+    "rows": [
+      [
+        "Need a closest point",
+        "Use an orthogonal projection."
+      ],
+      [
+        "Need repeated matrix powers",
+        "Try an eigenbasis if the matrix is diagonalizable."
+      ],
+      [
+        "Need compression or gain",
+        "Use singular values and singular vectors."
+      ]
+    ],
+    "next_slug": "symmetric-matrices-quadratic-forms-matrix-norm",
+    "next_title": "Quadratic forms and matrix gain",
+    "lab": "matrix"
+  },
+  "shannon-information-entropy-doubt-log": {
+    "short": "Information & entropy",
+    "idea": "Surprise belongs to one outcome. Entropy averages that surprise over all possible outcomes.",
+    "visual": "A fair coin is hardest to predict",
+    "caption": "For a binary source, uncertainty peaks at p = ½. When either outcome is certain, no bits are needed to describe which outcome occurred.",
+    "cards": [
+      {
+        "title": "Rare means surprising",
+        "text": "An outcome with probability 1/8 carries 3 bits of self-information."
+      },
+      {
+        "title": "Average the surprise",
+        "text": "A fair coin has 1 bit of entropy; a biased coin has less."
+      },
+      {
+        "title": "Coding uses the bias",
+        "text": "Frequent outcomes can receive shorter codes, lowering average length over long sequences."
+      }
+    ],
+    "equation": "I(x)=-\\log_2p(x),\\qquad H(X)=-\\sum_x p(x)\\log_2p(x)",
+    "note": "The logarithm turns multiplication of independent probabilities into addition of information.",
+    "rows": [
+      [
+        "One observed outcome",
+        "Compute its self-information."
+      ],
+      [
+        "A whole source distribution",
+        "Compute entropy."
+      ],
+      [
+        "A biased coin, p = 0.9",
+        "Heads: 0.152 bits; tails: 3.322 bits; average: 0.469 bits."
+      ]
+    ],
+    "next_slug": "probability-statistical-inference-for-machine-learning",
+    "next_title": "Probability and inference",
+    "lab": "entropy"
+  },
+  "symmetric-matrices-quadratic-forms-matrix-norm": {
+    "short": "Quadratic geometry",
+    "idea": "A symmetric matrix assigns curvature to directions. Its eigenvectors give the axes; its eigenvalues tell you how strongly each axis contributes.",
+    "visual": "From eigenvalues to an ellipse",
+    "caption": "For A = diag(4, 1), the set xᵀAx ≤ 1 has horizontal radius ½ and vertical radius 1. More curvature means a shorter ellipse axis.",
+    "cards": [
+      {
+        "title": "Quadratic form",
+        "text": "xᵀAx turns a vector into a scalar energy or curvature score."
+      },
+      {
+        "title": "PSD means every direction",
+        "text": "A is positive semidefinite when xᵀAx ≥ 0 for every x, equivalently all eigenvalues are nonnegative."
+      },
+      {
+        "title": "Norm means largest gain",
+        "text": "The matrix 2-norm is the largest singular value: the greatest length amplification over unit inputs."
+      }
+    ],
+    "equation": "x^TAx=\\sum_i\\lambda_i(q_i^Tx)^2",
+    "note": "This eigenvector expansion applies to real symmetric A. Positive definite matrices give bounded ellipsoids.",
+    "rows": [
+      [
+        "All eigenvalues positive",
+        "A bowl; bounded ellipsoidal sublevel sets."
+      ],
+      [
+        "Some zero, none negative",
+        "A flat direction; PSD but potentially singular."
+      ],
+      [
+        "Both positive and negative",
+        "A saddle; the quadratic is not convex."
+      ]
+    ],
+    "next_slug": "convex-quadratics-psd-schur-complement",
+    "next_title": "Curvature and constrained optimization",
+    "lab": null
+  },
+  "classical-machine-learning-models-from-first-principles": {
+    "short": "Classical machine learning",
+    "idea": "Choose a model by the shape of the problem: predict a value, separate classes, group examples, or find a smaller representation.",
+    "visual": "Different questions need different geometry",
+    "caption": "These are schematic examples: a regression line predicts a number, a decision boundary separates labels, and clusters group nearby points.",
+    "cards": [
+      {
+        "title": "Start with an assumption",
+        "text": "Linear models use additive effects; trees split feature space; kernels express similarity."
+      },
+      {
+        "title": "Control flexibility",
+        "text": "Regularization trades training fit for a simpler model. Ridge shrinks weights; lasso can set them to zero."
+      },
+      {
+        "title": "Evaluate the consequence",
+        "text": "Choose held-out metrics that reflect the cost of mistakes, then choose a threshold if needed."
+      }
+    ],
+    "equation": "\\text{objective}=\\text{data loss}+\\lambda\\,\\text{complexity penalty}",
+    "note": "Fit preprocessing on training data only. Use validation to choose settings; reserve the test set for final evaluation.",
+    "rows": [
+      [
+        "A continuous target",
+        "Linear regression is a useful baseline."
+      ],
+      [
+        "A class probability",
+        "Try logistic regression; check calibration."
+      ],
+      [
+        "No labels",
+        "Use K-means for groups or PCA for variance-preserving projection."
+      ]
+    ],
+    "next_slug": "deep-learning-field-notes",
+    "next_title": "The deep learning training loop",
+    "lab": null
+  },
+  "deep-learning-field-notes": {
+    "short": "Deep learning",
+    "idea": "Training is a feedback loop: predict, measure error, send gradients backward, and update parameters. Every layer has a job in that loop.",
+    "visual": "One training step, two directions",
+    "caption": "The forward pass builds a prediction. Backpropagation applies the chain rule in reverse; the optimizer uses those gradients to update weights.",
+    "cards": [
+      {
+        "title": "Loss defines the target",
+        "text": "Cross-entropy scores class probabilities. Focal loss reduces the contribution of already easy examples."
+      },
+      {
+        "title": "Layers move information",
+        "text": "Convolutions mix local patterns, activations add nonlinearity, and normalization controls selected statistics."
+      },
+      {
+        "title": "Training differs from inference",
+        "text": "Dropout samples masks in training. BatchNorm usually uses running statistics at inference; LayerNorm uses each example."
+      }
+    ],
+    "equation": "\\theta\\leftarrow\\theta-\\eta\\nabla_\\theta\\mathcal L",
+    "note": "This is plain gradient descent. Adam also tracks moving averages of gradients and their squares.",
+    "rows": [
+      [
+        "Loss will not decrease",
+        "Check targets, gradients, and a tiny-batch overfit."
+      ],
+      [
+        "Training works, validation fails",
+        "Inspect data leakage, distribution shift, and overfitting."
+      ],
+      [
+        "Inference is too slow",
+        "Measure on the target device before pruning or quantizing."
+      ]
+    ],
+    "next_slug": "weight-initialization-zero-xavier-he",
+    "next_title": "Why initialization matters",
+    "lab": null
+  },
+  "generative-ai-variational-inference-vaes-diffusion": {
+    "short": "Generative models",
+    "idea": "Generative models learn how data can arise from hidden variables. A VAE learns a compact latent code; diffusion learns to reverse gradual corruption.",
+    "visual": "Two routes from noise to data",
+    "caption": "A VAE decoder maps a latent sample to data in one pass. Diffusion generation repeatedly denoises; its forward corruption process is fixed.",
+    "cards": [
+      {
+        "title": "Posterior inference",
+        "text": "Given x, infer which latent z could have produced it. Exact inference is often intractable."
+      },
+      {
+        "title": "VAE shortcut",
+        "text": "Train an encoder q(z|x) and decoder together using reconstruction and a KL regularizer."
+      },
+      {
+        "title": "Diffusion shortcut",
+        "text": "Create noisy examples at known noise levels, then train a model to predict the chosen denoising target."
+      }
+    ],
+    "equation": "\\log p(x)\\geq\\mathbb E_{q(z\\mid x)}[\\log p(x\\mid z)]-D_{KL}(q(z\\mid x)\\|p(z))",
+    "note": "The ELBO rewards explaining the observation while penalizing disagreement with the prior.",
+    "rows": [
+      [
+        "Need a differentiable latent sample",
+        "Use z = μ + σ ⊙ ε with independent standard Gaussian ε."
+      ],
+      [
+        "Need a noisy training example",
+        "Sample its noise level directly; no full forward chain is needed."
+      ],
+      [
+        "Need latent diffusion",
+        "Use a frozen image codec, then train diffusion in its latent space."
+      ]
+    ],
+    "next_slug": "vae-training-for-latent-diffusion",
+    "next_title": "The VAE as an image codec",
+    "lab": "diffusion"
+  },
+  "probability-statistical-inference-for-machine-learning": {
+    "short": "Probability & inference",
+    "idea": "Probability predicts data from a model. Likelihood scores models using observed data. Bayes combines likelihood with a prior.",
+    "visual": "Update a belief after observing data",
+    "caption": "Starting with Beta(2, 2), observing 8 heads and 2 tails yields Beta(10, 4). The posterior combines prior evidence and observed counts.",
+    "cards": [
+      {
+        "title": "Probability",
+        "text": "Hold the parameter fixed and ask which data could occur."
+      },
+      {
+        "title": "Likelihood",
+        "text": "Hold the observed data fixed and compare parameter values. It need not integrate to one over parameters."
+      },
+      {
+        "title": "Posterior",
+        "text": "Multiply likelihood by prior, then normalize over the parameter space."
+      }
+    ],
+    "equation": "p(\\theta\\mid D)\\propto p(D\\mid\\theta)\\,p(\\theta)",
+    "note": "For a Bernoulli probability, a Beta(a, b) prior becomes Beta(a + heads, b + tails).",
+    "rows": [
+      [
+        "Need a point estimate",
+        "MLE maximizes likelihood; MAP maximizes posterior density."
+      ],
+      [
+        "Interpreting a p-value",
+        "It measures tail extremeness under the null model, not the probability the null is true."
+      ],
+      [
+        "Comparing variables",
+        "Correlation measures association; it does not establish causation."
+      ]
+    ],
+    "next_slug": "classical-machine-learning-models-from-first-principles",
+    "next_title": "Models built from these assumptions",
+    "lab": null
+  },
+  "vae-training-for-latent-diffusion": {
+    "short": "The VAE image codec",
+    "idea": "Before training diffusion, check whether the VAE can reconstruct the details you care about. The codec limits what the generator can recover.",
+    "visual": "Find the bottleneck before scaling the model",
+    "caption": "Encode a real image and decode it immediately. If that reconstruction already loses a feature, increasing denoiser capacity cannot recover that feature through this fixed codec.",
+    "cards": [
+      {
+        "title": "Spatial capacity",
+        "text": "Latent height and width determine how much spatial detail survives. Extra channels are a different kind of capacity."
+      },
+      {
+        "title": "Balanced objective",
+        "text": "Reconstruction preserves information; KL regularization structures the posterior. Inspect both terms separately."
+      },
+      {
+        "title": "Freeze the contract",
+        "text": "Save the VAE checkpoint, latent shape, scaling, and choice of posterior mean or sample with the diffusion setup."
+      }
+    ],
+    "equation": "z=\\mu_\\phi(x)+\\sigma_\\phi(x)\\odot\\epsilon,\\qquad \\epsilon\\sim\\mathcal N(0,I)",
+    "note": "At decode time, undo any latent normalization before passing latents to the VAE decoder.",
+    "rows": [
+      [
+        "Real-image reconstructions are soft",
+        "Fix the codec before tuning diffusion."
+      ],
+      [
+        "KL is near zero, reconstructions are poor",
+        "Check whether the decoder is ignoring the latent."
+      ],
+      [
+        "Reconstructions work, generation fails",
+        "Check latent scaling and denoiser/sampler agreement next."
+      ]
+    ],
+    "next_slug": "why-kl-annealing-helps-vaes",
+    "next_title": "Why KL warmup helps",
+    "lab": null
+  },
+  "why-kl-annealing-helps-vaes": {
+    "short": "KL annealing",
+    "idea": "Let the VAE learn to use its code before charging the full price for storing information. Warmup changes the learning path, while the final KL weight sets the trade-off.",
+    "visual": "First open the channel, then regularize it",
+    "caption": "A rising β gradually adds KL pressure. In the scalar experiment, an overly large final β still makes zero information optimal; warmup cannot remove that incentive.",
+    "cards": [
+      {
+        "title": "Reconstruction wants information",
+        "text": "Encoder and decoder must learn together so z actually explains x."
+      },
+      {
+        "title": "KL charges for information",
+        "text": "Strong pressure too early can push the encoder toward an input-independent prior."
+      },
+      {
+        "title": "Annealing changes timing",
+        "text": "Begin with a small β, raise it toward a chosen target, and keep checking reconstruction and latent use."
+      }
+    ],
+    "equation": "\\mathcal L=\\mathcal L_{recon}+\\beta_tD_{KL}(q(z\\mid x)\\|p(z))",
+    "note": "β is meaningful relative to the reconstruction loss scale and its sum-versus-mean reduction.",
+    "rows": [
+      [
+        "KL collapses immediately",
+        "Inspect decoder dependence on z; consider a slower warmup."
+      ],
+      [
+        "Warmup helps, collapse returns",
+        "Revisit the final objective and KL weight."
+      ],
+      [
+        "KL is large",
+        "Inspect scaling, reductions, and reconstruction before changing β."
+      ]
+    ],
+    "next_slug": "vae-training-for-latent-diffusion",
+    "next_title": "VAE diagnostics and readiness",
+    "lab": "kl"
+  },
+  "training-latent-diffusion-models": {
+    "short": "Train latent diffusion",
+    "idea": "Diffusion learns the distribution of your encoded images. Make the codec, latent scale, prediction target, and reverse sampler agree before adding complexity.",
+    "visual": "Training and generation run in different directions",
+    "caption": "Training samples one noise level and predicts a target. Generation starts from Gaussian noise and repeatedly applies a compatible reverse sampler before decoding.",
+    "cards": [
+      {
+        "title": "Freeze a working codec",
+        "text": "Confirm real-image reconstructions and record whether training uses means or posterior samples."
+      },
+      {
+        "title": "Create one noisy latent",
+        "text": "Draw a timestep and Gaussian noise, then compute zₜ directly from the clean latent."
+      },
+      {
+        "title": "Match the sampler",
+        "text": "Epsilon, clean-latent, and velocity prediction require the matching conversion equations and schedule."
+      }
+    ],
+    "equation": "z_t=\\sqrt{\\bar\\alpha_t}\\,z_0+\\sqrt{1-\\bar\\alpha_t}\\,\\epsilon",
+    "note": "Training timesteps define noise levels. Sampling steps are a separate choice and may use a subset of those levels.",
+    "rows": [
+      [
+        "Starting a baseline",
+        "Use a simple unconditional model and fixed sample seeds."
+      ],
+      [
+        "Changing latent normalization",
+        "Apply the same convention in training and sampling, and undo it for decoding."
+      ],
+      [
+        "Loss falls, samples do not improve",
+        "Check interfaces and timestep-specific error before adding capacity."
+      ]
+    ],
+    "next_slug": "conditioning-and-scaling-latent-diffusion",
+    "next_title": "Add conditioning and capacity",
+    "lab": "diffusion"
+  },
+  "conditioning-and-scaling-latent-diffusion": {
+    "short": "Condition & scale diffusion",
+    "idea": "Send a condition through a path that preserves its structure: labels are global, masks are spatial, and text is a token sequence.",
+    "visual": "Put the condition where it can help",
+    "caption": "A label can modulate features, a spatial map can be concatenated or injected at multiple scales, and tokens can provide keys and values for cross-attention.",
+    "cards": [
+      {
+        "title": "Global information",
+        "text": "Embed class labels or scalar metadata and use the embedding to influence denoiser blocks."
+      },
+      {
+        "title": "Spatial information",
+        "text": "Keep masks or maps aligned with the image through resizing and augmentation."
+      },
+      {
+        "title": "Guidance needs training",
+        "text": "Classifier-free guidance requires training with some conditions dropped so unconditional predictions are meaningful."
+      }
+    ],
+    "equation": "\\hat\\epsilon=\\epsilon_u+s(\\epsilon_c-\\epsilon_u)",
+    "note": "Here s = 0 gives the unconditional estimate and s = 1 gives the conditional estimate. Larger values strengthen guidance, with possible quality trade-offs.",
+    "rows": [
+      [
+        "A class ID",
+        "Use an embedding and feature modulation."
+      ],
+      [
+        "A segmentation map",
+        "Use aligned spatial features or concatenation."
+      ],
+      [
+        "A token sequence",
+        "Use cross-attention; queries come from image features."
+      ]
+    ],
+    "next_slug": "debugging-latent-diffusion-training",
+    "next_title": "Evaluate and debug diffusion",
+    "lab": null
+  },
+  "debugging-latent-diffusion-training": {
+    "short": "Debug latent diffusion",
+    "idea": "Debug the simplest deterministic boundary first. A lower denoising loss alone cannot tell you which part of the image pipeline is working.",
+    "visual": "A diagnostic ladder",
+    "caption": "Check the codec, scaling, a tiny-set overfit, sampler agreement, and evaluation in that order. Move onward when the previous boundary behaves as expected.",
+    "cards": [
+      {
+        "title": "Lock the comparison",
+        "text": "Reuse validation latents, timesteps, noise, and generation seeds to make changes comparable."
+      },
+      {
+        "title": "Separate training from sampling",
+        "text": "Compare raw and EMA weights with identical generation settings. Bucket denoising loss by noise level."
+      },
+      {
+        "title": "Resume the experiment",
+        "text": "Restore model, optimizer, scheduler, scaler, EMA, step count, and needed random states."
+      }
+    ],
+    "equation": null,
+    "note": "Use the table to choose the first check. Change one component at a time so the result identifies a cause.",
+    "rows": [
+      [
+        "Real-image reconstructions look bad",
+        "VAE quality and decode conventions."
+      ],
+      [
+        "Tiny subset will not overfit",
+        "Targets, gradients, timestep inputs, and conditioning."
+      ],
+      [
+        "Resume changes behavior sharply",
+        "Missing optimizer, scheduler, EMA, or random state."
+      ]
+    ],
+    "next_slug": "latent-diffusion-training-series",
+    "next_title": "The complete diffusion reading path",
+    "lab": null
+  },
+  "latent-diffusion-training-series": {
+    "short": "Latent diffusion reading path",
+    "idea": "Build a reliable pipeline, add control, then evaluate systematically. Start at the earliest part whose assumptions you have not yet verified.",
+    "visual": "Three questions, one training system",
+    "caption": "Each stage has a clear exit check. The VAE codec is a prerequisite shared by all three parts.",
+    "cards": [
+      {
+        "title": "01 · Build",
+        "text": "Understand latent encoding, noise schedules, prediction targets, and reverse sampling."
+      },
+      {
+        "title": "02 · Control",
+        "text": "Add the right condition path; scale model capacity after the baseline works."
+      },
+      {
+        "title": "03 · Diagnose",
+        "text": "Use fixed comparisons, tiny-set overfitting, and complete checkpoints."
+      }
+    ],
+    "equation": null,
+    "note": "The VAE, normalization, target, schedule, conditions, and sampler form one shared contract.",
+    "rows": [
+      [
+        "Implementing for the first time",
+        "Part 1: Training Latent Diffusion Without Guesswork."
+      ],
+      [
+        "A baseline works; add conditions",
+        "Part 2: Conditioning and Scaling."
+      ],
+      [
+        "Loss and sample quality disagree",
+        "Part 3: Debugging Latent Diffusion."
+      ]
+    ],
+    "next_slug": "training-latent-diffusion-models",
+    "next_title": "Part 1 · Build the pipeline",
+    "lab": null
+  },
+  "cnn-vs-transformer-why-conformer-needs-both": {
+    "short": "Local & global context",
+    "idea": "Speech has nearby acoustic patterns and distant context. Conformer gives convolution and attention complementary ways to connect those positions.",
+    "visual": "Two ways to mix a sequence",
+    "caption": "The highlighted query sees a fixed neighborhood through a convolution. Global self-attention can connect it directly to every position with input-dependent weights.",
+    "cards": [
+      {
+        "title": "Convolution",
+        "text": "Reuses a learned local kernel at each time position. Locality is built into the operation."
+      },
+      {
+        "title": "Self-attention",
+        "text": "Computes routing weights from the current input. Useful context can come from anywhere in the sequence."
+      },
+      {
+        "title": "Conformer",
+        "text": "Applies attention and local convolution within the same residual block, surrounded by feed-forward transforms."
+      }
+    ],
+    "equation": "\\operatorname{Attention}(Q,K,V)=\\operatorname{softmax}(QK^T/\\sqrt{d_k})V",
+    "note": "Vanilla global attention forms pairwise scores with quadratic sequence-length size; a fixed-width convolution scales roughly linearly.",
+    "rows": [
+      [
+        "Nearby repeating patterns",
+        "Convolution supplies a useful local bias."
+      ],
+      [
+        "Content-dependent distant context",
+        "Self-attention supplies a short interaction path."
+      ],
+      [
+        "Both occur in the task",
+        "Combine the mechanisms and validate the actual trade-off."
+      ]
+    ],
+    "next_slug": "inside-conformer-reason-behind-every-module",
+    "next_title": "Follow the full Conformer block",
+    "lab": null
+  },
+  "inside-conformer-reason-behind-every-module": {
+    "short": "Inside a Conformer block",
+    "idea": "Transform each frame, exchange global context, refine local patterns, then transform again. The tensor returns to the same model width after every residual module.",
+    "visual": "Follow one tensor through the block",
+    "caption": "The two half-step FFNs surround attention and convolution. The convolution inset shows how channel mixing and time mixing are separated.",
+    "cards": [
+      {
+        "title": "Pointwise mixes channels",
+        "text": "A kernel of width 1 turns D features into 2D features independently at each time step."
+      },
+      {
+        "title": "GLU chooses what passes",
+        "text": "Split the 2D features into A and B, then compute A ⊙ sigmoid(B), returning to width D."
+      },
+      {
+        "title": "Depthwise mixes time",
+        "text": "Each channel has its own temporal kernel. A final pointwise projection recombines channels."
+      }
+    ],
+    "equation": "\\operatorname{GLU}([A,B])=A\\odot\\sigma(B)",
+    "note": "For D channels and kernel width k, a depthwise temporal convolution has kD weights; a full one has kD², excluding biases.",
+    "rows": [
+      [
+        "FFN",
+        "Transforms features at one time position."
+      ],
+      [
+        "Attention",
+        "Mixes positions using input-dependent weights."
+      ],
+      [
+        "Convolution module",
+        "Gates channels and models local temporal evolution."
+      ]
+    ],
+    "next_slug": "cnn-vs-transformer-why-conformer-needs-both",
+    "next_title": "Why local and global context both matter",
+    "lab": null
+  },
+  "residual-vector-quantization-from-grids-to-codebooks": {
+    "short": "Residual vector quantization",
+    "idea": "Store a rough approximation, measure its error, and let the next codebook describe that error. Decode by adding the selected vectors.",
+    "visual": "Every stage encodes what remains",
+    "caption": "For x = (4.6, 2.3), the selected codewords sum to (4.55, 2.12). The final residual is (0.05, 0.18). The arrows are successive corrections, not nested grid cells.",
+    "cards": [
+      {
+        "title": "Codebook",
+        "text": "A shared table of vectors. An index is an address into that table."
+      },
+      {
+        "title": "Residual",
+        "text": "Subtract the selected vector from the current error, then quantize what remains."
+      },
+      {
+        "title": "Bitrate",
+        "text": "M codebooks with 256 entries use M bytes per vector, excluding the shared codebooks and other overhead."
+      }
+    ],
+    "equation": "r_m=r_{m-1}-c_m[i_m],\\qquad\\hat x=\\sum_{m=1}^M c_m[i_m]",
+    "note": "Greedy stage-by-stage selection is efficient, but it does not guarantee the globally nearest additive combination.",
+    "rows": [
+      [
+        "One codebook is too coarse",
+        "Add residual stages to encode corrections."
+      ],
+      [
+        "Need a lower bitrate",
+        "Use fewer active stages if the trained codec supports it."
+      ],
+      [
+        "K entries across M stages",
+        "Store MK vectors; there are up to Kᴹ index tuples, which may not all give unique sums."
+      ]
+    ],
+    "next_slug": "generative-ai-variational-inference-vaes-diffusion",
+    "next_title": "Continuous latent representations",
+    "lab": "rvq"
+  },
+  "conic-optimization-socp-sdp": {
+    "short": "Conic optimization",
+    "idea": "LP, SOCP, and SDP share a pattern: keep expressions affine and require them to belong to a cone. The cone defines what “nonnegative” means.",
+    "visual": "Three meanings of nonnegative",
+    "caption": "The orthant constrains entries; a second-order cone bounds a norm; the PSD cone constrains every quadratic direction. The sketches are schematic.",
+    "cards": [
+      {
+        "title": "LP · Scalar positivity",
+        "text": "An affine slack vector must be componentwise nonnegative."
+      },
+      {
+        "title": "SOCP · Norm bound",
+        "text": "A scalar must dominate the Euclidean length of a vector."
+      },
+      {
+        "title": "SDP · Matrix positivity",
+        "text": "An affine symmetric matrix must be positive semidefinite. This is not entrywise positivity."
+      }
+    ],
+    "equation": "\\min_x c^Tx\\quad\\text{subject to}\\quad Ax=b,\\;h-Gx\\in K",
+    "note": "Use the smallest cone that expresses the model exactly. Greater representational power can cost more computation.",
+    "rows": [
+      [
+        "Componentwise linear inequalities",
+        "Use the nonnegative orthant."
+      ],
+      [
+        "A Euclidean norm below an affine bound",
+        "Use a second-order cone."
+      ],
+      [
+        "An affine symmetric matrix must be PSD",
+        "Use a semidefinite constraint."
+      ]
+    ],
+    "next_slug": "convex-optimization-doubt-log",
+    "next_title": "The convex optimization learning map",
+    "lab": null
+  },
+  "convex-quadratics-psd-schur-complement": {
+    "short": "Curvature & constraints",
+    "idea": "The Hessian determines curvature. Constraints determine which descent directions are available. At the optimum, no feasible direction improves the objective.",
+    "visual": "The best feasible point can sit on a boundary",
+    "caption": "For f(x, y) = (x − 2)² + (y − 2)² with 0 ≤ x, y ≤ 1, the unconstrained center is outside the box. The constrained optimum is (1, 1).",
+    "cards": [
+      {
+        "title": "PSD curvature",
+        "text": "For a symmetric quadratic, P ⪰ 0 makes the objective convex; P ≻ 0 makes it strictly convex."
+      },
+      {
+        "title": "Feasible directions",
+        "text": "A nonzero gradient at a constrained optimum is possible: every allowed direction can still be uphill."
+      },
+      {
+        "title": "Matrix reformulation",
+        "text": "With a positive definite leading block, the Schur complement converts a block PSD condition into a smaller one."
+      }
+    ],
+    "equation": "\\nabla f(x^*)^T(y-x^*)\\geq0\\quad\\text{for every feasible }y",
+    "note": "For differentiable convex f over a convex feasible set, this condition is necessary and sufficient for optimality.",
+    "rows": [
+      [
+        "No active constraints",
+        "A differentiable optimum has zero gradient."
+      ],
+      [
+        "An active boundary",
+        "Check the gradient against feasible directions."
+      ],
+      [
+        "Eliminating equalities Ax = b",
+        "Write x = x₀ + Fz using a basis F of the nullspace."
+      ]
+    ],
+    "next_slug": "conic-optimization-socp-sdp",
+    "next_title": "Cones and semidefinite models",
+    "lab": null
+  },
+  "convex-sets-functions-first-order-geometry": {
+    "short": "Convexity & sublevel sets",
+    "idea": "A convex set contains straight paths between its points. A convex function lies below its chords. A quasiconvex function only needs convex sublevel sets.",
+    "visual": "The chord test explains convexity",
+    "caption": "For f(x) = x², a chord sits above the curve. A tangent sits below it. These two pictures explain Jensen’s inequality and first-order lower bounds.",
+    "cards": [
+      {
+        "title": "Set test",
+        "text": "Can you join any two feasible points without leaving the set?"
+      },
+      {
+        "title": "Function test",
+        "text": "Does averaging inputs cost no more than averaging their function values?"
+      },
+      {
+        "title": "Quasiconvex test",
+        "text": "For every threshold t, is the set {x : f(x) ≤ t} convex? If yes, search over t with feasibility tests."
+      }
+    ],
+    "equation": "f(\\theta x+(1-\\theta)y)\\leq\\theta f(x)+(1-\\theta)f(y),\\quad0\\leq\\theta\\leq1",
+    "note": "Quasiconvexity replaces the right-hand average with max{f(x), f(y)}. It is a weaker requirement.",
+    "rows": [
+      [
+        "Convex objective and constraints",
+        "Local minima are global; use convex optimization tools."
+      ],
+      [
+        "Only convex sublevel sets",
+        "Bisection on the objective threshold may apply."
+      ],
+      [
+        "A ratio with an affine denominator",
+        "Keep the denominator strictly positive when forming its sublevel inequalities."
+      ]
+    ],
+    "next_slug": "convex-quadratics-psd-schur-complement",
+    "next_title": "Curvature and constrained optima",
+    "lab": "convex"
+  },
+  "how-dinov2-dinov3-learn-without-labels": {
+    "short": "Learning without labels",
+    "idea": "The target comes from another view of the image and a slowly changing teacher. The student learns useful representations by matching those targets.",
+    "visual": "The teacher supplies targets; the student learns",
+    "caption": "Only the student receives gradients. Its EMA teacher sees global unmasked views; the student also sees local crops and masked patches. DINOv3 later anchors patch relationships to a Gram teacher.",
+    "cards": [
+      {
+        "title": "DINO · Global agreement",
+        "text": "Make different views agree at the image level, using teacher distributions over learned prototypes."
+      },
+      {
+        "title": "iBOT + KoLeo · Detail & diversity",
+        "text": "Predict teacher patch targets at masked locations; use KoLeo to discourage crowded global features."
+      },
+      {
+        "title": "DINOv3 · Preserve relationships",
+        "text": "Gram anchoring matches patch-to-patch similarities to a separate reference teacher during refinement."
+      }
+    ],
+    "equation": "\\theta_t\\leftarrow m\\theta_t+(1-m)\\theta_s",
+    "note": "The EMA teacher is a smoothed training history. Balanced, sharpened targets help prevent collapse; no human category label enters these losses.",
+    "rows": [
+      [
+        "Image-level understanding",
+        "DINO supervises global class-token representations."
+      ],
+      [
+        "Useful local descriptors",
+        "iBOT supervises masked patch representations."
+      ],
+      [
+        "Dense features degrade during long training",
+        "DINOv3 adds Gram anchoring to preserve patch relationships."
+      ]
+    ],
+    "next_slug": "cnn-vs-transformer-why-conformer-needs-both",
+    "next_title": "How attention moves information",
+    "lab": null
+  },
+  "weight-initialization-zero-xavier-he": {
+    "short": "Weight initialization",
+    "idea": "Randomness lets neurons learn different features. The right scale keeps activations and gradients usable as they pass through many layers.",
+    "visual": "Small scale errors multiply with depth",
+    "caption": "In a constant-width ReLU network, the approximate per-layer second-moment multiplier is r = n · Var(w) / 2. He initialization makes this multiplier about 1.",
+    "cards": [
+      {
+        "title": "Break symmetry",
+        "text": "Identical hidden units receive identical updates. Random weights give them different starting roles; biases can usually be zero."
+      },
+      {
+        "title": "Match the activation",
+        "text": "Xavier balances fan-in and fan-out for linear or tanh-like propagation. He compensates for ReLU gating."
+      },
+      {
+        "title": "Check both directions",
+        "text": "Forward signals depend on fan-in; backward signals also depend on fan-out and activation derivatives."
+      }
+    ],
+    "equation": "\\operatorname{Var}(w)_{Xavier}=\\frac{2}{n_{in}+n_{out}},\\qquad\\operatorname{Var}(w)_{He}=\\frac{2}{n_{in}}",
+    "note": "These are approximate starting scales, not convergence guarantees. Established architectures can require special gains and residual scaling.",
+    "rows": [
+      [
+        "Linear or tanh-like layer",
+        "Start from Xavier; use the appropriate activation gain."
+      ],
+      [
+        "ReLU or leaky ReLU layer",
+        "Use He/Kaiming with the matching negative slope."
+      ],
+      [
+        "An established Transformer or specialized model",
+        "Reproduce its complete initialization recipe."
+      ]
+    ],
+    "next_slug": "deep-learning-field-notes",
+    "next_title": "Follow gradients through training",
+    "lab": "initialization"
+  }
+}

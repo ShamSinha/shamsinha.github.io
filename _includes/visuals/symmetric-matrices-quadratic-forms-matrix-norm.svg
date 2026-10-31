@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="symmetric-matrices-quadratic-forms-matrix-norm-title symmetric-matrices-quadratic-forms-matrix-norm-desc">
+<title id="symmetric-matrices-quadratic-forms-matrix-norm-title">From eigenvalues to an ellipse</title>
+<desc id="symmetric-matrices-quadratic-forms-matrix-norm-desc">For A = diag(4, 1), the set xᵀAx ≤ 1 has horizontal radius ½ and vertical radius 1. More curvature means a shorter ellipse axis.</desc>
+<defs><marker id="symmetric-matrices-quadratic-forms-matrix-norm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<line x1="55" y1="180" x2="370" y2="180" class="axis"/>
+<line x1="55" y1="180" x2="55" y2="180" class="axis"/>
+<line x1="210" y1="40" x2="210" y2="310" class="axis"/>
+<ellipse cx="210" cy="180" rx="25.0" ry="50" class="stroke-blue"/>
+<ellipse cx="210" cy="180" rx="40.0" ry="80" class="stroke-teal"/>
+<ellipse cx="210" cy="180" rx="55.0" ry="110" class="stroke-blue"/>
+<line x1="210" y1="180" x2="265" y2="180" class="stroke-orange"/>
+<line x1="210" y1="180" x2="210" y2="70" class="stroke-teal"/>
+<text x="278" y="185" class="label" text-anchor="start">½</text>
+<text x="220" y="78" class="label" text-anchor="start">1</text>
+<rect x="435" y="62" width="310" height="72" rx="10" class="wash"/>
+<text x="590.0" y="91" class="label" text-anchor="middle">A = diag(4, 1)</text>
+<text x="590.0" y="114" class="small" text-anchor="middle">horizontal curvature is larger</text>
+<rect x="435" y="160" width="310" height="72" rx="10" class="wash-teal"/>
+<text x="590.0" y="189" class="label" text-anchor="middle">xᵀAx = 4x₁² + x₂²</text>
+<text x="590.0" y="212" class="small" text-anchor="middle">contours share the eigenvector axes</text>
+<text x="590" y="283" class="label" text-anchor="middle">Level set: xᵀAx ≤ 1</text>
+<text x="210" y="342" class="small" text-anchor="middle">greater curvature → shorter axis</text>
+</svg>

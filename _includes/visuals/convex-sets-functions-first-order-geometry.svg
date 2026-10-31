@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="convex-sets-functions-first-order-geometry-title convex-sets-functions-first-order-geometry-desc">
+<title id="convex-sets-functions-first-order-geometry-title">The chord test explains convexity</title>
+<desc id="convex-sets-functions-first-order-geometry-desc">For f(x) = x², a chord sits above the curve. A tangent sits below it. These two pictures explain Jensen’s inequality and first-order lower bounds.</desc>
+<defs><marker id="convex-sets-functions-first-order-geometry-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<line x1="45" y1="275" x2="445" y2="275" class="axis"/>
+<line x1="45" y1="275" x2="45" y2="55" class="axis"/>
+<path d="M50.00,205.20 L53.40,208.82 L56.80,212.34 L60.20,215.75 L63.60,219.06 L67.00,222.26 L70.40,225.36 L73.80,228.36 L77.20,231.25 L80.60,234.03 L84.00,236.72 L87.40,239.30 L90.80,241.77 L94.20,244.14 L97.60,246.41 L101.00,248.58 L104.40,250.63 L107.80,252.59 L111.20,254.44 L114.60,256.19 L118.00,257.83 L121.40,259.37 L124.80,260.81 L128.20,262.14 L131.60,263.36 L135.00,264.49 L138.40,265.51 L141.80,266.42 L145.20,267.23 L148.60,267.94 L152.00,268.54 L155.40,269.04 L158.80,269.44 L162.20,269.73 L165.60,269.91 L169.00,270.00 L172.40,269.97 L175.80,269.85 L179.20,269.62 L182.60,269.29 L186.00,268.85 L189.40,268.31 L192.80,267.66 L196.20,266.91 L199.60,266.06 L203.00,265.10 L206.40,264.04 L209.80,262.87 L213.20,261.60 L216.60,260.23 L220.00,258.75 L223.40,257.17 L226.80,255.48 L230.20,253.69 L233.60,251.80 L237.00,249.80 L240.40,247.70 L243.80,245.49 L247.20,243.18 L250.60,240.77 L254.00,238.25 L257.40,235.63 L260.80,232.90 L264.20,230.07 L267.60,227.13 L271.00,224.10 L274.40,220.95 L277.80,217.71 L281.20,214.36 L284.60,210.90 L288.00,207.34 L291.40,203.68 L294.80,199.91 L298.20,196.04 L301.60,192.07 L305.00,187.99 L308.40,183.80 L311.80,179.52 L315.20,175.13 L318.60,170.63 L322.00,166.03 L325.40,161.33 L328.80,156.52 L332.20,151.61 L335.60,146.59 L339.00,141.48 L342.40,136.25 L345.80,130.92 L349.20,125.49 L352.60,119.96 L356.00,114.32 L359.40,108.57 L362.80,102.73 L366.20,96.78 L369.60,90.72 L373.00,84.56 L376.40,78.30 L379.80,71.93 L383.20,65.46 L386.60,58.88 L390.00,52.20" class="stroke-blue"/>
+<line x1="70" y1="225" x2="370" y2="90" class="stroke-orange"/>
+<circle cx="70" cy="225" r="5" class="orange"/>
+<circle cx="370" cy="90" r="5" class="orange"/>
+<line x1="50.0" y1="335.25" x2="370" y2="191.25" class="stroke-teal"/>
+<text x="160" y="75" class="orange" text-anchor="start">chord above</text>
+<text x="305" y="290" class="teal" text-anchor="start">tangent below</text>
+<text x="250" y="330" class="small" text-anchor="middle">f(x) = x²</text>
+<ellipse cx="625" cy="145" rx="110" ry="70" class="wash-teal"/>
+<circle cx="566" cy="153" r="5" class="teal"/>
+<circle cx="685" cy="130" r="5" class="teal"/>
+<line x1="566" y1="153" x2="685" y2="130" class="stroke-teal"/>
+<text x="625" y="255" class="label" text-anchor="middle">A convex set keeps</text>
+<text x="625" y="281" class="small" text-anchor="middle">the whole segment inside.</text>
+</svg>

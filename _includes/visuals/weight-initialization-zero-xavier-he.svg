@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="weight-initialization-zero-xavier-he-title weight-initialization-zero-xavier-he-desc">
+<title id="weight-initialization-zero-xavier-he-title">Small scale errors multiply with depth</title>
+<desc id="weight-initialization-zero-xavier-he-desc">In a constant-width ReLU network, the approximate per-layer second-moment multiplier is r = n · Var(w) / 2. He initialization makes this multiplier about 1.</desc>
+<defs><marker id="weight-initialization-zero-xavier-he-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<line x1="65" y1="285" x2="540" y2="285" class="axis"/>
+<line x1="65" y1="285" x2="65" y2="55" class="axis"/>
+<line x1="65" y1="266" x2="540" y2="266" class="line"/>
+<text x="52" y="270" class="small" text-anchor="end">10⁻⁴</text>
+<line x1="65" y1="218" x2="540" y2="218" class="line"/>
+<text x="52" y="222" class="small" text-anchor="end">10⁻²</text>
+<line x1="65" y1="170" x2="540" y2="170" class="line"/>
+<text x="52" y="174" class="small" text-anchor="end">10⁰</text>
+<line x1="65" y1="122" x2="540" y2="122" class="line"/>
+<text x="52" y="126" class="small" text-anchor="end">10²</text>
+<line x1="65" y1="74" x2="540" y2="74" class="line"/>
+<text x="52" y="78" class="small" text-anchor="end">10⁴</text>
+<path d="M65.00,170.00 L88.75,165.77 L112.50,161.55 L136.25,157.32 L160.00,153.10 L183.75,148.87 L207.50,144.64 L231.25,140.42 L255.00,136.19 L278.75,131.96 L302.50,127.74 L326.25,123.51 L350.00,119.29 L373.75,115.06 L397.50,110.83 L421.25,106.61 L445.00,102.38 L468.75,98.15 L492.50,93.93 L516.25,89.70 L540.00,85.48" class="stroke-orange"/>
+<path d="M65.00,170.00 L88.75,170.00 L112.50,170.00 L136.25,170.00 L160.00,170.00 L183.75,170.00 L207.50,170.00 L231.25,170.00 L255.00,170.00 L278.75,170.00 L302.50,170.00 L326.25,170.00 L350.00,170.00 L373.75,170.00 L397.50,170.00 L421.25,170.00 L445.00,170.00 L468.75,170.00 L492.50,170.00 L516.25,170.00 L540.00,170.00" class="stroke-teal"/>
+<path d="M65.00,170.00 L88.75,174.49 L112.50,178.98 L136.25,183.47 L160.00,187.96 L183.75,192.45 L207.50,196.94 L231.25,201.43 L255.00,205.92 L278.75,210.41 L302.50,214.90 L326.25,219.39 L350.00,223.88 L373.75,228.37 L397.50,232.86 L421.25,237.35 L445.00,241.84 L468.75,246.33 L492.50,250.82 L516.25,255.31 L540.00,259.80" class="stroke-blue"/>
+<text x="65" y="310" class="small" text-anchor="start">0</text>
+<text x="540" y="310" class="small" text-anchor="end">20 layers</text>
+<text x="65" y="35" class="small" text-anchor="start">Second moment / input · log scale</text>
+<text x="580" y="85" class="orange" text-anchor="start">r = 1.50</text>
+<text x="580" y="110" class="small" text-anchor="start">grows</text>
+<text x="580" y="172" class="teal" text-anchor="start">r = 1.00</text>
+<text x="580" y="197" class="small" text-anchor="start">stays near scale</text>
+<text x="580" y="260" class="blue" text-anchor="start">r = 0.65</text>
+<text x="580" y="285" class="small" text-anchor="start">shrinks</text>
+<text x="400" y="345" class="label" text-anchor="middle">He + ReLU: n × (2 / n) × ½ ≈ 1</text>
+</svg>

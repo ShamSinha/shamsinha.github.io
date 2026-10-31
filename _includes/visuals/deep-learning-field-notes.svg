@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="deep-learning-field-notes-title deep-learning-field-notes-desc">
+<title id="deep-learning-field-notes-title">One training step, two directions</title>
+<desc id="deep-learning-field-notes-desc">The forward pass builds a prediction. Backpropagation applies the chain rule in reverse; the optimizer uses those gradients to update weights.</desc>
+<defs><marker id="deep-learning-field-notes-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="31.0" y="105" width="156" height="72" rx="10" class="wash"/>
+<text x="109.0" y="134" class="label" text-anchor="middle">Input</text>
+<text x="109.0" y="157" class="small" text-anchor="middle">data + targets</text>
+<line x1="194.0" y1="141" x2="218.0" y2="141" class="axis" marker-end="url(#deep-learning-field-notes-arrow)"/>
+<rect x="225.0" y="105" width="156" height="72" rx="10" class="wash"/>
+<text x="303.0" y="134" class="label" text-anchor="middle">Network</text>
+<text x="303.0" y="157" class="small" text-anchor="middle">layers + activations</text>
+<line x1="388.0" y1="141" x2="412.0" y2="141" class="axis" marker-end="url(#deep-learning-field-notes-arrow)"/>
+<rect x="419.0" y="105" width="156" height="72" rx="10" class="wash"/>
+<text x="497.0" y="134" class="label" text-anchor="middle">Prediction</text>
+<text x="497.0" y="157" class="small" text-anchor="middle">scores / values</text>
+<line x1="582.0" y1="141" x2="606.0" y2="141" class="axis" marker-end="url(#deep-learning-field-notes-arrow)"/>
+<rect x="613.0" y="105" width="156" height="72" rx="10" class="wash-teal"/>
+<text x="691.0" y="134" class="label" text-anchor="middle">Loss</text>
+<text x="691.0" y="157" class="small" text-anchor="middle">measure the error</text>
+<path d="M685 193 V255 H290 V193" class="axis" marker-end="url(#deep-learning-field-notes-arrow)"/>
+<text x="500" y="244" class="teal" text-anchor="middle">backpropagate gradients</text>
+<text x="500" y="282" class="small" text-anchor="middle">optimizer updates the parameters</text>
+<text x="400" y="55" class="small" text-anchor="middle">FORWARD →</text>
+<text x="400" y="332" class="label" text-anchor="middle">Repeat on batches; evaluate on held-out data.</text>
+</svg>

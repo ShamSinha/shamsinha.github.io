@@ -1,0 +1,40 @@
+<section class="vg-lab" data-lab="{{ include.type }}" hidden aria-label="Interactive experiment">
+  <div class="vg-lab-heading"><span class="vg-live-dot" aria-hidden="true"></span> Try the idea</div>
+  {% case include.type %}
+  {% when 'initialization' %}
+    <p>Change the per-layer signal multiplier. Watch a small mismatch compound over 20 layers.</p>
+    <label for="vg-control">Second-moment multiplier r <output id="vg-control-value" for="vg-control">1.00</output></label>
+    <input id="vg-control" type="range" min="0.5" max="1.5" step="0.01" value="1">
+  {% when 'entropy' %}
+    <p>Move from a predictable coin to a fair coin. Which one carries more average surprise?</p>
+    <label for="vg-control">Probability of heads <output id="vg-control-value" for="vg-control">0.50</output></label>
+    <input id="vg-control" type="range" min="0" max="1" step="0.01" value="0.5">
+  {% when 'diffusion' %}
+    <p>Mix a fixed toy signal with fixed Gaussian noise. This shows forward corruption, not a trained reverse model.</p>
+    <label for="vg-control">Retained signal power ᾱ <output id="vg-control-value" for="vg-control">0.80</output></label>
+    <input id="vg-control" type="range" min="0" max="1" step="0.01" value="0.8">
+  {% when 'rvq' %}
+    <p>Add the codewords from the worked example, one stage at a time. Each arrow corrects the approximation.</p>
+    <label for="vg-control">Active codebooks <output id="vg-control-value" for="vg-control">1</output></label>
+    <input id="vg-control" type="range" min="1" max="3" step="1" value="1">
+  {% when 'matrix' %}
+    <p>Stretch the horizontal axis. The same matrix transforms the unit circle and every vector inside it.</p>
+    <label for="vg-control">Horizontal scale a in diag(a, 1) <output id="vg-control-value" for="vg-control">2.00</output></label>
+    <input id="vg-control" type="range" min="0" max="3" step="0.05" value="2">
+  {% when 'kl' %}
+    <p>Explore the ideal scalar rate–distortion objective, with source variance V = 4 and reconstruction weight λ = 0.05.</p>
+    <label for="vg-control">Final KL weight β <output id="vg-control-value" for="vg-control">0.20</output></label>
+    <input id="vg-control" type="range" min="0" max="0.8" step="0.01" value="0.2">
+  {% when 'convex' %}
+    <p>Move a point along the chord joining (−1, 1) and (2, 4) on f(x) = x². The curve stays below the chord.</p>
+    <label for="vg-control">Interpolation θ <output id="vg-control-value" for="vg-control">0.50</output></label>
+    <input id="vg-control" type="range" min="0" max="1" step="0.01" value="0.5">
+  {% endcase %}
+  <svg class="vg-lab-plot" viewBox="0 0 640 240" role="img" aria-labelledby="vg-lab-title vg-lab-desc">
+    <title id="vg-lab-title">Interactive {{ include.type }} experiment</title>
+    <desc id="vg-lab-desc">Adjust the labeled slider. The numerical result and explanation below describe the plot.</desc>
+    <g data-plot></g>
+  </svg>
+  <p class="vg-lab-result" aria-live="polite" aria-atomic="true"></p>
+  <p class="vg-lab-note">{% if include.type == 'initialization' %}Approximation: constant width, independent weights, symmetric pre-activations, and ReLU gating. This plots second moments, not a measured training run.{% elsif include.type == 'kl' %}This is an analytic optimum, not a training simulation. Warmup changes the optimization path, not this final objective.{% elsif include.type == 'rvq' %}These are fixed illustrative codewords. Extra greedy stages do not guarantee lower error for arbitrary codebooks.{% else %}A small mathematical example; the full notes below explain the assumptions.{% endif %}</p>
+</section>

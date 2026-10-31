@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="conditioning-and-scaling-latent-diffusion-title conditioning-and-scaling-latent-diffusion-desc">
+<title id="conditioning-and-scaling-latent-diffusion-title">Put the condition where it can help</title>
+<desc id="conditioning-and-scaling-latent-diffusion-desc">A label can modulate features, a spatial map can be concatenated or injected at multiple scales, and tokens can provide keys and values for cross-attention.</desc>
+<defs><marker id="conditioning-and-scaling-latent-diffusion-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<rect x="30" y="35" width="210" height="72" rx="10" class="wash"/>
+<text x="135.0" y="64" class="label" text-anchor="middle">Label / scalar</text>
+<text x="135.0" y="87" class="small" text-anchor="middle">embed + modulate</text>
+<line x1="250" y1="71" x2="440" y2="71" class="axis"/>
+<line x1="440" y1="71" x2="440" y2="178" class="axis"/>
+<rect x="30" y="142" width="210" height="72" rx="10" class="wash"/>
+<text x="135.0" y="171" class="label" text-anchor="middle">Mask / map</text>
+<text x="135.0" y="194" class="small" text-anchor="middle">aligned spatial features</text>
+<line x1="250" y1="178" x2="440" y2="178" class="axis"/>
+<line x1="440" y1="178" x2="440" y2="178" class="axis"/>
+<rect x="30" y="249" width="210" height="72" rx="10" class="wash"/>
+<text x="135.0" y="278" class="label" text-anchor="middle">Text tokens</text>
+<text x="135.0" y="301" class="small" text-anchor="middle">cross-attention context</text>
+<line x1="250" y1="285" x2="440" y2="285" class="axis"/>
+<line x1="440" y1="285" x2="440" y2="178" class="axis"/>
+<rect x="500" y="132" width="245" height="92" rx="10" class="wash-teal"/>
+<text x="622.5" y="161" class="label" text-anchor="middle">Denoiser</text>
+<text x="622.5" y="184" class="small" text-anchor="middle">noisy latent + timestep</text>
+<line x1="440" y1="178" x2="490" y2="178" class="axis" marker-end="url(#conditioning-and-scaling-latent-diffusion-arrow)"/>
+<text x="620" y="75" class="small" text-anchor="middle">zₜ and t</text>
+<line x1="620" y1="84" x2="620" y2="122" class="axis" marker-end="url(#conditioning-and-scaling-latent-diffusion-arrow)"/>
+<text x="620" y="287" class="label" text-anchor="middle">conditional prediction</text>
+<line x1="620" y1="234" x2="620" y2="259" class="axis" marker-end="url(#conditioning-and-scaling-latent-diffusion-arrow)"/>
+</svg>

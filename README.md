@@ -41,3 +41,17 @@ This work is published under [MIT][mit] License.
 [chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
 [CD]: https://en.wikipedia.org/wiki/Continuous_deployment
 [mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
+
+## Visual post guides
+
+Posts with `visual_guide` front matter start with a short visual overview. Edit its
+summary, three key ideas, formula, and application table in
+`_data/visual_guides.json`. The matching diagram lives in
+`_includes/visuals/<visual_guide>.svg`; SVGs inherit the site's light/dark palette.
+Interactive examples are in `_includes/visual-lab.html` and
+`assets/js/visual-guide.js` and use no external plotting library.
+
+The complete original post remains in `_includes/notes/<visual_guide>.md`, rendered
+inside a native expandable section. Keep its heading IDs intact so existing deep
+links continue to work. New guides should use the same include/disclosure pattern
+as the existing posts. Preview with `bundle exec jekyll serve`.

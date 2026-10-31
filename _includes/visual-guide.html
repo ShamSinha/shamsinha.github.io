@@ -1,0 +1,58 @@
+{% assign guide = site.data.visual_guides[page.visual_guide] %}
+<section class="visual-guide" aria-label="Visual overview">
+  <div class="vg-intro">
+    <p class="vg-eyebrow">Visual field notes <span aria-hidden="true">/</span> {{ guide.short | escape }}</p>
+    <p class="vg-idea">{{ guide.idea | escape }}</p>
+    <a class="vg-detail-link" href="#full-notes">Need the derivation? Open the full notes <span aria-hidden="true">↗</span></a>
+  </div>
+
+  <h2 id="the-visual-model">The visual model</h2>
+  <figure class="vg-figure">
+    <div class="vg-figure-heading"><span class="vg-index" aria-hidden="true">01</span> {{ guide.visual | escape }}</div>
+    <div class="vg-diagram" tabindex="0" role="region" aria-label="{{ guide.visual | escape }}. Scroll horizontally on small screens.">
+      {% assign diagram_path = page.visual_guide | prepend: 'visuals/' | append: '.svg' %}
+      {% include {{ diagram_path }} %}
+    </div>
+    <figcaption>{{ guide.caption | escape }}</figcaption>
+  </figure>
+
+  {% if guide.lab %}
+    {% include visual-lab.html type=guide.lab %}
+  {% endif %}
+
+  <h2 id="three-ideas-to-keep">Three ideas to keep</h2>
+  <div class="vg-cards">
+    {% for card in guide.cards %}
+      <div class="vg-card">
+        <span class="vg-card-number" aria-hidden="true">0{{ forloop.index }}</span>
+        <h3 data-toc-skip>{{ card.title | escape }}</h3>
+        <p>{{ card.text | escape }}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="vg-equation" markdown="0">
+    <p class="vg-eyebrow">{% if guide.equation %}Connect the picture to the math{% else %}Put it into practice{% endif %}</p>
+    {% if guide.equation %}<div class="vg-math">\[{{ guide.equation }}\]</div>{% endif %}
+    <p>{{ guide.note | escape }}</p>
+  </div>
+
+  <h2 id="use-it-in-practice">Use it in practice</h2>
+  <div class="vg-table-wrap">
+    <table class="vg-table">
+      <thead><tr><th scope="col">When you see…</th><th scope="col">Think…</th></tr></thead>
+      <tbody>{% for row in guide.rows %}<tr><th scope="row">{{ row[0] | escape }}</th><td>{{ row[1] | escape }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+
+  {% if page.visual_guide == 'latent-diffusion-training-series' %}
+    <nav class="vg-reading-path" aria-label="Diffusion series">
+      <a href="{{ '/posts/training-latent-diffusion-models/' | relative_url }}">01 · Build the pipeline <span aria-hidden="true">→</span></a>
+      <a href="{{ '/posts/conditioning-and-scaling-latent-diffusion/' | relative_url }}">02 · Add control <span aria-hidden="true">→</span></a>
+      <a href="{{ '/posts/debugging-latent-diffusion-training/' | relative_url }}">03 · Debug and evaluate <span aria-hidden="true">→</span></a>
+    </nav>
+  {% else %}
+    {% capture next_path %}/posts/{{ guide.next_slug }}/{% endcapture %}
+    <a class="vg-next" href="{{ next_path | relative_url }}"><span><small>Connected idea</small>{{ guide.next_title | escape }}</span><span aria-hidden="true">→</span></a>
+  {% endif %}
+</section>

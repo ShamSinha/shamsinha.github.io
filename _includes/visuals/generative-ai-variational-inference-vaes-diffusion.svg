@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="generative-ai-variational-inference-vaes-diffusion-title generative-ai-variational-inference-vaes-diffusion-desc">
+<title id="generative-ai-variational-inference-vaes-diffusion-title">Two routes from noise to data</title>
+<desc id="generative-ai-variational-inference-vaes-diffusion-desc">A VAE decoder maps a latent sample to data in one pass. Diffusion generation repeatedly denoises; its forward corruption process is fixed.</desc>
+<defs><marker id="generative-ai-variational-inference-vaes-diffusion-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<text x="45" y="48" class="label" text-anchor="start">VAE</text>
+<rect x="45" y="75" width="160" height="72" rx="10" class="wash"/>
+<text x="125.0" y="104" class="label" text-anchor="middle">Latent z</text>
+<text x="125.0" y="127" class="small" text-anchor="middle">sample from prior</text>
+<rect x="320" y="75" width="160" height="72" rx="10" class="wash"/>
+<text x="400.0" y="104" class="label" text-anchor="middle">Decoder</text>
+<text x="400.0" y="127" class="small" text-anchor="middle">one learned map</text>
+<rect x="595" y="75" width="160" height="72" rx="10" class="wash-teal"/>
+<text x="675.0" y="104" class="label" text-anchor="middle">Image x</text>
+<text x="675.0" y="127" class="small" text-anchor="middle">generated output</text>
+<line x1="215" y1="111" x2="310" y2="111" class="axis" marker-end="url(#generative-ai-variational-inference-vaes-diffusion-arrow)"/>
+<line x1="490" y1="111" x2="585" y2="111" class="axis" marker-end="url(#generative-ai-variational-inference-vaes-diffusion-arrow)"/>
+<text x="45" y="214" class="label" text-anchor="start">DIFFUSION</text>
+<rect x="45" y="233" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="58" y="233" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="71" y="233" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="84" y="233" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="97" y="233" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="110" y="233" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="45" y="246" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.5"/>
+<rect x="58" y="246" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.8"/>
+<rect x="71" y="246" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="84" y="246" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="97" y="246" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.8"/>
+<rect x="110" y="246" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="45" y="259" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.5"/>
+<rect x="58" y="259" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="71" y="259" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="84" y="259" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.8"/>
+<rect x="97" y="259" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="110" y="259" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="45" y="272" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="58" y="272" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="71" y="272" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="84" y="272" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="97" y="272" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="110" y="272" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="45" y="285" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.5"/>
+<rect x="58" y="285" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.8"/>
+<rect x="71" y="285" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.8"/>
+<rect x="84" y="285" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="97" y="285" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.8"/>
+<rect x="110" y="285" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="45" y="298" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.5"/>
+<rect x="58" y="298" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.5"/>
+<rect x="71" y="298" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="84" y="298" width="11" height="11" rx="2" style="fill:var(--vg-muted);opacity:0.5"/>
+<rect x="97" y="298" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.5"/>
+<rect x="110" y="298" width="11" height="11" rx="2" style="fill:var(--vg-blue);opacity:0.5"/>
+<rect x="210" y="235" width="180" height="72" rx="10" class="wash"/>
+<text x="300.0" y="264" class="label" text-anchor="middle">Reverse sampler</text>
+<text x="300.0" y="287" class="small" text-anchor="middle">repeat denoising</text>
+<rect x="465" y="233" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="478" y="233" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="491" y="233" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="504" y="233" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="517" y="233" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="530" y="233" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="465" y="246" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="478" y="246" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="491" y="246" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="504" y="246" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="517" y="246" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="530" y="246" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="465" y="259" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="478" y="259" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="491" y="259" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="504" y="259" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="517" y="259" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="530" y="259" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="465" y="272" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="478" y="272" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="491" y="272" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="504" y="272" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="517" y="272" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="530" y="272" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="465" y="285" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="478" y="285" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="491" y="285" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="504" y="285" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="517" y="285" width="11" height="11" rx="2" style="fill:var(--vg-teal);opacity:0.8"/>
+<rect x="530" y="285" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="465" y="298" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="478" y="298" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="491" y="298" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="504" y="298" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="517" y="298" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<rect x="530" y="298" width="11" height="11" rx="2" style="fill:var(--vg-line);opacity:0.5"/>
+<line x1="134" y1="271" x2="200" y2="271" class="axis" marker-end="url(#generative-ai-variational-inference-vaes-diffusion-arrow)"/>
+<line x1="400" y1="271" x2="450" y2="271" class="axis" marker-end="url(#generative-ai-variational-inference-vaes-diffusion-arrow)"/>
+<text x="625" y="260" class="label" text-anchor="middle">noise → structure</text>
+<text x="625" y="288" class="small" text-anchor="middle">many learned denoising steps</text>
+</svg>

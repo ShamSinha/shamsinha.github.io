@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="convex-quadratics-psd-schur-complement-title convex-quadratics-psd-schur-complement-desc">
+<title id="convex-quadratics-psd-schur-complement-title">The best feasible point can sit on a boundary</title>
+<desc id="convex-quadratics-psd-schur-complement-desc">For f(x, y) = (x − 2)² + (y − 2)² with 0 ≤ x, y ≤ 1, the unconstrained center is outside the box. The constrained optimum is (1, 1).</desc>
+<defs><marker id="convex-quadratics-psd-schur-complement-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<line x1="55" y1="295" x2="395" y2="295" class="axis"/>
+<line x1="55" y1="295" x2="55" y2="35" class="axis"/>
+<defs><clipPath id="convex-quadratics-psd-schur-complement-clip"><rect x="55" y="35" width="340" height="260"/></clipPath></defs>
+<g clip-path="url(#convex-quadratics-psd-schur-complement-clip)">
+<circle cx="270" cy="95" r="45" class="stroke-blue"/>
+<circle cx="270" cy="95" r="90" class="stroke-blue"/>
+<circle cx="270" cy="95" r="141.4213562373095" class="stroke-blue"/>
+<circle cx="270" cy="95" r="190" class="stroke-blue"/>
+<circle cx="270" cy="95" r="235" class="stroke-blue"/>
+</g>
+<rect x="70" y="195" width="100" height="100" rx="0" class="wash-teal"/>
+<circle cx="170" cy="195" r="6" class="teal"/>
+<circle cx="270" cy="95" r="5" class="orange"/>
+<text x="83" y="265" class="small" text-anchor="start">feasible</text>
+<text x="185" y="207" class="small" text-anchor="start">(1, 1)</text>
+<text x="280" y="84" class="small" text-anchor="start">(2, 2)</text>
+<rect x="450" y="55" width="300" height="72" rx="10" class="wash"/>
+<text x="600.0" y="84" class="label" text-anchor="middle">Unconstrained minimum</text>
+<text x="600.0" y="107" class="small" text-anchor="middle">(2, 2) lies outside the box</text>
+<rect x="450" y="165" width="300" height="72" rx="10" class="wash-teal"/>
+<text x="600.0" y="194" class="label" text-anchor="middle">Constrained minimum</text>
+<text x="600.0" y="217" class="small" text-anchor="middle">(1, 1) is the closest feasible point</text>
+<text x="600" y="290" class="label" text-anchor="middle">The gradient need not be zero.</text>
+<text x="600" y="320" class="small" text-anchor="middle">Every feasible move is uphill.</text>
+</svg>

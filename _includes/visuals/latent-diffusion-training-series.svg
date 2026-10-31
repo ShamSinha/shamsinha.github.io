@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-labelledby="latent-diffusion-training-series-title latent-diffusion-training-series-desc">
+<title id="latent-diffusion-training-series-title">Three questions, one training system</title>
+<desc id="latent-diffusion-training-series-desc">Each stage has a clear exit check. The VAE codec is a prerequisite shared by all three parts.</desc>
+<defs><marker id="latent-diffusion-training-series-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--vg-muted)"/></marker></defs>
+<a href="{{ '/posts/training-latent-diffusion-models/' | relative_url }}" aria-label="Part 01: Build">
+<rect x="30" y="65" width="210" height="210" rx="10" class="wash"/>
+<text x="53" y="110" class="label teal" text-anchor="start">01</text>
+<text x="53" y="160" class="label" text-anchor="start">Build</text>
+<text x="53" y="197" class="small" text-anchor="start">Can it train and sample?</text>
+<text x="53" y="246" class="small" text-anchor="start">Read part 01 →</text>
+</a>
+<a href="{{ '/posts/conditioning-and-scaling-latent-diffusion/' | relative_url }}" aria-label="Part 02: Control">
+<rect x="295" y="65" width="210" height="210" rx="10" class="wash"/>
+<text x="318" y="110" class="label teal" text-anchor="start">02</text>
+<text x="318" y="160" class="label" text-anchor="start">Control</text>
+<text x="318" y="197" class="small" text-anchor="start">Does the condition work?</text>
+<text x="318" y="246" class="small" text-anchor="start">Read part 02 →</text>
+</a>
+<a href="{{ '/posts/debugging-latent-diffusion-training/' | relative_url }}" aria-label="Part 03: Diagnose">
+<rect x="560" y="65" width="210" height="210" rx="10" class="wash-teal"/>
+<text x="583" y="110" class="label teal" text-anchor="start">03</text>
+<text x="583" y="160" class="label" text-anchor="start">Diagnose</text>
+<text x="583" y="197" class="small" text-anchor="start">Can you explain failures?</text>
+<text x="583" y="246" class="small" text-anchor="start">Read part 03 →</text>
+</a>
+<line x1="250" y1="170" x2="283" y2="170" class="axis" marker-end="url(#latent-diffusion-training-series-arrow)"/>
+<line x1="515" y1="170" x2="548" y2="170" class="axis" marker-end="url(#latent-diffusion-training-series-arrow)"/>
+<text x="400" y="325" class="small" text-anchor="middle">Shared foundation: a working VAE codec and explicit latent conventions.</text>
+</svg>
