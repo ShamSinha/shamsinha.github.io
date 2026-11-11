@@ -141,11 +141,11 @@ then optimization can move the mean and change the variance, but every candidate
 
 Why not allow every possible distribution? We need a representation we can compute with: typically, we must be able to sample from $q_\phi$, evaluate its log-density, and estimate ELBO gradients efficiently. A very flexible family may make those operations expensive. A very simple one may miss important posterior structure.
 
-#### 2. What does the mean-field assumption remove?
+<h4 id="2-what-does-the-mean-field-assumption-remove">2. What is the mean-field assumption?</h4>
 
-Suppose $z=(z_1,z_2)$. The true joint posterior can express dependence: learning the value of $z_1$ may change what we expect about $z_2$.
+The **mean-field assumption** means choosing an approximate posterior in which the latent coordinates are **independent of one another for a fixed observation $x$**. We represent the joint distribution as a product of separate distributions, one for each coordinate. This product form is called **factorization**.
 
-**Mean-field VI** restricts the approximation to a product:
+For two latent coordinates, $z=(z_1,z_2)$, the assumption is
 
 $$
 q_\phi(z_1,z_2\mid x)
@@ -158,9 +158,9 @@ $$
 q_\phi(z\mid x)=\prod_{j=1}^d q_{\phi_j}(z_j\mid x).
 $$
 
-The product says the coordinates are **independent under $q$ for a given $x$**. It does not claim that the true posterior has this independence. Mean-field also does not require Gaussian factors; choosing a Gaussian for each factor is an additional decision.
+In plain language, once $x$ is known, learning the value of $z_1$ gives no additional information about $z_2$ under $q$. Both coordinate distributions can still depend on $x$. Mean-field also does not require Gaussian factors; choosing a Gaussian for each factor is an additional decision.
 
-Consider a correlated Gaussian posterior:
+This assumption removes dependence between coordinates from the approximation. The true posterior may still contain such dependence: knowing $z_1$ may change what we expect about $z_2$. For example, consider a correlated Gaussian posterior:
 
 $$
 p_\theta(z\mid x)=\mathcal N\!\left(
