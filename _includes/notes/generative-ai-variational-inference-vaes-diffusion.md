@@ -62,7 +62,7 @@ $$
 
 For a neural decoder, the evidence integral in the denominator is usually high-dimensional and has no useful closed form. “Intractable” does not mean logically impossible. It means exact evaluation is unavailable or computationally prohibitive at the required scale.
 
-Sampling methods such as Markov chain Monte Carlo approximate the posterior with samples. Variational inference takes a different route: turn inference into optimization.
+Sampling methods such as **Markov chain Monte Carlo (MCMC)** approximate the posterior with samples. Variational inference takes a different route: turn inference into optimization.
 
 ---
 
@@ -125,15 +125,169 @@ Variational inference is especially useful in three settings: limited data where
 
 ### Choosing the variational family
 
-The approximation can only express distributions inside its chosen family. A common **mean-field** assumption factorizes the latent dimensions:
+VI asks us to choose both **which distributions are allowed** and **how to measure their mismatch** with the posterior. Even perfect optimization can give a poor approximation if these choices cannot preserve the features we care about.
+
+#### 1. What is a variational family?
+
+For a fixed observation $x$, we want $q_\phi(z\mid x)$ to approximate $p_\theta(z\mid x)$. The **variational family** is the set of distributions that $q_\phi$ can represent as we vary its parameters $\phi$.
+
+For example, if we choose
+
+$$
+q_\phi(z\mid x)=\mathcal N(z;\mu_\phi(x),\sigma_\phi^2(x)),
+$$
+
+then optimization can move the mean and change the variance, but every candidate is still a single Gaussian bell curve. It cannot become a distribution with two separate peaks. Choosing the family is like choosing straight lines for curve fitting: optimizing the slope and intercept cannot turn a line into a circle.
+
+Why not allow every possible distribution? We need a representation we can compute with: typically, we must be able to sample from $q_\phi$, evaluate its log-density, and estimate ELBO gradients efficiently. A very flexible family may make those operations expensive. A very simple one may miss important posterior structure.
+
+#### 2. What does the mean-field assumption remove?
+
+Suppose $z=(z_1,z_2)$. The true joint posterior can express dependence: learning the value of $z_1$ may change what we expect about $z_2$.
+
+**Mean-field VI** restricts the approximation to a product:
+
+$$
+q_\phi(z_1,z_2\mid x)
+=q_{\phi_1}(z_1\mid x)q_{\phi_2}(z_2\mid x).
+$$
+
+For $d$ latent coordinates, this becomes
 
 $$
 q_\phi(z\mid x)=\prod_{j=1}^d q_{\phi_j}(z_j\mid x).
 $$
 
-This makes expectations and gradients cheap, but it cannot directly represent posterior correlations between latent dimensions. Full-covariance Gaussians are richer and more expensive. Normalizing flows, mixtures, and structured variational families add flexibility at additional computational cost.
+The product says the coordinates are **independent under $q$ for a given $x$**. It does not claim that the true posterior has this independence. Mean-field also does not require Gaussian factors; choosing a Gaussian for each factor is an additional decision.
 
-The KL direction also matters. Minimizing $D_{\mathrm{KL}}(q\|p)$ penalizes placing mass where $p$ has little mass very strongly, but it does not penalize every region that $q$ fails to cover equally. With a multimodal true posterior and a unimodal $q$, the approximation may concentrate on one mode rather than spread across low-density space between modes. This behavior is often called **mode seeking** or **zero forcing**.
+Consider a correlated Gaussian posterior:
+
+$$
+p_\theta(z\mid x)=\mathcal N\!\left(
+\begin{bmatrix}0\\0\end{bmatrix},
+\underbrace{\begin{bmatrix}1&0.9\\0.9&1\end{bmatrix}}_{\Sigma_p}
+\right).
+$$
+
+The diagonal entries are the marginal variances: each coordinate has variance $1$. The off-diagonal entries are covariances. Since both standard deviations are $1$, the correlation is also $0.9$: larger $z_1$ tends to accompany larger $z_2$.
+
+A mean-field Gaussian instead has
+
+$$
+\Sigma_q=\begin{bmatrix}a&0\\0&b\end{bmatrix},
+\qquad a,b>0.
+$$
+
+Changing $a$ and $b$ changes the widths along the two axes, but it cannot introduce correlation. The true density has tilted elliptical contours; $q$ has axis-aligned contours. A contour connects points with the same probability density.
+
+![Left: tilted contours of the correlated posterior and smaller circular contours of the optimal mean-field Gaussian. Right: a two-peaked posterior compared with a Gaussian near one peak and a broad Gaussian covering both.](/assets/images/variational-family-comparison.svg)
+_Left: the same axes and the same fractions of each density's peak height are used for both sets of contours. Right: the one-mode Gaussian is illustrative; the covering Gaussian is the exact forward-KL optimum derived below._
+
+#### 3. Why can mean-field underestimate uncertainty?
+
+For this example, minimizing $D_{\mathrm{KL}}(q\Vert p)$ over diagonal Gaussians gives mean zero and
+
+$$
+\boxed{\Sigma_q=\begin{bmatrix}0.19&0\\0&0.19\end{bmatrix}.}
+$$
+
+Each approximate marginal variance is only $0.19$, even though the true value is $1$. Here is where that number comes from.
+
+The inverse covariance, also called the **precision matrix**, is
+
+$$
+\Sigma_p^{-1}
+=\frac{1}{1-0.9^2}
+\begin{bmatrix}1&-0.9\\-0.9&1\end{bmatrix}
+=\frac{1}{0.19}\begin{bmatrix}1&-0.9\\-0.9&1\end{bmatrix}.
+$$
+
+For zero-mean $q$ with variances $a,b$, substituting the Gaussian densities into KL gives
+
+$$
+D_{\mathrm{KL}}(q\|p)
+=\frac12\left[\frac{a+b}{0.19}-\log a-\log b\right]+C,
+$$
+
+where $C$ collects terms that do not depend on $a$ or $b$. Differentiating with respect to $a$ gives
+
+$$
+\frac{\partial D_{\mathrm{KL}}}{\partial a}
+=\frac12\left(\frac{1}{0.19}-\frac1a\right)=0
+\quad\Longrightarrow\quad a=0.19.
+$$
+
+The same calculation gives $b=0.19$. More generally, for a Gaussian target the optimal diagonal variances under reverse KL satisfy
+
+$$
+(\Sigma_q)_{jj}=\frac{1}{(\Sigma_p^{-1})_{jj}},
+$$
+
+which can be smaller than the target's marginal variances.
+
+Intuitively, independent coordinates with variance $1$ would generate too many combinations such as large positive $z_1$ with large negative $z_2$. Those combinations are unlikely under the positively correlated posterior. Unable to tilt its contours, $q$ shrinks to avoid them. It consequently loses much of the uncertainty along the posterior's long diagonal direction.
+
+#### 4. Why use mean-field despite that limitation?
+
+A full-covariance Gaussian can represent this correlated posterior exactly, but its covariance requires $d(d+1)/2$ unique parameters. A diagonal Gaussian needs only $d$:
+
+| Gaussian family | Covariance parameters | At $d=1000$ |
+|---|---|---|
+| Diagonal / mean-field | $d$ | 1,000 |
+| Full covariance | $d(d+1)/2$ | 500,500 |
+
+Both also require $d$ mean parameters. Diagonal Gaussians make sampling and many ELBO calculations cheap, which is why they are common VAE encoder distributions.
+
+A full covariance captures Gaussian correlations but still gives a single Gaussian. Mixtures combine multiple component distributions and can represent separate peaks. Normalizing flows transform a simple distribution through invertible maps to produce richer shapes. These choices increase flexibility and usually add computational cost.
+
+#### 5. Why does the direction of KL matter?
+
+Keep $x$ fixed and abbreviate the posterior as $p(z)$ and the approximation as $q(z)$. VI minimizes **reverse KL**:
+
+$$
+D_{\mathrm{KL}}(q\|p)
+=\int q(z)\log\frac{q(z)}{p(z)}\,dz
+=\mathbb E_{z\sim q}\!\left[\log\frac{q(z)}{p(z)}\right].
+$$
+
+The expectation is over samples from $q$. This creates an asymmetry:
+
+- If $q$ assigns appreciable probability where $p$ is tiny, samples from $q$ encounter a large positive log-ratio and incur a penalty.
+- If $q$ assigns almost no probability to a region where $p$ is large, that region is rarely sampled under $q$ and contributes little directly to the objective.
+
+To see the consequence, suppose the posterior has two **modes**, meaning two density peaks:
+
+$$
+p(z)=\tfrac12\mathcal N(z;-4,1)+\tfrac12\mathcal N(z;4,1),
+\qquad q(z)=\mathcal N(z;\mu,\sigma^2).
+$$
+
+A single Gaussian cannot match both separated peaks without also putting probability in the low-density valley between them. Reverse KL often prefers concentrating near one peak, such as $q(z)\approx\mathcal N(z;4,1)$, and missing the other. This tendency is called **mode seeking**.
+
+Near the right peak, $p(z)\approx\tfrac12q(z)$, so this one-mode approximation has
+
+$$
+D_{\mathrm{KL}}(q\|p)\approx\log 2\approx0.693.
+$$
+
+Thus an approximation can miss roughly half the posterior probability while paying a finite, relatively modest KL cost. The approximation is optimal or nearly optimal *for that family and objective*, yet can still be poor for describing all plausible latent explanations.
+
+**Forward KL** reverses the expectation:
+
+$$
+D_{\mathrm{KL}}(p\|q)
+=\mathbb E_{z\sim p}\!\left[\log\frac{p(z)}{q(z)}\right].
+$$
+
+Now samples come from both true peaks. If $q$ is tiny at either peak, the objective incurs a large penalty there. Among single Gaussians, the forward-KL optimum matches the target's mean and variance. Here the mean is $0$, and the variance is $1+4^2=17$: variance $1$ within each component plus variance $16$ from the two component means. Therefore,
+
+$$
+q^*_{\mathrm{forward}}(z)=\mathcal N(z;0,17).
+$$
+
+This broad Gaussian covers both peaks but also assigns too much probability to the valley. That tendency is called **mode covering**. It preserves a different feature of the posterior while still failing to reproduce its two-peak shape.
+
+Mode seeking and mode covering are tendencies under restricted families, not universal rules. If the family contains $p$ and optimization reaches the global minimum, either KL direction recovers $q=p$. Forward KL is also not an automatic replacement for the VI objective: its expectation requires access to the posterior, typically through samples that may themselves be hard to obtain.
 
 ### Variational inference versus MCMC
 
